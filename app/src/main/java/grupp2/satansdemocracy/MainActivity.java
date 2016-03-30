@@ -23,6 +23,9 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private final String TAG = MainActivity.class.getSimpleName();
 
+    /**
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +40,9 @@ public class MainActivity extends AppCompatActivity {
         setupDrawer();
     }
 
+    /**
+     * @param savedInstanceState
+     */
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         // Ser till att drawern är synkad om den är utdragen eller inte
@@ -44,13 +50,20 @@ public class MainActivity extends AppCompatActivity {
         super.onPostCreate(savedInstanceState);
     }
 
+    /**
+     *
+     */
     @Override
     protected void onResume() {
         // till för framtiden kanske
         super.onResume();
     }
 
-    // Skapar en arraylista för drawern där vi lägger till nya "rubriker", använder sedan en switch med onclicklistener för att sätta upp de olika rubrikerna
+    /**
+     * Skapar en array för drawern där vi lägger till nya "rubriker",
+     * använder sedan en switch med onClickListener för att sätta upp de olika rubrikerna
+     *
+     */
     private void addDrawerItems() {
         String[] drawerArray = {"News", "Biljetter", "xxx ", "xxx ", "xxxx"};
         mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, drawerArray);
@@ -84,6 +97,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     *
+     */
     private void setupDrawer() {
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
                 R.string.drawer_open, R.string.drawer_close) {
@@ -99,6 +115,11 @@ public class MainActivity extends AppCompatActivity {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
+    /**
+     *
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
