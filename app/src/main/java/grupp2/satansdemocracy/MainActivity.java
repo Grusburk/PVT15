@@ -14,6 +14,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+
 public class MainActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
@@ -29,6 +31,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                        .setDefaultFontPath("fonts/Roboto-RobotoRegular.ttf")
+                        .setFontAttrId(R.attr.fontPath)
+                        .build()
+        );
+
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -38,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         mDrawerList = (ListView) findViewById(R.id.navList);
         addDrawerItems();
         setupDrawer();
+
     }
 
     /**
