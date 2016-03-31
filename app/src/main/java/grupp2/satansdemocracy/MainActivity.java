@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
      *
      */
     private void addDrawerItems() {
-        String[] drawerArray = {"News", "Biljetter", "xxx ", "xxx ", "xxxx"};
+        String[] drawerArray = {"Start", "Nyheter", "Föreställning ", "Information ", "Wiki+", "Logga ut"};
         mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, drawerArray);
         mDrawerList.setAdapter(mAdapter);
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -90,6 +90,10 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case 4:
                         Log.i(TAG, "position 4");
+                        mDrawerLayout.closeDrawers();
+                        break;
+                    case 5:
+                        Log.i(TAG, "position 5");
                         mDrawerLayout.closeDrawers();
                         break;
                 }
