@@ -15,8 +15,13 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
     private final String TAG = MainActivity.class.getSimpleName();
+
+    private OkHttpClient client = new OkHttpClient(); // Se metoden run()
 
     /**
      * @param savedInstanceState
@@ -138,6 +145,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * TODO: Detta är (eventuell) förberedelse för serverkommunikation, vet inte om det funkar.
+     * @param url
+     * @return
+     * @throws IOException
+     */
+    String run(String url) throws IOException {
+        Request request = new Request.Builder().url(url).build();
+
+        Response response = client.newCall(request).execute();
+        return response.body().string();
     }
 
 }
