@@ -134,6 +134,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      *
      * @return
      */
+    @TargetApi(Build.VERSION_CODES.M)
     private boolean mayRequestContacts() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             return true;

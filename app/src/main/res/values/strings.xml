@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Satans Democracy</string>
+    <string name="app_name">Satans Demokrati</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <!-- Strings related to login -->
@@ -14,5 +14,5 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">Satans Demokrati</string>
 </resources>
