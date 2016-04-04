@@ -26,7 +26,7 @@
             tools:context="">
 
         <Button
-            android:id="@+id/exempel"
+            android:id="@+id/exempel_button"
             style="?android:textAppearanceSmall"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
