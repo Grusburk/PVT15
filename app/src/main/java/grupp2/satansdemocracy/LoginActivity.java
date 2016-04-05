@@ -3,6 +3,7 @@ package grupp2.satansdemocracy;
 /**
  * Created by dödsadde on 2016-04-04.
  */
+
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -17,15 +18,21 @@ import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+import com.facebook.Profile;
 
 import java.util.Arrays;
-
 
 
 public class LoginActivity extends AppCompatActivity {
 
     private CallbackManager callbackManager;
+    Profile profile = null;
+    JSONObject profileToDB = null;
+    JSONObject category = null;
+    JSONArray profileList = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +48,20 @@ public class LoginActivity extends AppCompatActivity {
             public void onSuccess(LoginResult loginResult) {
                 /**
                  * TODO: Save UserInformation To DB
+                 * checkDB
+                 * ifExist(GO TO LOGIN)
+                 * ifNotExist(SAVE PROFILE TO DB; GO TO LOGIN)
+                 * FINITO
                  */
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                profile = Profile.getCurrentProfile();
+                profile.getId();
+
+                if (true) {
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                } else {
+
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                }
             }
 
             @Override
