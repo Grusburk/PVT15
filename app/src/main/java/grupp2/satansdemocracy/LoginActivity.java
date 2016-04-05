@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.content.Intent;
 
+import android.widget.Toast;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.CallbackManager;
@@ -19,6 +20,7 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 import com.facebook.Profile;
@@ -30,9 +32,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private CallbackManager callbackManager;
     Profile profile = null;
-    JSONObject profileToDB = null;
-    JSONObject category = null;
-    JSONArray profileList = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 /**
+                 * TODO: Hantera eventuella anslutningssvårigheter
                  * TODO: Save UserInformation To DB
                  * checkDB
                  * ifExist(GO TO LOGIN)
@@ -55,11 +55,57 @@ public class LoginActivity extends AppCompatActivity {
                  */
                 profile = Profile.getCurrentProfile();
                 profile.getId();
+                JSONObject profileID = null;
 
-                if (true) {
+                try {
+                    profileID.put("Id", profile.getId());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                /**
+                 * TODO: Send profileID to server/DB
+                 * TODO: Handle JSON answer
+                 */
+
+                if (true/** Check profileID against hash table in DB (JSON answer bool == true) */) {
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 } else {
+                    /**
+                     * TODO: If user doesnt exist in DB, create it
+                     */
+                    JSONObject firstName = null,
+                            middleName = null,
+                            lastName = null,
+                            name = null,
+                            linkUri = null;
+                    JSONArray profileArr = null;
+                    JSONObject prof = null;
+                    try {
+                        /** Adding data to JSONObjects */
+                        firstName.put("firstName", profile.getFirstName());
+                        middleName.put("middleName", profile.getMiddleName());
+                        lastName.put("lastName", profile.getLastName());
+                        name.put("name", profile.getName());
+                        linkUri.put("linkUri", profile.getLinkUri());
 
+                        /** Adding JSONObjects to JSONArray */
+                        profileArr.put(profileID);
+                        profileArr.put(firstName);
+                        profileArr.put(middleName);
+                        profileArr.put(lastName);
+                        profileArr.put(name);
+                        profileArr.put(linkUri);
+
+                        /** Adding JSONArray to a JSONObject ready for DB */
+                        prof.put("profile", profileArr);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    /**
+                     * TODO: send JSON.prof to DB
+                     */
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 }
             }
