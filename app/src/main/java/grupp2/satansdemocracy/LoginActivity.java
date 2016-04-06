@@ -48,6 +48,12 @@ public class LoginActivity extends AppCompatActivity {
                 /**
                  * TODO: Hantera eventuella anslutningssvårigheter
                  * TODO: Save UserInformation To DB
+                 * TODO: Server info:
+                 *          - Server:           mysql.dsv.su.se
+                 *          - Port:             3306 (default)
+                 *          - Database name:    joso8829
+                 *          - User name:        joso8829
+                 *          - Password:         vaeB3iebi9ro
                  * checkDB
                  * ifExist(GO TO LOGIN)
                  * ifNotExist(SAVE PROFILE TO DB; GO TO LOGIN)
