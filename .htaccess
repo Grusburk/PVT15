@@ -1,0 +1,9 @@
+<IfModule mod_rewrite.c>
+RewriteEngine On
+#Options +FollowSymLinks
+#RewriteRule ^(.*)$ http://www.joomla.org/? [R=301,L]
+RewriteBase /~anth3046
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.+)$ SatansDemokrati/api/v1/api.php?request=$1 [QSA,NC,L]
+</IfModule>
