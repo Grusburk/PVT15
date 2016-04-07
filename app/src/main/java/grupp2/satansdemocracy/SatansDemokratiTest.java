@@ -1,6 +1,6 @@
 package grupp2.satansdemocracy;
 
-import org.junit.Test;
+// import org.junit.Test;
 
 /**
  * Created by Joakim on 2016-04-06.
