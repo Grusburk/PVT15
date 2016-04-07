@@ -4,6 +4,19 @@ package grupp2.satansdemocracy;
  * Created by dödsadde on 2016-04-04.
  */
 
+/**
+ * ISSUE: android.os.NetworkOnMainThreadException
+ at grupp2.satansdemocracy.LoginActivity.apiGet(LoginActivity.java:46)
+ at grupp2.satansdemocracy.LoginActivity$1$1.onSuccess(LoginActivity.java:88)
+ at grupp2.satansdemocracy.LoginActivity$1$1.onSuccess(LoginActivity.java:63)
+ at grupp2.satansdemocracy.LoginActivity.onActivityResult(LoginActivity.java:176)
+
+ * CHECK: http://stackoverflow.com/questions/6343166/how-to-fix-android-os-networkonmainthreadexception
+ *
+ *
+ * OPEN QUESTION: IS jObject.put gonna work since we declare it as null?
+ */
+
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -35,14 +48,27 @@ import java.util.Arrays;
 public class LoginActivity extends AppCompatActivity {
 
     private CallbackManager callbackManager;
-    private static final String API_URL = "https://people.dsv.su.se/~anth3046/SatansDemokrati/api/v1/";
     Profile profile = null;
+
+    /**
+     * The URL to our API
+     */
+    private static final String API_URL = "https://people.dsv.su.se/~anth3046/SatansDemokrati/api/v1/";
+
+    /**
+     * Our HttpHandler (CALL FOR HTTP METHODS)
+     */
     OkHttpClient client = new OkHttpClient();
 
+    /**
+     * Sends HttpRequest and tries to handle the response
+     * (might have to be rewritten, straight out copied from internet with a slight edit)
+     */
     JSONObject apiGet(String url) throws IOException, JSONException {
         Request request = new Request.Builder()
                 .url(API_URL+url)
                 .build();
+
         Response response = client.newCall(request).execute();
         return new JSONObject(response.body().string());
     }
@@ -55,7 +81,9 @@ public class LoginActivity extends AppCompatActivity {
         callbackManager = CallbackManager.Factory.create();
         LoginButton loginButton =(LoginButton)findViewById(R.id.login_button);
 
-
+        /**
+         * Ny setOnClickListener (The application went straight into "facebook screen" on start. Didnt notice until I started it on my phone)
+         */
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,7 +94,7 @@ public class LoginActivity extends AppCompatActivity {
                         /**
                          * TODO: Hantera eventuella anslutningssvårigheter
                          * TODO: Save UserInformation To DB
-                         * TODO: Server info:
+                         * OTHER: Server info:
                          *          - Server:           mysql.dsv.su.se
                          *          - Port:             3306 (default)
                          *          - Database name:    joso8829
@@ -82,6 +110,8 @@ public class LoginActivity extends AppCompatActivity {
 
                         /**
                          * TODO: Send profileID to server/DB
+                         * Sends the user ID to the server
+                         * (NOT DONE, JUST TEST)
                          */
                         JSONObject jProfile = null;
                         try {
@@ -141,17 +171,11 @@ public class LoginActivity extends AppCompatActivity {
 
                     @Override
                     public void onCancel() {
-                        /**
-                         *  TODO: CancelMessage
-                         */
                         Log.d("LoginActivity", "Facebook_LOGIN_CANCEL");
                     }
 
                     @Override
                     public void onError(FacebookException e) {
-                        /**
-                         * TODO: TOAST ERROR
-                         */
                         Log.d("LoginActivity", "Facebook_LOGIN_ERROR");
                         e.printStackTrace();
                     }
