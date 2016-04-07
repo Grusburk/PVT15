@@ -9,7 +9,14 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="500dp"
-        android:id="@+id/nyheter_frane">
+        android:id="@+id/nyheter_frame">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="30sp"
+            android:textColor="@color/colorAccent"
+            android:text="NYHETER FRAME"/>
 
     </FrameLayout>
 
