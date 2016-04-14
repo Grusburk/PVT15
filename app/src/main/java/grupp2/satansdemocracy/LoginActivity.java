@@ -2,6 +2,102 @@ package grupp2.satansdemocracy;
 
 /**
  * Created by dödsadde on 2016-04-04.
+ * <p>
+ * ISSUE: android.os.NetworkOnMainThreadException
+ * at grupp2.satansdemocracy.LoginActivity.apiGet(LoginActivity.java:46)
+ * at grupp2.satansdemocracy.LoginActivity$1$1.onSuccess(LoginActivity.java:88)
+ * at grupp2.satansdemocracy.LoginActivity$1$1.onSuccess(LoginActivity.java:63)
+ * at grupp2.satansdemocracy.LoginActivity.onActivityResult(LoginActivity.java:176)
+ * <p>
+ * CHECK: http://stackoverflow.com/questions/6343166/how-to-fix-android-os-networkonmainthreadexception
+ * <p>
+ * <p>
+ * OPEN QUESTION: IS jObject.put gonna work since we declare it as null?
+ * <p>
+ * TODO: Hantera eventuella anslutningssvårigheter
+ * TODO: Save UserInformation To DB
+ * OTHER: Server info:
+ * - Server:           mysql.dsv.su.se
+ * - Port:             3306 (default)
+ * - Database name:    joso8829
+ * - User name:        joso8829
+ * - Password:         vaeB3iebi9ro
+ * checkDB
+ * ifExist(GO TO LOGIN)
+ * ifNotExist(SAVE PROFILE TO DB; GO TO LOGIN)
+ * FINITO
+ * <p>
+ * ISSUE: android.os.NetworkOnMainThreadException
+ * at grupp2.satansdemocracy.LoginActivity.apiGet(LoginActivity.java:46)
+ * at grupp2.satansdemocracy.LoginActivity$1$1.onSuccess(LoginActivity.java:88)
+ * at grupp2.satansdemocracy.LoginActivity$1$1.onSuccess(LoginActivity.java:63)
+ * at grupp2.satansdemocracy.LoginActivity.onActivityResult(LoginActivity.java:176)
+ * <p>
+ * CHECK: http://stackoverflow.com/questions/6343166/how-to-fix-android-os-networkonmainthreadexception
+ * <p>
+ * <p>
+ * OPEN QUESTION: IS jObject.put gonna work since we declare it as null?
+ * <p>
+ * TODO: Hantera eventuella anslutningssvårigheter
+ * TODO: Save UserInformation To DB
+ * OTHER: Server info:
+ * - Server:           mysql.dsv.su.se
+ * - Port:             3306 (default)
+ * - Database name:    joso8829
+ * - User name:        joso8829
+ * - Password:         vaeB3iebi9ro
+ * checkDB
+ * ifExist(GO TO LOGIN)
+ * ifNotExist(SAVE PROFILE TO DB; GO TO LOGIN)
+ * FINITO
+ * <p>
+ * ISSUE: android.os.NetworkOnMainThreadException
+ * at grupp2.satansdemocracy.LoginActivity.apiGet(LoginActivity.java:46)
+ * at grupp2.satansdemocracy.LoginActivity$1$1.onSuccess(LoginActivity.java:88)
+ * at grupp2.satansdemocracy.LoginActivity$1$1.onSuccess(LoginActivity.java:63)
+ * at grupp2.satansdemocracy.LoginActivity.onActivityResult(LoginActivity.java:176)
+ * <p>
+ * CHECK: http://stackoverflow.com/questions/6343166/how-to-fix-android-os-networkonmainthreadexception
+ * <p>
+ * <p>
+ * OPEN QUESTION: IS jObject.put gonna work since we declare it as null?
+ * <p>
+ * TODO: Hantera eventuella anslutningssvårigheter
+ * TODO: Save UserInformation To DB
+ * OTHER: Server info:
+ * - Server:           mysql.dsv.su.se
+ * - Port:             3306 (default)
+ * - Database name:    joso8829
+ * - User name:        joso8829
+ * - Password:         vaeB3iebi9ro
+ * checkDB
+ * ifExist(GO TO LOGIN)
+ * ifNotExist(SAVE PROFILE TO DB; GO TO LOGIN)
+ * FINITO
+ * <p>
+ * ISSUE: android.os.NetworkOnMainThreadException
+ * at grupp2.satansdemocracy.LoginActivity.apiGet(LoginActivity.java:46)
+ * at grupp2.satansdemocracy.LoginActivity$1$1.onSuccess(LoginActivity.java:88)
+ * at grupp2.satansdemocracy.LoginActivity$1$1.onSuccess(LoginActivity.java:63)
+ * at grupp2.satansdemocracy.LoginActivity.onActivityResult(LoginActivity.java:176)
+ * <p>
+ * CHECK: http://stackoverflow.com/questions/6343166/how-to-fix-android-os-networkonmainthreadexception
+ * <p>
+ * <p>
+ * OPEN QUESTION: IS jObject.put gonna work since we declare it as null?
+ * <p>
+ * TODO: Hantera eventuella anslutningssvårigheter
+ * TODO: Save UserInformation To DB
+ * OTHER: Server info:
+ * - Server:           mysql.dsv.su.se
+ * - Port:             3306 (default)
+ * - Database name:    joso8829
+ * - User name:        joso8829
+ * - Password:         vaeB3iebi9ro
+ * checkDB
+ * ifExist(GO TO LOGIN)
+ * ifNotExist(SAVE PROFILE TO DB; GO TO LOGIN)
+ * FINITO
  */
 
 /**
@@ -17,7 +113,23 @@ package grupp2.satansdemocracy;
  * OPEN QUESTION: IS jObject.put gonna work since we declare it as null?
  */
 
+/**
+ * TODO: Hantera eventuella anslutningssvårigheter
+ * TODO: Save UserInformation To DB
+ * OTHER: Server info:
+ *          - Server:           mysql.dsv.su.se
+ *          - Port:             3306 (default)
+ *          - Database name:    joso8829
+ *          - User name:        joso8829
+ *          - Password:         vaeB3iebi9ro
+ * checkDB
+ * ifExist(GO TO LOGIN)
+ * ifNotExist(SAVE PROFILE TO DB; GO TO LOGIN)
+ * FINITO
+ */
+
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -49,29 +161,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private CallbackManager callbackManager;
     Profile profile = null;
-
-    /**
-     * The URL to our API
-     */
-    private static final String API_URL = "https://people.dsv.su.se/~anth3046/SatansDemokrati/api/v1/";
-
-    /**
-     * Our HttpHandler (CALL FOR HTTP METHODS)
-     */
-    OkHttpClient client = new OkHttpClient();
-
-    /**
-     * Sends HttpRequest and tries to handle the response
-     * (might have to be rewritten, straight out copied from internet with a slight edit)
-     */
-    JSONObject apiGet(String url) throws IOException, JSONException {
-        Request request = new Request.Builder()
-                .url(API_URL+url)
-                .build();
-
-        Response response = client.newCall(request).execute();
-        return new JSONObject(response.body().string());
-    }
+    DBHandler dbHandler = new DBHandler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +169,7 @@ public class LoginActivity extends AppCompatActivity {
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
         callbackManager = CallbackManager.Factory.create();
-        LoginButton loginButton =(LoginButton)findViewById(R.id.login_button);
+        LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
 
         /**
          * Ny setOnClickListener (The application went straight into "facebook screen" on start. Didnt notice until I started it on my phone)
@@ -91,83 +181,22 @@ public class LoginActivity extends AppCompatActivity {
                 LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
-                        /**
-                         * TODO: Hantera eventuella anslutningssvårigheter
-                         * TODO: Save UserInformation To DB
-                         * OTHER: Server info:
-                         *          - Server:           mysql.dsv.su.se
-                         *          - Port:             3306 (default)
-                         *          - Database name:    joso8829
-                         *          - User name:        joso8829
-                         *          - Password:         vaeB3iebi9ro
-                         * checkDB
-                         * ifExist(GO TO LOGIN)
-                         * ifNotExist(SAVE PROFILE TO DB; GO TO LOGIN)
-                         * FINITO
-                         */
+
                         profile = Profile.getCurrentProfile();
-                        profile.getId();
 
-                        /**
-                         * TODO: Send profileID to server/DB
-                         * Sends the user ID to the server
-                         * (NOT DONE, JUST TEST)
-                         */
-                        JSONObject jProfile = null;
-                        try {
-                            jProfile = apiGet("get_user/"+profile.getId());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        Log.d("LoginActivity", String.valueOf(jProfile));
-
-                        /**
-                         * TODO: Handle JSON answer
-                         */
-
-                        if (true/** Check profileID against hash table in DB (JSON answer bool == true) */) {
-                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                        } else {
-                            /**
-                             * TODO: If user doesnt exist in DB, create it
-                             */
-                            JSONObject firstName = null,
-                                    middleName = null,
-                                    lastName = null,
-                                    name = null,
-                                    linkUri = null;
-                            JSONArray profileArr = null;
-                            JSONObject prof = null;
-                            try {
-                                /** Adding data to JSONObjects */
-                                firstName.put("firstName", profile.getFirstName());
-                                middleName.put("middleName", profile.getMiddleName());
-                                lastName.put("lastName", profile.getLastName());
-                                name.put("name", profile.getName());
-                                linkUri.put("linkUri", profile.getLinkUri());
-
-                                /** Adding JSONObjects to JSONArray */
-                                //profileArr.put(profileID);
-                                profileArr.put(firstName);
-                                profileArr.put(middleName);
-                                profileArr.put(lastName);
-                                profileArr.put(name);
-                                profileArr.put(linkUri);
-
-                                /** Adding JSONArray to a JSONObject ready for DB */
-                                prof.put("profile", profileArr);
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                        AsyncTask.execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (dbHandler.idExist(profile)) {
+                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                } else {
+                                    dbHandler.postNewProfileToDB(profile);
+                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                }
                             }
-                            /**
-                             * TODO: send JSON.prof to DB
-                             */
-                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                        }
+                        });
                     }
+
 
                     @Override
                     public void onCancel() {
