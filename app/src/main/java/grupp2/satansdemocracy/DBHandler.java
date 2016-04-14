@@ -2,15 +2,18 @@ package grupp2.satansdemocracy;
 
 import android.util.Log;
 import com.facebook.Profile;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import okhttp3.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import grupp2.satansdemocracy.LoginActivity;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * Created by dödsadde on 2016-04-14.
@@ -25,6 +28,7 @@ public class DBHandler {
      * Our HttpHandler (CALL FOR HTTP METHODS)
      */
     OkHttpClient client = new OkHttpClient();
+    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     /**
      * Sends HttpRequest and tries to handle the response
@@ -38,10 +42,23 @@ public class DBHandler {
         return new JSONObject(response.body().string());
     }
 
+    String apiPut(String url, String json) throws IOException, JSONException {
+        RequestBody body = RequestBody.create(JSON, json);
+        Request request = new Request.Builder().url(url).post(body).build();
+        Response response = client.newCall(request).execute();
+        return response.body().string();
+    }
+
 
     public DBHandler() {
         /**
          * EMPTY CONSTRUCTOR
+         */
+    }
+
+    public void tryConnection() {
+        /**
+         * TODO: http://developer.android.com/reference/java/net/HttpURLConnection.html
          */
     }
 
@@ -64,10 +81,24 @@ public class DBHandler {
         return jProfile != null;
     }
 
+    /**
+     * Creates a new entry in the DB
+     *
+     * @param profile
+     */
     public void postNewProfileToDB(Profile profile) {
 
         try {
             /** Adding data to JSONObjects */
+
+/*            String profil = "{'profile':["
+                            + "{'id':'" + profile.getId()
+                            + "','firstName':'" + profile.getFirstName()
+                            + "','middleName':'" + profile.getMiddleName()
+                            + "','lastName':'" + profile.getLastName()
+                            + "','name':'" + profile.getName()
+                            + "','linkUri':'" + profile.getLinkUri()
+                            + "'}]}";*/
 
             JSONObject profileID = new JSONObject();
             profileID.put("id", profile.getId());
@@ -97,6 +128,7 @@ public class DBHandler {
             JSONObject TEST = new JSONObject();
 
             prof.put("profile", profileArr);
+
 
         } catch (JSONException e) {
             e.printStackTrace();

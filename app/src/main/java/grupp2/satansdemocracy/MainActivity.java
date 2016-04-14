@@ -170,7 +170,7 @@ ForestallningFragment.OnFragmentInteractionListener{
     }
 
     /**
-     * TODO: Detta är (eventuell) förberedelse för serverkommunikation, vet inte om det funkar.
+     *
      * @param url
      * @return
      * @throws IOException
