@@ -1,9 +1,13 @@
 package grupp2.satansdemocracy;
 
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -23,8 +27,11 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 import java.io.IOException;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements WikiFragment.OnFragmentInteractionListener,
+InformationFragment.OnFragmentInteractionListener, NyheterFragment.OnFragmentInteractionListener,
+ForestallningFragment.OnFragmentInteractionListener{
 
+    private Fragment fragment;
     private Toolbar toolbar;
     private ListView mDrawerList;
     private ArrayAdapter<String> mAdapter;
@@ -92,22 +99,37 @@ public class MainActivity extends AppCompatActivity {
                 switch (position) {
                     case 0:
                         Log.i(TAG, "position 0");
+                        while(getSupportFragmentManager().getBackStackEntryCount()>0){
+                            getSupportFragmentManager().popBackStackImmediate();
+                        }
                         mDrawerLayout.closeDrawers();
                         break;
                     case 1:
                         Log.i(TAG, "position 1");
+                        getSupportFragmentManager().beginTransaction()
+                                .add(R.id.main_frame, new NyheterFragment())
+                                .addToBackStack(null).commit();
                         mDrawerLayout.closeDrawers();
                         break;
                     case 2:
                         Log.i(TAG, "position 2");
+                        getSupportFragmentManager().beginTransaction()
+                                .add(R.id.main_frame, new ForestallningFragment())
+                                .addToBackStack(null).commit();
                         mDrawerLayout.closeDrawers();
                         break;
                     case 3:
                         Log.i(TAG, "position 3");
+                        getSupportFragmentManager().beginTransaction()
+                                .add(R.id.main_frame, new InformationFragment())
+                                .addToBackStack(null).commit();
                         mDrawerLayout.closeDrawers();
                         break;
                     case 4:
                         Log.i(TAG, "position 4");
+                        getSupportFragmentManager().beginTransaction()
+                                .add(R.id.main_frame, new WikiFragment())
+                                .addToBackStack(null).commit();
                         mDrawerLayout.closeDrawers();
                         break;
                     case 5:
@@ -160,4 +182,8 @@ public class MainActivity extends AppCompatActivity {
         return response.body().string();
     }
 
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
 }
