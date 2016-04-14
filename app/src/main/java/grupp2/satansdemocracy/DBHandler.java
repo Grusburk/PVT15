@@ -94,6 +94,7 @@ public class DBHandler {
 
             /** Adding JSONArray to a JSONObject ready for DB */
             JSONObject prof = new JSONObject();
+            JSONObject TEST = new JSONObject();
 
             prof.put("profile", profileArr);
 
