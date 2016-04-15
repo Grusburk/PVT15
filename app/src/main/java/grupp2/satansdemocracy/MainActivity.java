@@ -3,6 +3,7 @@ package grupp2.satansdemocracy;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -19,6 +20,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -41,12 +44,14 @@ ForestallningFragment.OnFragmentInteractionListener{
 
     private OkHttpClient client = new OkHttpClient(); // Se metoden run()
 
+
     /**
      * @param savedInstanceState
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -134,6 +139,8 @@ ForestallningFragment.OnFragmentInteractionListener{
                         break;
                     case 5:
                         Log.i(TAG, "position 5");
+                        LoginManager.getInstance().logOut();
+                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
                         mDrawerLayout.closeDrawers();
                         break;
                 }

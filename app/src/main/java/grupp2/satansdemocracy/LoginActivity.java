@@ -1,155 +1,12 @@
 package grupp2.satansdemocracy;
 
 /**
- * Created by dödsadde on 2016-04-04.
- * <p/>
- * ISSUE: android.os.NetworkOnMainThreadException
- * at grupp2.satansdemocracy.LoginActivity.apiGet(LoginActivity.java:46)
- * at grupp2.satansdemocracy.LoginActivity$1$1.onSuccess(LoginActivity.java:88)
- * at grupp2.satansdemocracy.LoginActivity$1$1.onSuccess(LoginActivity.java:63)
- * at grupp2.satansdemocracy.LoginActivity.onActivityResult(LoginActivity.java:176)
- * <p/>
- * CHECK: http://stackoverflow.com/questions/6343166/how-to-fix-android-os-networkonmainthreadexception
- * <p/>
- * <p/>
- * OPEN QUESTION: IS jObject.put gonna work since we declare it as null?
- * <p/>
- * TODO: Hantera eventuella anslutningssvårigheter
- * TODO: Save UserInformation To DB
- * OTHER: Server info:
- * - Server:           mysql.dsv.su.se
- * - Port:             3306 (default)
- * - Database name:    joso8829
- * - User name:        joso8829
- * - Password:         vaeB3iebi9ro
- * checkDB
- * ifExist(GO TO LOGIN)
- * ifNotExist(SAVE PROFILE TO DB; GO TO LOGIN)
- * FINITO
- * <p/>
- * ISSUE: android.os.NetworkOnMainThreadException
- * at grupp2.satansdemocracy.LoginActivity.apiGet(LoginActivity.java:46)
- * at grupp2.satansdemocracy.LoginActivity$1$1.onSuccess(LoginActivity.java:88)
- * at grupp2.satansdemocracy.LoginActivity$1$1.onSuccess(LoginActivity.java:63)
- * at grupp2.satansdemocracy.LoginActivity.onActivityResult(LoginActivity.java:176)
- * <p/>
- * CHECK: http://stackoverflow.com/questions/6343166/how-to-fix-android-os-networkonmainthreadexception
- * <p/>
- * <p/>
- * OPEN QUESTION: IS jObject.put gonna work since we declare it as null?
- * <p/>
- * TODO: Hantera eventuella anslutningssvårigheter
- * TODO: Save UserInformation To DB
- * OTHER: Server info:
- * - Server:           mysql.dsv.su.se
- * - Port:             3306 (default)
- * - Database name:    joso8829
- * - User name:        joso8829
- * - Password:         vaeB3iebi9ro
- * checkDB
- * ifExist(GO TO LOGIN)
- * ifNotExist(SAVE PROFILE TO DB; GO TO LOGIN)
- * FINITO
- * <p/>
- * ISSUE: android.os.NetworkOnMainThreadException
- * at grupp2.satansdemocracy.LoginActivity.apiGet(LoginActivity.java:46)
- * at grupp2.satansdemocracy.LoginActivity$1$1.onSuccess(LoginActivity.java:88)
- * at grupp2.satansdemocracy.LoginActivity$1$1.onSuccess(LoginActivity.java:63)
- * at grupp2.satansdemocracy.LoginActivity.onActivityResult(LoginActivity.java:176)
- * <p/>
- * CHECK: http://stackoverflow.com/questions/6343166/how-to-fix-android-os-networkonmainthreadexception
- * <p/>
- * <p/>
- * OPEN QUESTION: IS jObject.put gonna work since we declare it as null?
- * <p/>
- * TODO: Hantera eventuella anslutningssvårigheter
- * TODO: Save UserInformation To DB
- * OTHER: Server info:
- * - Server:           mysql.dsv.su.se
- * - Port:             3306 (default)
- * - Database name:    joso8829
- * - User name:        joso8829
- * - Password:         vaeB3iebi9ro
- * checkDB
- * ifExist(GO TO LOGIN)
- * ifNotExist(SAVE PROFILE TO DB; GO TO LOGIN)
- * FINITO
- * <p/>
- * ISSUE: android.os.NetworkOnMainThreadException
- * at grupp2.satansdemocracy.LoginActivity.apiGet(LoginActivity.java:46)
- * at grupp2.satansdemocracy.LoginActivity$1$1.onSuccess(LoginActivity.java:88)
- * at grupp2.satansdemocracy.LoginActivity$1$1.onSuccess(LoginActivity.java:63)
- * at grupp2.satansdemocracy.LoginActivity.onActivityResult(LoginActivity.java:176)
- * <p/>
- * CHECK: http://stackoverflow.com/questions/6343166/how-to-fix-android-os-networkonmainthreadexception
- * <p/>
- * <p/>
- * OPEN QUESTION: IS jObject.put gonna work since we declare it as null?
- * <p/>
- * TODO: Hantera eventuella anslutningssvårigheter
- * TODO: Save UserInformation To DB
- * OTHER: Server info:
- * - Server:           mysql.dsv.su.se
- * - Port:             3306 (default)
- * - Database name:    joso8829
- * - User name:        joso8829
- * - Password:         vaeB3iebi9ro
- * checkDB
- * ifExist(GO TO LOGIN)
- * ifNotExist(SAVE PROFILE TO DB; GO TO LOGIN)
- * FINITO
- * <p/>
- * ISSUE: android.os.NetworkOnMainThreadException
- * at grupp2.satansdemocracy.LoginActivity.apiGet(LoginActivity.java:46)
- * at grupp2.satansdemocracy.LoginActivity$1$1.onSuccess(LoginActivity.java:88)
- * at grupp2.satansdemocracy.LoginActivity$1$1.onSuccess(LoginActivity.java:63)
- * at grupp2.satansdemocracy.LoginActivity.onActivityResult(LoginActivity.java:176)
- * <p/>
- * CHECK: http://stackoverflow.com/questions/6343166/how-to-fix-android-os-networkonmainthreadexception
- * <p/>
- * <p/>
- * OPEN QUESTION: IS jObject.put gonna work since we declare it as null?
- * <p/>
- * TODO: Hantera eventuella anslutningssvårigheter
- * TODO: Save UserInformation To DB
- * OTHER: Server info:
- * - Server:           mysql.dsv.su.se
- * - Port:             3306 (default)
- * - Database name:    joso8829
- * - User name:        joso8829
- * - Password:         vaeB3iebi9ro
- * checkDB
- * ifExist(GO TO LOGIN)
- * ifNotExist(SAVE PROFILE TO DB; GO TO LOGIN)
- * FINITO
- */
-
-/**
- * ISSUE: android.os.NetworkOnMainThreadException
- at grupp2.satansdemocracy.LoginActivity.apiGet(LoginActivity.java:46)
- at grupp2.satansdemocracy.LoginActivity$1$1.onSuccess(LoginActivity.java:88)
- at grupp2.satansdemocracy.LoginActivity$1$1.onSuccess(LoginActivity.java:63)
- at grupp2.satansdemocracy.LoginActivity.onActivityResult(LoginActivity.java:176)
-
- * CHECK: http://stackoverflow.com/questions/6343166/how-to-fix-android-os-networkonmainthreadexception
- *
- *
- * OPEN QUESTION: IS jObject.put gonna work since we declare it as null?
- */
-
-/**
- * TODO: Hantera eventuella anslutningssvårigheter
- * TODO: Save UserInformation To DB
  * OTHER: Server info:
  *          - Server:           mysql.dsv.su.se
  *          - Port:             3306 (default)
  *          - Database name:    joso8829
  *          - User name:        joso8829
  *          - Password:         vaeB3iebi9ro
- * checkDB
- * ifExist(GO TO LOGIN)
- * ifNotExist(SAVE PROFILE TO DB; GO TO LOGIN)
- * FINITO
  */
 
 import android.content.Context;
@@ -161,20 +18,12 @@ import android.view.View;
 import android.widget.Button;
 import android.content.Intent;
 
-import android.widget.Toast;
 import com.facebook.*;
-import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-import java.io.IOException;
 import java.util.Arrays;
 
 public class LoginActivity extends AppCompatActivity {
@@ -182,68 +31,99 @@ public class LoginActivity extends AppCompatActivity {
     private CallbackManager callbackManager;
     Profile profile;
     DBHandler dbHandler = new DBHandler();
-    private boolean loggedIn;
+    private ProfileTracker mProfileTracker;
+    private AccessTokenTracker mAccessTokenTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(loggedIn) {
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-        }
         FacebookSdk.sdkInitialize(getApplicationContext());
-        setContentView(R.layout.activity_login);
-        callbackManager = CallbackManager.Factory.create();
-        LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
 
         /**
-         * Ny setOnClickListener (The application went straight into "facebook screen" on start. Didnt notice until I started it on my phone)
+         * Super wierd bug-fix, facebook uses persistent storage for Profile data.
+         * We need to wait for it to be populated before continuing, else Profile.getCurrentProfile() will return null.
          */
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        /**
+         * Get current profile
+         */
+        profile = Profile.getCurrentProfile();
+        /**
+         * If already logged in, go directly to main activity
+         */
+        if (profile != null) {
+            loginAndChangeActivity(profile);
+        }
+        /**
+         * Instantiate Facebook Callbackmanager
+         */
+        callbackManager = CallbackManager.Factory.create();
+        /**
+         * Sets layout..
+         */
+        setContentView(R.layout.activity_login);
+        /**
+         * LoginButton and permissions
+         */
+        LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
+        loginButton.setReadPermissions(Arrays.asList("email", "public_profile"));
         assert loginButton != null;
-        loginButton.setOnClickListener(new View.OnClickListener() {
+        /**
+         * "on-click" but not really
+         *  Using the the login button in the way it was intended gets us out of
+         *  callback-hell, using the onClick event requires two callbacks inside one another.
+         */
+        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
-            public void onClick(View view) {
-                LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("email", "user_photos", "public_profile"));
-                LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-                    @Override
-                    public void onSuccess(LoginResult loginResult) {
+            public void onSuccess(LoginResult loginResult) {
 
-                        profile = Profile.getCurrentProfile();
+                /**
+                 * If the current profile is not set, track changes to the current profile and wait for it to be set.
+                 */
+                if (Profile.getCurrentProfile() == null) {
+                    mProfileTracker = new ProfileTracker() {
+                        @Override
+                        protected void onCurrentProfileChanged(Profile profile, Profile profile2) {
+                            // profile2 is the new profile
+                            Log.v("facebook - profile", profile2.getFirstName());
+                            mProfileTracker.stopTracking();
+                            loginAndChangeActivity(profile2);
+                        }
+                    };
+                    mProfileTracker.startTracking();
+                }
+                /**
+                 * If current profile is set, Log In.
+                 */
+                else {
+                    Profile profile = Profile.getCurrentProfile();
+                    Log.v("facebook - profile", profile.getFirstName());
+                    loginAndChangeActivity(profile);
+                }
 
-                        AsyncTask.execute(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (dbHandler.idExist(profile)) {
-                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                } else {
-                                    dbHandler.postNewProfileToDB(profile);
-                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                }
-                            }
-                        });
-                        /**
-                         * Boolean to skip login screen, for now.
-                         */
-                        loggedIn = true;
-                    }
+
+            }
 
 
-                    @Override
-                    public void onCancel() {
-                        Log.d("LoginActivity", "Facebook_LOGIN_CANCEL");
-                    }
+            @Override
+            public void onCancel() {
+                Log.d("LoginActivity", "Facebook_LOGIN_CANCEL");
+            }
 
-                    @Override
-                    public void onError(FacebookException e) {
-                        Log.d("LoginActivity", "Facebook_LOGIN_ERROR");
-                        e.printStackTrace();
-                    }
-                });
+            @Override
+            public void onError(FacebookException e) {
+                Log.d("LoginActivity", "Facebook_LOGIN_ERROR");
+                e.printStackTrace();
             }
         });
 
-
         /**
-         * START: LOGIN BYPASS
+         * LOGIN BYPASS
          */
         Button nextViewButton = (Button) findViewById(R.id.bypass_button);
 
@@ -254,22 +134,32 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
             }
         });
-        /**
-         * END: LOGIN BYPASS
-         */
-
     }
 
     /**
-     *
-     * @param requestCode
-     * @param resultCode
-     * @param data
+     * Facebook Standard
      */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    /**
+     * Former asyncronus execute. This method was called from several places so its now a refactored function.
+     */
+    private void loginAndChangeActivity(final Profile profile) {
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                if (dbHandler.idExist(profile)) {
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                } else {
+                    dbHandler.postNewProfileToDB(profile);
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                }
+            }
+        });
     }
 
     /**
