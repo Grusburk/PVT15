@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
                         break;
                     case 2:
                         Log.i(TAG, "position 2");
-                        verifyBluetooth();
+//                        verifyBluetooth();
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.main_frame, new ForestallningFragment())
                                 .addToBackStack(null).commit();

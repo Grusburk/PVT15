@@ -1,17 +1,39 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="grupp2.satansdemocracy.ForestallningFragment"
-    android:background="@color/colorPrimaryDark">
+    android:background="@color/colorPrimaryDark"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <Button
+        android:id="@+id/activate_beacons"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="FÖRESTÄLLNINGS INFO"
-        android:textColor="@color/colorAccent"
-        android:textSize="30sp"
+        android:layout_height="100dp"
+        android:text="AKTIVERA FÖRESTÄLLNING"
+        android:layout_centerInParent="true"
         />
 
-</FrameLayout>
+    <!-- TODO: Update blank fragment layout -->
+    <FrameLayout
+        android:layout_marginTop="40dp"
+        android:layout_below="@+id/activate_beacons"
+        android:id="@+id/show_frame"
+        android:layout_width="match_parent"
+        android:layout_height="450dp">
+
+    <TextView
+        android:textAlignment="center"
+        android:id="@+id/show_info"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/showinfo"
+        android:textColor="@color/colorAccent"
+        android:textSize="20sp"
+        />
+
+    </FrameLayout>
+
+
+</RelativeLayout>
