@@ -131,7 +131,7 @@ public class LoginActivity extends AppCompatActivity {
         nextViewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                goToMain();
             }
         });
     }
@@ -153,13 +153,22 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void run() {
                 if (dbHandler.idExist(profile)) {
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    goToMain();
                 } else {
                     dbHandler.postNewProfileToDB(profile);
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    goToMain();
                 }
             }
         });
+    }
+
+    /**
+     * Method for changeing view to main.
+     *
+     */
+    private void goToMain() {
+        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+        finish();
     }
 
     /**

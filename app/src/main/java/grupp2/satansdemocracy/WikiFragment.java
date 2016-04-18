@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 
 /**
@@ -31,6 +32,8 @@ public class WikiFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private ImageButton wolandButton, pilatusButton, margaritaButton;
+    private TextView charName, charInfo;
 
     private OnFragmentInteractionListener mListener;
 
@@ -55,19 +58,46 @@ public class WikiFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-     //   ImageButton wolandButton = (ImageButton) getView().findViewById(R.id.button_woland);
-       // wolandButton.setOnClickListener(new View.OnClickListener() {
-         //   @Override
-           // public void onClick(View v) {
-
-          //  }
-       // });
     }
 
-    //@Override
-    //public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-      //  super.onViewCreated(view, savedInstanceState);
-    //}
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        charName = (TextView) view.findViewById(R.id.char_name_view);
+        charInfo = (TextView) view.findViewById(R.id.char_about_view);
+        wolandButton = (ImageButton) view.findViewById(R.id.button_woland);
+        pilatusButton = (ImageButton) view.findViewById(R.id.button_pilatus);
+        margaritaButton = (ImageButton) view.findViewById(R.id.button_margarita);
+        wolandButton.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus){
+                    charName.setText("Woland");
+                    charInfo.setText("WOLAND GILLAR KATTER. WOLAND GILLAR KATTER. WOLAND GILLAR KATTER. WOLAND GILLAR KATTER. WOLAND GILLAR KATTER.");
+                }
+            }
+        });
+
+        pilatusButton.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                charName.setText("PONTIUS PILATUS");
+                charInfo.setText("PONTIUS PILATUS ÄR FLINTIIS. PONTIUS PILATUS ÄR FLINTIIS. PONTIUS PILATUS ÄR FLINTIIS. PONTIUS PILATUS ÄR FLINTIIS. ");
+
+            }
+        });
+
+        margaritaButton.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                charName.setText("MARGARITA");
+                charInfo.setText("JAG VILL BARA VARA DIN MARGARETA; JAG VILL BARA VARA DIN MARGARETA; JAG VILL BARA VARA DIN MARGARETA; JAG VILL BARA VARA DIN MARGARETA; ");
+
+            }
+        });
+
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

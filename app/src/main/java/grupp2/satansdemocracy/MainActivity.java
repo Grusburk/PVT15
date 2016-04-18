@@ -86,7 +86,6 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
-
     /**
      * @param savedInstanceState
      */
@@ -128,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
                     case 1:
                         Log.i(TAG, "position 1");
                         getSupportFragmentManager().beginTransaction()
-                                .add(R.id.main_frame, new NyheterFragment())
+                                .replace(R.id.main_frame, new NyheterFragment())
                                 .addToBackStack(null).commit();
                         mDrawerLayout.closeDrawers();
                         break;
@@ -136,21 +135,21 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
                         Log.i(TAG, "position 2");
                         verifyBluetooth();
                         getSupportFragmentManager().beginTransaction()
-                                .add(R.id.main_frame, new ForestallningFragment())
+                                .replace(R.id.main_frame, new ForestallningFragment())
                                 .addToBackStack(null).commit();
                         mDrawerLayout.closeDrawers();
                         break;
                     case 3:
                         Log.i(TAG, "position 3");
                         getSupportFragmentManager().beginTransaction()
-                                .add(R.id.main_frame, new InformationFragment())
+                                .replace(R.id.main_frame, new InformationFragment())
                                 .addToBackStack(null).commit();
                         mDrawerLayout.closeDrawers();
                         break;
                     case 4:
                         Log.i(TAG, "position 4");
                         getSupportFragmentManager().beginTransaction()
-                                .add(R.id.main_frame, new WikiFragment())
+                                .replace(R.id.main_frame, new WikiFragment())
                                 .addToBackStack(null).commit();
                         mDrawerLayout.closeDrawers();
                         break;
@@ -163,6 +162,11 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
                 }
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
     }
 
     /**
