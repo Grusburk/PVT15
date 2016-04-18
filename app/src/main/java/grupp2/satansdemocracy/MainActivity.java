@@ -1,8 +1,10 @@
 package grupp2.satansdemocracy;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -26,18 +28,17 @@ import com.facebook.login.LoginManager;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import org.altbeacon.beacon.BeaconConsumer;
-import org.altbeacon.beacon.BeaconManager;
-import org.altbeacon.beacon.MonitorNotifier;
-import org.altbeacon.beacon.Region;
+import org.altbeacon.beacon.*;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements WikiFragment.OnFragmentInteractionListener,
-InformationFragment.OnFragmentInteractionListener, NyheterFragment.OnFragmentInteractionListener,
-ForestallningFragment.OnFragmentInteractionListener, BeaconConsumer{
+        InformationFragment.OnFragmentInteractionListener, NyheterFragment.OnFragmentInteractionListener,
+        ForestallningFragment.OnFragmentInteractionListener, BeaconConsumer {
 
     private Fragment fragment;
     private Toolbar toolbar;
@@ -47,7 +48,14 @@ ForestallningFragment.OnFragmentInteractionListener, BeaconConsumer{
     private DrawerLayout mDrawerLayout;
     private final String TAG = MainActivity.class.getSimpleName();
 
+    /**
+     * Beacon related variables
+     */
     private BeaconManager beaconManager;
+    private ArrayList<Beacon> beaconList;
+    //TODO: Correctly set the ID's of the beacons. Currently beacon2 is the ziggy beacon.
+    private Beacon beacon1 = new AltBeacon.Builder().setId1("0000FFE0-0000-1000-8000-00805F9B34FB").setId2("1").setId3("1").setRssi(-55).setTxPower(-55).build();
+    private Beacon beacon2 = new AltBeacon.Builder().setId1("00002A00-0000-1000-8000-00805F9B34FB").setId2("1").setId3("2").setRssi(-55).setTxPower(-55).build();
 
 
     /**
@@ -58,8 +66,6 @@ ForestallningFragment.OnFragmentInteractionListener, BeaconConsumer{
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_main);
-        beaconManager = BeaconManager.getInstanceForApplication(this);
-        beaconManager.bind(this);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -68,6 +74,10 @@ ForestallningFragment.OnFragmentInteractionListener, BeaconConsumer{
         mDrawerList = (ListView) findViewById(R.id.navList);
         addDrawerItems();
         setupDrawer();
+
+        /** Beacon set-up */
+        beaconManager = BeaconManager.getInstanceForApplication(this);
+        beaconManager.bind(this);
 
     }
 
@@ -99,7 +109,6 @@ ForestallningFragment.OnFragmentInteractionListener, BeaconConsumer{
     /**
      * Skapar en array för drawern där vi lägger till nya "rubriker",
      * använder sedan en switch med onClickListener för att sätta upp de olika rubrikerna
-     *
      */
     private void addDrawerItems() {
         String[] drawerArray = {"START", "#SATANSDEMOKRATI", "FÖRESTÄLLNING ", "INFORMATION ", "WIKI+", "LOGGA UT"};
@@ -111,7 +120,7 @@ ForestallningFragment.OnFragmentInteractionListener, BeaconConsumer{
                 switch (position) {
                     case 0:
                         Log.i(TAG, "position 0");
-                        while(getSupportFragmentManager().getBackStackEntryCount()>0){
+                        while (getSupportFragmentManager().getBackStackEntryCount() > 0) {
                             getSupportFragmentManager().popBackStackImmediate();
                         }
                         mDrawerLayout.closeDrawers();
@@ -125,6 +134,7 @@ ForestallningFragment.OnFragmentInteractionListener, BeaconConsumer{
                         break;
                     case 2:
                         Log.i(TAG, "position 2");
+                        verifyBluetooth();
                         getSupportFragmentManager().beginTransaction()
                                 .add(R.id.main_frame, new ForestallningFragment())
                                 .addToBackStack(null).commit();
@@ -174,7 +184,6 @@ ForestallningFragment.OnFragmentInteractionListener, BeaconConsumer{
     }
 
     /**
-     *
      * @param item
      * @return
      */
@@ -231,5 +240,45 @@ ForestallningFragment.OnFragmentInteractionListener, BeaconConsumer{
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * To make sure the Föreställningsläge is functional.
+     */
+    private void verifyBluetooth() {
+        try {
+            if (!BeaconManager.getInstanceForApplication(this).checkAvailability()) {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Bluetooth not enabled");
+                builder.setMessage("Please enable bluetooth in settings and restart this application.");
+                builder.setPositiveButton(android.R.string.ok, null);
+                builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        finish();
+                        System.exit(0);
+                    }
+                });
+                builder.show();
+            }
+        }
+        catch (RuntimeException e) {
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Bluetooth LE not available");
+            builder.setMessage("Sorry, this device does not support Bluetooth LE.");
+            builder.setPositiveButton(android.R.string.ok, null);
+            builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    finish();
+                    System.exit(0);
+                }
+
+            });
+            builder.show();
+
+        }
+
     }
 }
