@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
@@ -25,6 +26,10 @@ import com.facebook.login.LoginManager;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.altbeacon.beacon.BeaconConsumer;
+import org.altbeacon.beacon.BeaconManager;
+import org.altbeacon.beacon.MonitorNotifier;
+import org.altbeacon.beacon.Region;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -32,7 +37,7 @@ import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity implements WikiFragment.OnFragmentInteractionListener,
 InformationFragment.OnFragmentInteractionListener, NyheterFragment.OnFragmentInteractionListener,
-ForestallningFragment.OnFragmentInteractionListener{
+ForestallningFragment.OnFragmentInteractionListener, BeaconConsumer{
 
     private Fragment fragment;
     private Toolbar toolbar;
@@ -42,7 +47,7 @@ ForestallningFragment.OnFragmentInteractionListener{
     private DrawerLayout mDrawerLayout;
     private final String TAG = MainActivity.class.getSimpleName();
 
-    private OkHttpClient client = new OkHttpClient(); // Se metoden run()
+    private BeaconManager beaconManager;
 
 
     /**
@@ -53,6 +58,8 @@ ForestallningFragment.OnFragmentInteractionListener{
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_main);
+        beaconManager = BeaconManager.getInstanceForApplication(this);
+        beaconManager.bind(this);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -176,21 +183,53 @@ ForestallningFragment.OnFragmentInteractionListener{
         return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
-    /**
-     *
-     * @param url
-     * @return
-     * @throws IOException
-     */
-    String run(String url) throws IOException {
-        Request request = new Request.Builder().url(url).build();
-
-        Response response = client.newCall(request).execute();
-        return response.body().string();
-    }
-
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    /**
+     * Handling the beacon interaction
+     * TODO: Should this be in mainActivity? If so, we need to initiate the beacon
+     * TODO: only when the föreställningsläge is initiated.
+     */
+    @Override
+    public void onBeaconServiceConnect() {
+        beaconManager.setMonitorNotifier(new MonitorNotifier() {
+
+            /**
+             * Triggers when a beacon is visible for the first time.
+             * @param region
+             */
+            @Override
+            public void didEnterRegion(Region region) {
+
+            }
+
+            /**
+             * Triggers when a beacon is no longer visible.
+             * @param region
+             */
+            @Override
+            public void didExitRegion(Region region) {
+
+            }
+
+            /**
+             *
+             * @param i
+             * @param region
+             */
+            @Override
+            public void didDetermineStateForRegion(int i, Region region) {
+
+            }
+        });
+
+        try {
+            beaconManager.startMonitoringBeaconsInRegion(new Region("myMonitoringUniqueId", null, null, null));
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 }
