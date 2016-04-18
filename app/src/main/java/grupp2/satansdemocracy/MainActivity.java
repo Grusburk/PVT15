@@ -95,7 +95,7 @@ ForestallningFragment.OnFragmentInteractionListener{
      *
      */
     private void addDrawerItems() {
-        String[] drawerArray = {"Start", "Nyheter", "Föreställning ", "Information ", "Wiki+", "Logga ut"};
+        String[] drawerArray = {"START", "#SATANSDEMOKRATI", "FÖRESTÄLLNING ", "INFORMATION ", "WIKI+", "LOGGA UT"};
         mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, drawerArray);
         mDrawerList.setAdapter(mAdapter);
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {

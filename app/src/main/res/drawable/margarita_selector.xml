@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- focused -->
+    <item android:drawable="@drawable/facemargartia" android:state_focused="true"/>
+    <!-- default -->
+    <item android:drawable="@drawable/bw_marg"/>
+</selector>
