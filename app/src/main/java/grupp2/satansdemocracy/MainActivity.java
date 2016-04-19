@@ -80,11 +80,11 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
         setUpDrawer();
 
         /** Beacon set-up */
-        beaconManager = BeaconManager.getInstanceForApplication(this);
+//        beaconManager = BeaconManager.getInstanceForApplication(this);
 
         // TODO: This is the layout for an iBeacon. Don't know if it's able to detect one of our beacons.
         // beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:2-3=2A24,i:4-19,i:20-21,i:22-23,p:24-24"));
-        beaconManager.bind(this);
+//        beaconManager.bind(this);
 
     }
 

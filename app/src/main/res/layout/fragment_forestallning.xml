@@ -7,18 +7,28 @@
     android:focusable="true"
     android:focusableInTouchMode="true">
 
+    <ImageSwitcher
+        android:id="@+id/lamp_switcher"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/beacons_button"
+        >
+    </ImageSwitcher>
+
     <Button
-        android:id="@+id/activate_beacons"
+        android:layout_margin="20dp"
+        android:background="@color/colorAccent"
+        android:id="@+id/beacons_button"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:text="AKTIVERA FÖRESTÄLLNING"
+        android:layout_height="wrap_content"
+        android:text=" "
         android:layout_centerInParent="true"
         />
 
     <!-- TODO: Update blank fragment layout -->
     <FrameLayout
         android:layout_marginTop="40dp"
-        android:layout_below="@+id/activate_beacons"
+        android:layout_below="@+id/beacons_button"
         android:id="@+id/show_frame"
         android:layout_width="match_parent"
         android:layout_height="450dp">

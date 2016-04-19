@@ -1,12 +1,28 @@
 package grupp2.satansdemocracy;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.ImageSwitcher;
+import android.widget.ImageView;
+import android.widget.Switch;
+import android.widget.ViewSwitcher;
+
+import org.altbeacon.beacon.BeaconConsumer;
+import org.altbeacon.beacon.BeaconManager;
 
 
 /**
@@ -22,6 +38,9 @@ public class ForestallningFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private Button beaconButton;
+    private ImageSwitcher lampSwitcher;
+    private boolean beaconMode;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -65,6 +84,48 @@ public class ForestallningFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_forestallning, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Animation in = AnimationUtils.loadAnimation(getContext(),android.R.anim.fade_in);
+        Animation out = AnimationUtils.loadAnimation(getContext(),android.R.anim.fade_out);
+
+
+
+        beaconButton = (Button) getView().findViewById(R.id.beacons_button);
+        beaconButton.setText("AKTIVERA FÖRESTÄLLNINGSLÄGE");
+        lampSwitcher = (ImageSwitcher) getView().findViewById(R.id.lamp_switcher);
+
+        lampSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
+            @Override
+            public View makeView() {
+                ImageView lampView = new ImageView(getContext());
+                return lampView;
+            }
+        });
+
+        lampSwitcher.setImageResource(R.drawable.off2);
+        lampSwitcher.setInAnimation(in);
+        lampSwitcher.setOutAnimation(out);
+
+
+        beaconButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!beaconMode){
+                    lampSwitcher.setImageResource(R.drawable.on2);
+                    beaconButton.setText("AVAKTIVERA FÖRESTÄLLNINGLÄGE");
+                    beaconMode = true;
+                } else {
+                    lampSwitcher.setImageResource(R.drawable.off2);
+                    beaconButton.setText("AKTIVERA FÖRESTÄLLNINGLÄGE");
+                    beaconMode = false;
+                }
+
+            }
+        });
     }
 
     // TODO: Rename method, update argument and hook method into UI event
