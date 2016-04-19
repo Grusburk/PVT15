@@ -55,9 +55,9 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
      */
     private BeaconManager beaconManager;
     private ArrayList<Beacon> beaconList;
-    //TODO: Correctly set the ID's of the beacons. Currently beacon2 is the ziggy beacon.
-    private Beacon beacon1 = new AltBeacon.Builder().setId1("0000FFE0-0000-1000-8000-00805F9B34FB").setId2("1").setId3("1").setRssi(-55).setTxPower(-55).build();
-    private Beacon beacon2 = new AltBeacon.Builder().setId1("00002A00-0000-1000-8000-00805F9B34FB").setId2("1").setId3("2").setRssi(-55).setTxPower(-55).build();
+    // TODO: Correctly set the ID's of the beacons. Currently beacon is the ziggy beacon.
+    // The beacon from Donny doesn't show a UUID when you connect to it via light blue (iPhone)
+    private Beacon beacon = new Beacon.Builder().setId1("E278E68A0C274F77881559B64AF67189").setId2("0032").setId3("0001").build();
 
 
     /**
@@ -252,9 +252,11 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
              */
             @Override
             public void didEnterRegion(Region region) {
-                Toast toast = Toast.makeText(MainActivity.this, "BEACON DETECTED", Toast.LENGTH_LONG);
-                toast.setGravity(Gravity.BOTTOM, 0, 0);
-                toast.show();
+                if(region.matchesBeacon(beacon)) {
+                    Toast toast = Toast.makeText(MainActivity.this, "BEACON DETECTED", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.BOTTOM, 0, 0);
+                    toast.show();
+                }
             }
 
             /**
@@ -263,7 +265,11 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
              */
             @Override
             public void didExitRegion(Region region) {
-
+                if(region.matchesBeacon(beacon)) {
+                    Toast toast = Toast.makeText(MainActivity.this, "BEACON DETECTED", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.BOTTOM, 0, 0);
+                    toast.show();
+                }
             }
 
             /**
