@@ -59,6 +59,8 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
 
 
     /**
+     * Sets up an instance oc the mainActivity class upon first creation.
+     *
      * @param savedInstanceState
      */
     @Override
@@ -73,12 +75,21 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         mDrawerList = (ListView) findViewById(R.id.navList);
         addDrawerItems();
-        setupDrawer();
+        setUpDrawer();
 
         /** Beacon set-up */
         beaconManager = BeaconManager.getInstanceForApplication(this);
         beaconManager.bind(this);
 
+    }
+
+    /**
+     * Called upon finishing the application or shutting down.
+     */
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        beaconManager.unbind(this);
     }
 
     @Override
@@ -87,6 +98,9 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
     }
 
     /**
+     * Called upon completion of onCreate().
+     * Syncs the navigation drawer.
+     *
      * @param savedInstanceState
      */
     @Override
@@ -97,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
     }
 
     /**
-     *
+     * Called when the application is opened again after being paused
      */
     @Override
     protected void onResume() {
@@ -106,8 +120,16 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
     }
 
     /**
-     * Skapar en array för drawern där vi lägger till nya "rubriker",
-     * använder sedan en switch med onClickListener för att sätta upp de olika rubrikerna
+     * Called when the application is inactive (minimized).
+     */
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    /**
+     * Creates an array for the navigation drawer in which to add headers.
+     * Then using a switch statement to set up the headers.
      */
     private void addDrawerItems() {
         String[] drawerArray = {"START", "#SATANSDEMOKRATI", "FÖRESTÄLLNING ", "INFORMATION ", "WIKI+", "LOGGA UT"};
@@ -133,7 +155,8 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
                         break;
                     case 2:
                         Log.i(TAG, "position 2");
-//                        verifyBluetooth();
+                        //TODO: Uncomment this call when tests are done or when testing on device and not emulator
+                        //verifyBluetooth();
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.main_frame, new ForestallningFragment())
                                 .addToBackStack(null).commit();
@@ -164,15 +187,18 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
         });
     }
 
+    /**
+     * Called when user presses back
+     */
     @Override
     public void onBackPressed() {
         moveTaskToBack(true);
     }
 
     /**
-     *
+     * Sets up the navigation drawer
      */
-    private void setupDrawer() {
+    private void setUpDrawer() {
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
                 R.string.drawer_open, R.string.drawer_close) {
             /** Called when a drawer has settled in a completely open state. */
@@ -188,14 +214,19 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
     }
 
     /**
+     * TODO: Förklara när den här metoden kallas.
      * @param item
-     * @return
+     * @return TODO: Vad är det som returneras? Drawern som blev tryckt på?
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
+    /**
+     *
+     * @param uri
+     */
     @Override
     public void onFragmentInteraction(Uri uri) {
 
@@ -248,6 +279,10 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
 
     /**
      * To make sure the Föreställningsläge is functional.
+     * Prompts the user to turn BLE on.
+     * If BLE is unavailable will give a notification that BLE is needed
+     * for this function to work.
+     * TODO: Uncomment call to this method in addDrawerItems().
      */
     private void verifyBluetooth() {
         try {

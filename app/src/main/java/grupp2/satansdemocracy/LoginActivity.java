@@ -34,6 +34,11 @@ public class LoginActivity extends AppCompatActivity {
     private ProfileTracker mProfileTracker;
     private AccessTokenTracker mAccessTokenTracker;
 
+    /**
+     * Called upon creation of this activity
+     * Basic set-up
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,26 +58,31 @@ public class LoginActivity extends AppCompatActivity {
          * Get current profile
          */
         profile = Profile.getCurrentProfile();
+
         /**
          * If already logged in, go directly to main activity
          */
         if (profile != null) {
             loginAndChangeActivity(profile);
         }
+
         /**
          * Instantiate Facebook Callbackmanager
          */
         callbackManager = CallbackManager.Factory.create();
+
         /**
          * Sets layout..
          */
         setContentView(R.layout.activity_login);
+
         /**
          * LoginButton and permissions
          */
         LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
-        loginButton.setReadPermissions(Arrays.asList("email", "public_profile"));
         assert loginButton != null;
+        loginButton.setReadPermissions(Arrays.asList("email", "public_profile"));
+
         /**
          * "on-click" but not really
          *  Using the the login button in the way it was intended gets us out of
@@ -97,6 +107,7 @@ public class LoginActivity extends AppCompatActivity {
                     };
                     mProfileTracker.startTracking();
                 }
+
                 /**
                  * If current profile is set, Log In.
                  */
@@ -124,6 +135,7 @@ public class LoginActivity extends AppCompatActivity {
 
         /**
          * LOGIN BYPASS
+         * TODO: Remove this after application completion
          */
         Button nextViewButton = (Button) findViewById(R.id.bypass_button);
 
@@ -146,7 +158,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Former asyncronus execute. This method was called from several places so its now a refactored function.
+     * Former asynchronous execute. This method was called from several places so its now a refactored function.
      */
     private void loginAndChangeActivity(final Profile profile) {
         AsyncTask.execute(new Runnable() {
@@ -172,7 +184,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * For the font
+     * Attaches the font in assets/fonts to the application
      * @param newBase
      */
     @Override
