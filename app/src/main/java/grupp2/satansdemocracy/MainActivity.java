@@ -17,12 +17,14 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import android.widget.Toast;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import okhttp3.OkHttpClient;
@@ -79,6 +81,9 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
 
         /** Beacon set-up */
         beaconManager = BeaconManager.getInstanceForApplication(this);
+
+        // TODO: This is the layout for an iBeacon. Don't know if it's able to detect one of our beacons.
+        // beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:2-3=2A24,i:4-19,i:20-21,i:22-23,p:24-24"));
         beaconManager.bind(this);
 
     }
@@ -247,7 +252,9 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
              */
             @Override
             public void didEnterRegion(Region region) {
-
+                Toast toast = Toast.makeText(MainActivity.this, "BEACON DETECTED", Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.BOTTOM, 0, 0);
+                toast.show();
             }
 
             /**
