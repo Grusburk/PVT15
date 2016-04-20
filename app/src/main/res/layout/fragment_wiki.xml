@@ -15,9 +15,8 @@
         android:textColor="@color/colorAccent"
         android:textAlignment="center"
         android:textSize="28sp"
-        android:textStyle="bold"
-        android:focusable="true"
-        android:focusableInTouchMode="true"/>
+        android:textStyle="bold" />
+
     <TextView
         android:id="@+id/char_about_view"
         android:layout_marginTop="15dp"
@@ -32,35 +31,45 @@
 
     <FrameLayout
         android:id="@+id/divider_frame"
-        android:layout_margin="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="20dp"
         android:layout_below="@+id/char_about_view"
         android:layout_width="match_parent"
         android:layout_height="5dp"
         android:background="@color/colorAccent">
 
     </FrameLayout>
-    <!--<HorizontalScrollView-->
-    <!--android:id="@+id/char_picture_frame"-->
-    <!--android:layout_below="@+id/divider_frame"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:scrollbarThumbHorizontal="@color/colorAccent"-->
-    <!--&gt;-->
+    <HorizontalScrollView
+    android:id="@+id/char_picture_frame"
+    android:layout_below="@+id/divider_frame"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbarThumbHorizontal="@color/colorAccent"
+    >
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/divider_frame"
-        android:weightSum="3">
+        android:layout_below="@+id/divider_frame">
+
+        <ImageButton
+            android:scaleType="fitCenter"
+            android:id="@+id/button_summary"
+            android:background="@android:color/transparent"
+            android:layout_width="125dp"
+            android:src="@drawable/summary_selector"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            />
 
         <ImageButton
             android:scaleType="fitCenter"
             android:id="@+id/button_woland"
             android:background="@android:color/transparent"
             android:src="@drawable/woland_selector"
-            android:layout_weight="1"
-            android:layout_width="0dp"
+            android:layout_width="125dp"
             android:layout_height="wrap_content"
             android:focusableInTouchMode="true"
             android:focusable="true"
@@ -70,9 +79,8 @@
             android:scaleType="fitCenter"
             android:id="@+id/button_pilatus"
             android:src="@drawable/pontius_selector"
-            android:layout_weight="1"
             android:background="@android:color/transparent"
-            android:layout_width="0dp"
+            android:layout_width="125dp"
             android:layout_height="wrap_content"
             android:focusable="true"
             android:focusableInTouchMode="true"
@@ -82,15 +90,35 @@
             android:scaleType="fitCenter"
             android:id="@+id/button_margarita"
             android:background="@android:color/transparent"
-            android:layout_weight="1"
-            android:layout_width="0dp"
+            android:layout_width="125dp"
             android:src="@drawable/margarita_selector"
             android:layout_height="wrap_content"
             android:focusable="true"
             android:focusableInTouchMode="true"
             />
 
+        <ImageButton
+            android:scaleType="fitCenter"
+            android:id="@+id/button_doctor"
+            android:background="@android:color/transparent"
+            android:layout_width="125dp"
+            android:src="@drawable/doc_selector"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            />
+
+        <ImageButton
+            android:scaleType="fitCenter"
+            android:id="@+id/button_aklagaren"
+            android:background="@android:color/transparent"
+            android:layout_width="125dp"
+            android:src="@drawable/aklagaren_selector"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            />
 
     </LinearLayout>
-    <!--</HorizontalScrollView>-->
+    </HorizontalScrollView>
 </RelativeLayout>

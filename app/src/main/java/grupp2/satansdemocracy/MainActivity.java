@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.RemoteException;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
@@ -20,17 +21,23 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageSwitcher;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import android.widget.Toast;
+import android.widget.ViewSwitcher;
+
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import org.altbeacon.beacon.*;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -39,9 +46,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements WikiFragment.OnFragmentInteractionListener,
-        InformationFragment.OnFragmentInteractionListener, NyheterFragment.OnFragmentInteractionListener,
-        ForestallningFragment.OnFragmentInteractionListener, BeaconConsumer {
+        InformationFragment.OnFragmentInteractionListener, NyheterFragment.OnFragmentInteractionListener{
 
+    private Button beaconButton;
+    private ImageSwitcher lampSwitcher;
+    private boolean beaconMode;
     private Fragment fragment;
     private Toolbar toolbar;
     private ListView mDrawerList;
@@ -49,16 +58,6 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
     private final String TAG = MainActivity.class.getSimpleName();
-
-    /**
-     * Beacon related variables
-     */
-    private BeaconManager beaconManager;
-    private ArrayList<Beacon> beaconList;
-    // TODO: Correctly set the ID's of the beacons. Currently beacon is the ziggy beacon.
-    // The beacon from Donny doesn't show a UUID when you connect to it via light blue (iPhone)
-    private Beacon beacon = new Beacon.Builder().setId1("E278E68A0C274F77881559B64AF67189").setId2("0032").setId3("0001").build();
-
 
     /**
      * Sets up an instance oc the mainActivity class upon first creation.
@@ -78,13 +77,9 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
         mDrawerList = (ListView) findViewById(R.id.navList);
         addDrawerItems();
         setUpDrawer();
-
-        /** Beacon set-up */
-//        beaconManager = BeaconManager.getInstanceForApplication(this);
-
-        // TODO: This is the layout for an iBeacon. Don't know if it's able to detect one of our beacons.
-        // beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:2-3=2A24,i:4-19,i:20-21,i:22-23,p:24-24"));
-//        beaconManager.bind(this);
+        beaconButton = (Button) findViewById(R.id.beacons_button);
+        beaconButton.setText("AKTIVERA FÖRESTÄLLNINGSLÄGE");
+        lampSwitcher = (ImageSwitcher) findViewById(R.id.lamp_switcher);
 
     }
 
@@ -94,7 +89,6 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        beaconManager.unbind(this);
     }
 
     @Override
@@ -110,7 +104,35 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
      */
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
-        // Ser till att drawern är synkad om den är utdragen eller inte
+        Animation in = AnimationUtils.loadAnimation(getApplicationContext(),android.R.anim.fade_in);
+        Animation out = AnimationUtils.loadAnimation(getApplicationContext(),android.R.anim.fade_out);
+        lampSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
+            @Override
+            public View makeView() {
+                ImageView lampView = new ImageView(getApplicationContext());
+                return lampView;
+            }
+        });
+
+        lampSwitcher.setImageResource(R.drawable.lamp_off);
+        lampSwitcher.setInAnimation(in);
+        lampSwitcher.setOutAnimation(out);
+
+        beaconButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!beaconMode){
+                    lampSwitcher.setImageResource(R.drawable.lamp_on);
+                    beaconButton.setText("AVAKTIVERA FÖRESTÄLLNINGLÄGE");
+                    beaconMode = true;
+                } else {
+                    lampSwitcher.setImageResource(R.drawable.lamp_off);
+                    beaconButton.setText("AKTIVERA FÖRESTÄLLNINGLÄGE");
+                    beaconMode = false;
+                }
+
+            }
+        });
         mDrawerToggle.syncState();
         super.onPostCreate(savedInstanceState);
     }
@@ -137,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
      * Then using a switch statement to set up the headers.
      */
     private void addDrawerItems() {
-        String[] drawerArray = {"START", "#SATANSDEMOKRATI", "FÖRESTÄLLNING ", "INFORMATION ", "WIKI+", "LOGGA UT"};
+        String[] drawerArray = {"START", "#SATANSDEMOKRATI", "INFORMATION ", "WIKI+", "LOGGA UT"};
         mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, drawerArray);
         mDrawerList.setAdapter(mAdapter);
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -145,44 +167,30 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
                     case 0:
-                        Log.i(TAG, "position 0");
                         while (getSupportFragmentManager().getBackStackEntryCount() > 0) {
                             getSupportFragmentManager().popBackStackImmediate();
                         }
                         mDrawerLayout.closeDrawers();
                         break;
                     case 1:
-                        Log.i(TAG, "position 1");
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.main_frame, new NyheterFragment())
                                 .addToBackStack(null).commit();
                         mDrawerLayout.closeDrawers();
                         break;
                     case 2:
-                        Log.i(TAG, "position 2");
-                        //TODO: Uncomment this call when tests are done or when testing on device and not emulator
-                        //verifyBluetooth();
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.main_frame, new ForestallningFragment())
-                                .addToBackStack(null).commit();
-                        mDrawerLayout.closeDrawers();
-                        break;
-                    case 3:
-                        Log.i(TAG, "position 3");
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.main_frame, new InformationFragment())
                                 .addToBackStack(null).commit();
                         mDrawerLayout.closeDrawers();
                         break;
-                    case 4:
-                        Log.i(TAG, "position 4");
+                    case 3:
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.main_frame, new WikiFragment())
                                 .addToBackStack(null).commit();
                         mDrawerLayout.closeDrawers();
                         break;
-                    case 5:
-                        Log.i(TAG, "position 5");
+                    case 4:
                         LoginManager.getInstance().logOut();
                         startActivity(new Intent(MainActivity.this, LoginActivity.class));
                         mDrawerLayout.closeDrawers();
@@ -234,103 +242,6 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
      */
     @Override
     public void onFragmentInteraction(Uri uri) {
-
-    }
-
-    /**
-     * Handling the beacon interaction
-     * TODO: Should this be in mainActivity? If so, we need to initiate the beacon
-     * TODO: only when the föreställningsläge is initiated.
-     */
-    @Override
-    public void onBeaconServiceConnect() {
-        beaconManager.setMonitorNotifier(new MonitorNotifier() {
-
-            /**
-             * Triggers when a beacon is visible for the first time.
-             * @param region
-             */
-            @Override
-            public void didEnterRegion(Region region) {
-                if(region.matchesBeacon(beacon)) {
-                    Toast toast = Toast.makeText(MainActivity.this, "BEACON DETECTED", Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.BOTTOM, 0, 0);
-                    toast.show();
-                }
-            }
-
-            /**
-             * Triggers when a beacon is no longer visible.
-             * @param region
-             */
-            @Override
-            public void didExitRegion(Region region) {
-                if(region.matchesBeacon(beacon)) {
-                    Toast toast = Toast.makeText(MainActivity.this, "BEACON DETECTED", Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.BOTTOM, 0, 0);
-                    toast.show();
-                }
-            }
-
-            /**
-             *
-             * @param i
-             * @param region
-             */
-            @Override
-            public void didDetermineStateForRegion(int i, Region region) {
-
-            }
-        });
-
-        try {
-            beaconManager.startMonitoringBeaconsInRegion(new Region("myMonitoringUniqueId", null, null, null));
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * To make sure the Föreställningsläge is functional.
-     * Prompts the user to turn BLE on.
-     * If BLE is unavailable will give a notification that BLE is needed
-     * for this function to work.
-     * TODO: Uncomment call to this method in addDrawerItems().
-     */
-    private void verifyBluetooth() {
-        try {
-            if (!BeaconManager.getInstanceForApplication(this).checkAvailability()) {
-                final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("Bluetooth not enabled");
-                builder.setMessage("Please enable bluetooth in settings and restart this application.");
-                builder.setPositiveButton(android.R.string.ok, null);
-                builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        finish();
-                        System.exit(0);
-                    }
-                });
-                builder.show();
-            }
-        }
-        catch (RuntimeException e) {
-            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Bluetooth LE not available");
-            builder.setMessage("Sorry, this device does not support Bluetooth LE.");
-            builder.setPositiveButton(android.R.string.ok, null);
-            builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-
-                @Override
-                public void onDismiss(DialogInterface dialog) {
-                    finish();
-                    System.exit(0);
-                }
-
-            });
-            builder.show();
-
-        }
 
     }
 }

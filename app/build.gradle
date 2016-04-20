@@ -21,7 +21,6 @@ android {
 
 repositories {
     mavenCentral()
-    jcenter()
 }
 
 dependencies {
@@ -34,5 +33,4 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.2.0'
     compile 'com.squareup.okio:okio:1.6.0'
     compile 'com.facebook.android:facebook-android-sdk:[4,5)'
-    compile 'org.altbeacon:android-beacon-library:2+'
 }

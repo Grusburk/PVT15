@@ -32,7 +32,7 @@ public class WikiFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private ImageButton wolandButton, pilatusButton, margaritaButton;
+    private ImageButton wolandButton, pilatusButton, margaritaButton, aklagarButton, docButton, summaryButton;
     private TextView charName, charInfo;
 
     private OnFragmentInteractionListener mListener;
@@ -65,15 +65,28 @@ public class WikiFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         charName = (TextView) view.findViewById(R.id.char_name_view);
         charInfo = (TextView) view.findViewById(R.id.char_about_view);
+
+        summaryButton = (ImageButton) view.findViewById(R.id.button_summary);
         wolandButton = (ImageButton) view.findViewById(R.id.button_woland);
         pilatusButton = (ImageButton) view.findViewById(R.id.button_pilatus);
         margaritaButton = (ImageButton) view.findViewById(R.id.button_margarita);
+        aklagarButton = (ImageButton) view.findViewById(R.id.button_aklagaren);
+        docButton = (ImageButton) view.findViewById(R.id.button_doctor);
+
+        summaryButton.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                charName.setText("DEL: 1");
+                charInfo.setText(R.string.summaryinfo);
+            }
+        });
+
         wolandButton.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus){
-                    charName.setText("Woland");
-                    charInfo.setText("WOLAND GILLAR KATTER. WOLAND GILLAR KATTER. WOLAND GILLAR KATTER. WOLAND GILLAR KATTER. WOLAND GILLAR KATTER.");
+                    charName.setText("WOLAND");
+                    charInfo.setText(R.string.wolandinfo);
                 }
             }
         });
@@ -82,7 +95,7 @@ public class WikiFragment extends Fragment {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 charName.setText("PONTIUS PILATUS");
-                charInfo.setText("PONTIUS PILATUS ÄR FLINTIIS. PONTIUS PILATUS ÄR FLINTIIS. PONTIUS PILATUS ÄR FLINTIIS. PONTIUS PILATUS ÄR FLINTIIS. ");
+                charInfo.setText(R.string.pilatusinfo);
 
             }
         });
@@ -91,7 +104,25 @@ public class WikiFragment extends Fragment {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 charName.setText("MARGARITA");
-                charInfo.setText("JAG VILL BARA VARA DIN MARGARETA; JAG VILL BARA VARA DIN MARGARETA; JAG VILL BARA VARA DIN MARGARETA; JAG VILL BARA VARA DIN MARGARETA; ");
+                charInfo.setText(R.string.margaritainfo);
+
+            }
+        });
+
+        docButton.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                charName.setText("DOKTORN");
+                charInfo.setText(R.string.docinfo);
+
+            }
+        });
+
+        aklagarButton.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                charName.setText("ÅKLAGAREN");
+                charInfo.setText(R.string.aklagarinfo);
 
             }
         });
