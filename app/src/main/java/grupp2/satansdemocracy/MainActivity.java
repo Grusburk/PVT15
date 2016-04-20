@@ -3,6 +3,9 @@ package grupp2.satansdemocracy;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -44,9 +47,10 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity implements WikiFragment.OnFragmentInteractionListener,
-        InformationFragment.OnFragmentInteractionListener, NyheterFragment.OnFragmentInteractionListener{
+        InformationFragment.OnFragmentInteractionListener, NyheterFragment.OnFragmentInteractionListener {
 
     private Button beaconButton;
     private ImageSwitcher lampSwitcher;
@@ -58,6 +62,29 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
     private final String TAG = MainActivity.class.getSimpleName();
+    private String UUIDOne;
+    private String UUIDTwo;
+    private String UUIDThree;
+    private String UUIDFour;
+    private List<String> found = new ArrayList<String>();
+    private List<String> used = new ArrayList<String>();
+    private String[] test = {"ettan", "tvåan", "trean"};
+    private UUID[] UUIDs;
+    private BluetoothAdapter bluetoothAdapter;
+    private boolean isBtEnable = false;
+    private UUID currentUUID;
+
+    private BluetoothAdapter.LeScanCallback leScanCallback = new BluetoothAdapter.LeScanCallback() {
+        @Override
+        public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    device.getAddress();
+                }
+            });
+        }
+    };
 
     /**
      * Sets up an instance oc the mainActivity class upon first creation.
@@ -80,7 +107,8 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
         beaconButton = (Button) findViewById(R.id.beacons_button);
         beaconButton.setText("AKTIVERA FÖRESTÄLLNINGSLÄGE");
         lampSwitcher = (ImageSwitcher) findViewById(R.id.lamp_switcher);
-
+        final BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+        bluetoothAdapter = bluetoothManager.getAdapter();
     }
 
     /**
@@ -104,8 +132,8 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
      */
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
-        Animation in = AnimationUtils.loadAnimation(getApplicationContext(),android.R.anim.fade_in);
-        Animation out = AnimationUtils.loadAnimation(getApplicationContext(),android.R.anim.fade_out);
+        Animation in = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in);
+        Animation out = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
         lampSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
             @Override
             public View makeView() {
@@ -121,10 +149,12 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
         beaconButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!beaconMode){
+                if (!beaconMode) {
                     lampSwitcher.setImageResource(R.drawable.lamp_on);
                     beaconButton.setText("AVAKTIVERA FÖRESTÄLLNINGLÄGE");
                     beaconMode = true;
+                    //LÄGG TILL ATT SLÅ PÅ BT return bool
+                    beaconHandler(isBtEnable);
                 } else {
                     lampSwitcher.setImageResource(R.drawable.lamp_off);
                     beaconButton.setText("AKTIVERA FÖRESTÄLLNINGLÄGE");
@@ -228,6 +258,7 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
 
     /**
      * TODO: Förklara när den här metoden kallas.
+     *
      * @param item
      * @return TODO: Vad är det som returneras? Drawern som blev tryckt på?
      */
@@ -237,11 +268,26 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
     }
 
     /**
-     *
      * @param uri
      */
     @Override
     public void onFragmentInteraction(Uri uri) {
 
     }
+
+    public void beaconHandler(boolean b) {
+
+        for (int i = 0; i < test.length; i++) {
+            UUIDs[i] = UUID.fromString(test[i]);
+        }
+        while (b) {
+            if(bluetoothAdapter.startLeScan(UUIDs, leScanCallback))
+                leScanCallback.toString();
+
+            if(found.contains(currentUUID) && !used.contains(currentUUID))
+                //nånting
+
+        }
+    }
+
 }
