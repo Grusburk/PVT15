@@ -1,50 +1,26 @@
 package grupp2.satansdemocracy;
 
-import android.app.AlertDialog;
 import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.RemoteException;
-import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ImageSwitcher;
-import android.widget.ImageView;
-import android.widget.ListView;
-
-import android.widget.Toast;
-import android.widget.ViewSwitcher;
-
+import android.widget.*;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -66,13 +42,14 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
     private String UUIDTwo;
     private String UUIDThree;
     private String UUIDFour;
-    private List<String> found = new ArrayList<String>();
-    private List<String> used = new ArrayList<String>();
+    private List<UUID> found = new ArrayList<>();
+    private List<UUID> used = new ArrayList<>();
     private String[] test = {"ettan", "tvåan", "trean"};
     private UUID[] UUIDs;
     private BluetoothAdapter bluetoothAdapter;
     private boolean isBtEnable = false;
     private UUID currentUUID;
+    private UUID beacon1 = UUID.fromString("E278E68A-0C27-4F77-8815-59B64AF67189");
 
     private BluetoothAdapter.LeScanCallback leScanCallback = new BluetoothAdapter.LeScanCallback() {
         @Override
@@ -80,7 +57,10 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    device.getAddress();
+                    currentUUID = UUID.fromString(device.getAddress());
+                    if (found.contains(currentUUID) && !used.contains(currentUUID)) {
+
+                    }
                 }
             });
         }
@@ -281,11 +261,13 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
             UUIDs[i] = UUID.fromString(test[i]);
         }
         while (b) {
-            if(bluetoothAdapter.startLeScan(UUIDs, leScanCallback))
+            if (bluetoothAdapter.startLeScan(UUIDs, leScanCallback))
                 leScanCallback.toString();
 
-            if(found.contains(currentUUID) && !used.contains(currentUUID))
+            if (found.contains(currentUUID) && !used.contains(currentUUID)) {
                 //nånting
+            }
+
 
         }
     }
