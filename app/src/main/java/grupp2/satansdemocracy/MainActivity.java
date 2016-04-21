@@ -1,12 +1,15 @@
 package grupp2.satansdemocracy;
 
+import android.annotation.TargetApi;
 import android.app.Fragment;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
+import android.bluetooth.le.*;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -23,7 +26,6 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity implements WikiFragment.OnFragmentInteractionListener,
         InformationFragment.OnFragmentInteractionListener, NyheterFragment.OnFragmentInteractionListener {
@@ -38,18 +40,23 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
     private final String TAG = MainActivity.class.getSimpleName();
-    private String UUIDOne;
-    private String UUIDTwo;
-    private String UUIDThree;
-    private String UUIDFour;
-    private List<UUID> found = new ArrayList<>();
-    private List<UUID> used = new ArrayList<>();
-    private String[] test = {"ettan", "tvåan", "trean"};
-    private UUID[] UUIDs;
+    private List<String> found = new ArrayList<>();
+    private List<String> used = new ArrayList<>();
+    private String[] test = {"CC:69:C6:5B:13:D7", "FF:FF:50:01:25:63"};
     private BluetoothAdapter bluetoothAdapter;
     private boolean isBtEnable = false;
-    private UUID currentUUID;
-    private UUID beacon1 = UUID.fromString("E278E68A-0C27-4F77-8815-59B64AF67189");
+    // private UUID beacon1 = UUID.fromString("E278E68A-0C27-4F77-8815-59B64AF67189");
+    private String jZiggy = "CC:69:C6:5B:13:D7";
+    private String jDonny = "FF:FF:50:01:25:63";
+    private String currentMac;
+    private BluetoothLeScanner bluetoothLeScanner;
+    private ScanFilter ziggyFilter = new ScanFilter.Builder().setDeviceAddress(test[0]).build();
+    private ScanFilter donnyFilter = new ScanFilter.Builder().setDeviceAddress(test[1]).build();
+    private List<ScanFilter> filterList;
+    private ScanCallback scanCallback;
+    private ScanSettings scanSettings = new ScanSettings.Builder()
+            .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
+            .build();
 
     private BluetoothAdapter.LeScanCallback leScanCallback = new BluetoothAdapter.LeScanCallback() {
         @Override
@@ -57,8 +64,8 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    currentUUID = UUID.fromString(device.getAddress());
-                    if (found.contains(currentUUID) && !used.contains(currentUUID)) {
+                    currentMac = device.getAddress();
+                    if (found.contains(currentMac) && !used.contains(currentMac)) {
 
                     }
                 }
@@ -87,8 +94,15 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
         beaconButton = (Button) findViewById(R.id.beacons_button);
         beaconButton.setText("AKTIVERA FÖRESTÄLLNINGSLÄGE");
         lampSwitcher = (ImageSwitcher) findViewById(R.id.lamp_switcher);
+
+        /**
+         * Beacon related initiation
+         */
         final BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
         bluetoothAdapter = bluetoothManager.getAdapter();
+        filterList = new ArrayList<>();
+        filterList.add(ziggyFilter);
+        filterList.add(donnyFilter);
     }
 
     /**
@@ -257,19 +271,25 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
 
     public void beaconHandler(boolean b) {
 
-        for (int i = 0; i < test.length; i++) {
-            UUIDs[i] = UUID.fromString(test[i]);
-        }
-        while (b) {
-            if (bluetoothAdapter.startLeScan(UUIDs, leScanCallback))
-                leScanCallback.toString();
-
-            if (found.contains(currentUUID) && !used.contains(currentUUID)) {
-                //nånting
+        bluetoothLeScanner = bluetoothAdapter.getBluetoothLeScanner();
+        this.scanCallback = new ScanCallback() {
+            @Override
+            public void onScanResult(int callbackType, ScanResult result) {
+                super.onScanResult(callbackType, result);
+                Toast.makeText(MainActivity.this, "Found: " + result.getDevice().getAddress(), Toast.LENGTH_LONG).show();
             }
 
+            @Override
+            public void onBatchScanResults(List<ScanResult> results) {
+                super.onBatchScanResults(results);
+            }
 
-        }
+            @Override
+            public void onScanFailed(int errorCode) {
+                super.onScanFailed(errorCode);
+            }
+        };
+        bluetoothLeScanner.startScan(filterList, scanSettings, scanCallback);
     }
 
 }
