@@ -1,6 +1,7 @@
 package grupp2.satansdemocracy;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
@@ -47,7 +48,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements WikiFragment.OnFragmentInteractionListener,
         InformationFragment.OnFragmentInteractionListener, NyheterFragment.OnFragmentInteractionListener{
-
+    private AlertDialog.Builder warningDialog;
     private Button beaconButton;
     private ImageSwitcher lampSwitcher;
     private boolean beaconMode;
@@ -75,12 +76,13 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
         getSupportActionBar().setHomeButtonEnabled(true);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         mDrawerList = (ListView) findViewById(R.id.navList);
-        addDrawerItems();
-        setUpDrawer();
         beaconButton = (Button) findViewById(R.id.beacons_button);
         beaconButton.setText("AKTIVERA FÖRESTÄLLNINGSLÄGE");
         lampSwitcher = (ImageSwitcher) findViewById(R.id.lamp_switcher);
-
+        warningDialog = new AlertDialog.Builder(MainActivity.this,R.style.WarningDialogTheme);
+        addDrawerItems();
+        setUpDrawer();
+        uiStuff();
     }
 
     /**
@@ -103,38 +105,10 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
      * @param savedInstanceState
      */
     @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        Animation in = AnimationUtils.loadAnimation(getApplicationContext(),android.R.anim.fade_in);
-        Animation out = AnimationUtils.loadAnimation(getApplicationContext(),android.R.anim.fade_out);
-        lampSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
-            @Override
-            public View makeView() {
-                ImageView lampView = new ImageView(getApplicationContext());
-                return lampView;
-            }
-        });
-
-        lampSwitcher.setImageResource(R.drawable.lamp_off);
-        lampSwitcher.setInAnimation(in);
-        lampSwitcher.setOutAnimation(out);
-
-        beaconButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!beaconMode){
-                    lampSwitcher.setImageResource(R.drawable.lamp_on);
-                    beaconButton.setText("AVAKTIVERA FÖRESTÄLLNINGLÄGE");
-                    beaconMode = true;
-                } else {
-                    lampSwitcher.setImageResource(R.drawable.lamp_off);
-                    beaconButton.setText("AKTIVERA FÖRESTÄLLNINGLÄGE");
-                    beaconMode = false;
-                }
-
-            }
-        });
-        mDrawerToggle.syncState();
+    protected void onPostCreate(final Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
+        mDrawerToggle.syncState();
+
     }
 
     /**
@@ -159,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
      * Then using a switch statement to set up the headers.
      */
     private void addDrawerItems() {
-        String[] drawerArray = {"START", "#SATANSDEMOKRATI", "INFORMATION ", "WIKI+", "LOGGA UT"};
+        String[] drawerArray = {"START", "#SATANSDEMOKRATI", "INFORMATION ", "WIKI", "LOGGA UT"};
         mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, drawerArray);
         mDrawerList.setAdapter(mAdapter);
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -242,6 +216,54 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
      */
     @Override
     public void onFragmentInteraction(Uri uri) {
+    }
 
+    private void uiStuff () {
+        Animation in = AnimationUtils.loadAnimation(getApplicationContext(),android.R.anim.fade_in);
+        Animation out = AnimationUtils.loadAnimation(getApplicationContext(),android.R.anim.fade_out);
+        lampSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
+            @Override
+            public View makeView() {
+                ImageView lampView = new ImageView(getApplicationContext());
+                return lampView;
+            }
+        });
+        lampSwitcher.setImageResource(R.drawable.lamp_off);
+        lampSwitcher.setInAnimation(in);
+        lampSwitcher.setOutAnimation(out);
+
+
+
+        beaconButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!beaconMode){
+                    lampSwitcher.setImageResource(R.drawable.lamp_on);
+                    beaconButton.setText("AVAKTIVERA FÖRESTÄLLNINGLÄGE");
+                    beaconMode = true;
+                } else {
+                    setWarningDialog();
+                }
+            }
+        });
+
+
+    }
+
+    private void setWarningDialog (){
+        warningDialog.setMessage("Är du säker på att du vill avbryta föreställnigsläge?");
+        warningDialog.setPositiveButton("NEJ", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+            }
+        });
+        warningDialog.setNegativeButton("JA", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                lampSwitcher.setImageResource(R.drawable.lamp_off);
+                beaconButton.setText("AKTIVERA FÖRESTÄLLNINGLÄGE");
+                beaconMode = false;
+            }
+        });
+        warningDialog.show();
     }
 }

@@ -4,9 +4,8 @@
     android:layout_height="match_parent"
     tools:context="grupp2.satansdemocracy.WikiFragment"
     android:background="@color/colorPrimaryDark">
-
-    <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:layout_alignParentTop="true"
         android:layout_marginTop="10dp"
         android:id="@+id/char_name_view"
         android:layout_width="match_parent"
@@ -16,109 +15,100 @@
         android:textAlignment="center"
         android:textSize="28sp"
         android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/char_about_view"
-        android:layout_marginTop="15dp"
-        android:layout_below="@+id/char_name_view"
-        android:layout_width="match_parent"
-        android:textAlignment="center"
-        android:layout_height="325dp"
-        android:text="@string/charinfo"
-        android:textColor="@color/colorAccent"
-        android:textSize="20sp"
-        />
-
     <FrameLayout
-        android:id="@+id/divider_frame"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="20dp"
-        android:layout_below="@+id/char_about_view"
+        android:layout_below="@+id/char_name_view"
+        android:id="@+id/divider_frame1"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginBottom="5dp"
         android:layout_width="match_parent"
         android:layout_height="5dp"
-        android:background="@color/colorAccent">
-
-    </FrameLayout>
-    <HorizontalScrollView
-    android:id="@+id/char_picture_frame"
-    android:layout_below="@+id/divider_frame"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:scrollbarThumbHorizontal="@color/colorAccent"
-    >
-
-    <LinearLayout
-        android:orientation="horizontal"
+        android:background="@color/colorAccent"/>
+    <ScrollView
+        android:layout_margin="10dp"
+        android:fillViewport="true"
+        android:id="@+id/char_about_scroll"
+        android:layout_below="@+id/divider_frame1"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/divider_frame">
-
-        <ImageButton
-            android:scaleType="fitCenter"
-            android:id="@+id/button_summary"
-            android:background="@android:color/transparent"
-            android:layout_width="125dp"
-            android:src="@drawable/summary_selector"
+        android:layout_height="match_parent"
+        android:layout_alignBottom="@+id/divider_frame">
+        <TextView
+            android:id="@+id/char_about_view"
+            android:layout_width="match_parent"
+            android:textAlignment="center"
             android:layout_height="wrap_content"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            />
-
-        <ImageButton
-            android:scaleType="fitCenter"
-            android:id="@+id/button_woland"
-            android:background="@android:color/transparent"
-            android:src="@drawable/woland_selector"
-            android:layout_width="125dp"
-            android:layout_height="wrap_content"
-            android:focusableInTouchMode="true"
-            android:focusable="true"
-            />
-
-        <ImageButton
-            android:scaleType="fitCenter"
-            android:id="@+id/button_pilatus"
-            android:src="@drawable/pontius_selector"
-            android:background="@android:color/transparent"
-            android:layout_width="125dp"
-            android:layout_height="wrap_content"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            />
-
-        <ImageButton
-            android:scaleType="fitCenter"
-            android:id="@+id/button_margarita"
-            android:background="@android:color/transparent"
-            android:layout_width="125dp"
-            android:src="@drawable/margarita_selector"
-            android:layout_height="wrap_content"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            />
-
-        <ImageButton
-            android:scaleType="fitCenter"
-            android:id="@+id/button_doctor"
-            android:background="@android:color/transparent"
-            android:layout_width="125dp"
-            android:src="@drawable/doc_selector"
-            android:layout_height="wrap_content"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            />
-
-        <ImageButton
-            android:scaleType="fitCenter"
-            android:id="@+id/button_aklagaren"
-            android:background="@android:color/transparent"
-            android:layout_width="125dp"
-            android:src="@drawable/aklagaren_selector"
-            android:layout_height="wrap_content"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            />
-
-    </LinearLayout>
+            android:text="@string/charinfo"
+            android:textColor="@color/colorAccent"
+            android:textSize="20sp" />
+    </ScrollView>
+    <FrameLayout
+        android:layout_above="@+id/char_picture_frame"
+        android:id="@+id/divider_frame"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginBottom="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@color/colorAccent"/>
+    <HorizontalScrollView
+        android:scrollbarStyle="outsideInset"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/char_picture_frame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageButton
+                android:id="@+id/button_summary"
+                android:background="@drawable/summary_selector"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                android:focusableInTouchMode="true" />
+            <ImageButton
+                android:scaleType="fitCenter"
+                android:id="@+id/button_woland"
+                android:background="@drawable/woland_selector"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:focusableInTouchMode="true"
+                android:focusable="true" />
+            <ImageButton
+                android:scaleType="fitCenter"
+                android:id="@+id/button_pilatus"
+                android:background="@drawable/pontius_selector"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                />
+            <ImageButton
+                android:scaleType="fitCenter"
+                android:id="@+id/button_margarita"
+                android:background="@drawable/margarita_selector"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                android:focusableInTouchMode="true" />
+            <ImageButton
+                android:scaleType="fitCenter"
+                android:id="@+id/button_doctor"
+                android:layout_width="wrap_content"
+                android:background="@drawable/doc_selector"
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                android:focusableInTouchMode="true" />
+            <ImageButton
+                android:scaleType="fitCenter"
+                android:id="@+id/button_aklagaren"
+                android:layout_width="wrap_content"
+                android:background="@drawable/aklagaren_selector"
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                android:focusableInTouchMode="true" />
+        </LinearLayout>
     </HorizontalScrollView>
 </RelativeLayout>
