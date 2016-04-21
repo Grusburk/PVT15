@@ -1,18 +1,17 @@
 package grupp2.satansdemocracy;
 
-import android.annotation.TargetApi;
-import android.app.Fragment;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.*;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -30,10 +29,10 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements WikiFragment.OnFragmentInteractionListener,
         InformationFragment.OnFragmentInteractionListener, NyheterFragment.OnFragmentInteractionListener {
 
+    private AlertDialog.Builder ziggyDialog;
     private Button beaconButton;
     private ImageSwitcher lampSwitcher;
     private boolean beaconMode;
-    private Fragment fragment;
     private Toolbar toolbar;
     private ListView mDrawerList;
     private ArrayAdapter<String> mAdapter;
@@ -42,36 +41,21 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
     private final String TAG = MainActivity.class.getSimpleName();
     private List<String> found = new ArrayList<>();
     private List<String> used = new ArrayList<>();
-    private String[] test = {"CC:69:C6:5B:13:D7", "FF:FF:50:01:25:63"};
     private BluetoothAdapter bluetoothAdapter;
     private boolean isBtEnable = false;
-    // private UUID beacon1 = UUID.fromString("E278E68A-0C27-4F77-8815-59B64AF67189");
-    private String jZiggy = "CC:69:C6:5B:13:D7";
-    private String jDonny = "FF:FF:50:01:25:63";
-    private String currentMac;
-    private BluetoothLeScanner bluetoothLeScanner;
-    private ScanFilter ziggyFilter = new ScanFilter.Builder().setDeviceAddress(test[0]).build();
-    private ScanFilter donnyFilter = new ScanFilter.Builder().setDeviceAddress(test[1]).build();
+    private final String jZiggy = "CC:69:C6:5B:13:D7";
+    private final String jDonny = "FF:FF:50:01:25:63";
+    private final String aZiggy = "F2:E1:A3:7E:CF:BC";
+    private final String aDonny = "FF:FF:70:01:4C:E6";
+    private ScanFilter jZiggyFilter = new ScanFilter.Builder().setDeviceAddress(jZiggy).build();
+    private ScanFilter jDonnyFilter = new ScanFilter.Builder().setDeviceAddress(jDonny).build();
+    private ScanFilter aZiggyFilter = new ScanFilter.Builder().setDeviceAddress(aZiggy).build();
+    private ScanFilter aDonnyFilter = new ScanFilter.Builder().setDeviceAddress(aDonny).build();
     private List<ScanFilter> filterList;
     private ScanCallback scanCallback;
     private ScanSettings scanSettings = new ScanSettings.Builder()
-            .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
+            .setScanMode(ScanSettings.SCAN_MODE_LOW_POWER)
             .build();
-
-    private BluetoothAdapter.LeScanCallback leScanCallback = new BluetoothAdapter.LeScanCallback() {
-        @Override
-        public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    currentMac = device.getAddress();
-                    if (found.contains(currentMac) && !used.contains(currentMac)) {
-
-                    }
-                }
-            });
-        }
-    };
 
     /**
      * Sets up an instance oc the mainActivity class upon first creation.
@@ -94,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
         beaconButton = (Button) findViewById(R.id.beacons_button);
         beaconButton.setText("AKTIVERA FÖRESTÄLLNINGSLÄGE");
         lampSwitcher = (ImageSwitcher) findViewById(R.id.lamp_switcher);
+        ziggyDialog = new AlertDialog.Builder(MainActivity.this, R.style.WarningDialogTheme);
 
         /**
          * Beacon related initiation
@@ -101,8 +86,10 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
         final BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
         bluetoothAdapter = bluetoothManager.getAdapter();
         filterList = new ArrayList<>();
-        filterList.add(ziggyFilter);
-        filterList.add(donnyFilter);
+        filterList.add(jZiggyFilter);
+        filterList.add(jDonnyFilter);
+        filterList.add(aZiggyFilter);
+        filterList.add(aDonnyFilter);
     }
 
     /**
@@ -269,14 +256,53 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
 
     }
 
+    public void ziggyBeaconDialog() {
+        Vibrator vibrator = (Vibrator) this.getSystemService(VIBRATOR_SERVICE);
+        vibrator.vibrate(1000);
+        ziggyDialog.setMessage("Du har gått in i dödsrummet. Du hittar en tidning. Wanna read?");
+        ziggyDialog.setPositiveButton("JA", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // TODO: Visa bilden
+            }
+        });
+        ziggyDialog.setNegativeButton("NEJ", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                return;
+            }
+        });
+        ziggyDialog.show();
+        used.add(jZiggy);
+    }
+
     public void beaconHandler(boolean b) {
 
-        bluetoothLeScanner = bluetoothAdapter.getBluetoothLeScanner();
+        final BluetoothLeScanner bluetoothLeScanner = bluetoothAdapter.getBluetoothLeScanner();
         this.scanCallback = new ScanCallback() {
             @Override
             public void onScanResult(int callbackType, ScanResult result) {
                 super.onScanResult(callbackType, result);
-                Toast.makeText(MainActivity.this, "Found: " + result.getDevice().getAddress(), Toast.LENGTH_LONG).show();
+                if(!found.contains(result.getDevice().getAddress())) {
+                    found.add(result.getDevice().getAddress());
+                }
+                switch (result.getDevice().getAddress()) {
+                    case jZiggy:
+                        if(!used.contains(jZiggy)) {
+                            ziggyBeaconDialog();
+                            assert used.contains(result.getDevice().getAddress());
+
+                        }
+                        break;
+                    case jDonny:
+                        break;
+                    case aZiggy:
+                        break;
+                    case aDonny:
+                        break;
+                    default:
+                        break;
+                }
             }
 
             @Override
