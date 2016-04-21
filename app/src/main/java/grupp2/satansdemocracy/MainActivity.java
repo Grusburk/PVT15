@@ -219,20 +219,18 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
     }
 
     private void uiStuff () {
-        Animation in = AnimationUtils.loadAnimation(getApplicationContext(),android.R.anim.fade_in);
-        Animation out = AnimationUtils.loadAnimation(getApplicationContext(),android.R.anim.fade_out);
+        Animation in = AnimationUtils.loadAnimation(MainActivity.this,android.R.anim.fade_in);
+        Animation out = AnimationUtils.loadAnimation(MainActivity.this,android.R.anim.fade_out);
         lampSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
             @Override
             public View makeView() {
-                ImageView lampView = new ImageView(getApplicationContext());
+                ImageView lampView = new ImageView(MainActivity.this);
                 return lampView;
             }
         });
         lampSwitcher.setImageResource(R.drawable.lamp_off);
         lampSwitcher.setInAnimation(in);
         lampSwitcher.setOutAnimation(out);
-
-
 
         beaconButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -246,15 +244,12 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
                 }
             }
         });
-
-
     }
 
     private void setWarningDialog (){
         warningDialog.setMessage("Är du säker på att du vill avbryta föreställnigsläge?");
         warningDialog.setPositiveButton("NEJ", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-
             }
         });
         warningDialog.setNegativeButton("JA", new DialogInterface.OnClickListener() {

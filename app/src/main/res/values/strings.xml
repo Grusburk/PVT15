@@ -23,39 +23,35 @@
     <string name="wikititle">WIKI</string>
     <string name="charinfo">TRYCK PÅ EN AV BILDERNA NEDAN FÖR ATT LÄRA DIG MER</string>
     <string name="showinfo">SÄTT IGÅNG FÖRESTÄLLNINGSLÄGE FÖR EN BÄTTRE UPPLEVELSE</string>
-    <string name="summaryinfo">
-        ILLUSIONEN AV DEMOKRATI SKYMMER PONTIUS PILATUS DIKTATUR, FOLK LEVER I OVETSKAPENS FÖRTRYCK. HÄR FINNS ELITEN, TJÄNSTEMÄNNENS STRIKTA HIRARKI OCH KONSTNÄRERNA SOM,
-        ISTÄLLET FÖR DET FRIA UTTRYCKET, ÄGNAR ALL KRATIVITET ÅT UNDERHÅLLNING. MEN HÄR FINNS OCKSÅ EN TRO, EN GNISTA AV HOPP. HÄR FINNS WOLAND.
-        PONTIUS PILATUS VÄLJS LIKT EN KIM JONG UN, TILL LEDARE AV FOLKET. I PARITET STÅR WOLAND, EN MOTSTÅNDARE SOM TRIGGAR UPPROR SOM ETT SVAR PÅ DET SNEDVRIDNA VALET,
-        SOM YAN TILL PILATUS YON RÅDER HON ÖVER GODHET NÄR DET FINNS ONT. EN PUSSY RIOT I SOVJETS RUINER. MEN ÄR WOLAND ALLTID BARA GOD?MARGARITA, JOURNALISTKÅRENS MESSIAS,
-        PLANTERAR OROANDE FRÅN I PONTIUS SINNE. I JESU FAMN LÄGGER HAN SITT HUVUD, HAN VILL GE UPP. MEN SÄKERHETSPOLISEN I DEN DIKTATORISKA DEMOKRATIN AVGER DEN RIKTIGA DOMEN,
-        OCH JOURNALISTEN GÅR SAMMA ÖDE TILL MÖTES SOM SIN NÄMNE, ETT ÖDE MOT DET OUNDVIKLIGA SLUTET, DÖDEN. MEN ÄR DÖDEN VERKLIGEN SLUTET FÖR MESSIAS?
-        I SKUGGAN AV ELITEN OCH DESS DRAMOR, KNAPRAR INVÅNARNA TABLETTER. TABLETTER SKAPADE AV SPECIALISTEN, DOKTORN. EN DROG SOM SKÄRMAR AV, SOM FÖRHÖJER,
-        OCH GER EN KÄNSLA AV FRIHET I DENNA KARGA OCH CIRKUSLIKNANDE MILJÖ.SATANS DEMOKRATI BEHÖVER BRÄNSLE, EN KRAFT SOM BLOTTAR, EN WOLAND.
-        ALLT VI SER STRÄVAR MOT KAOS, OCH DET ÄR I KAOSET TRON PÅ GOTT OCH ONT LEVER VIDARE...
-    </string>
 
     <string name="wolandinfo">
-        DEN FÄRGSTARKA GNISTAN I SAMHÄLLET. WOLAND ÄR SATAN, EN REVOLUTIONÄR SOM VÄNDER UPP OCH NED PÅ SAMHÄLLET OCH SKAPAR TUMULT MED
-        HENNES BEFRIANDE NÄRVARO. EN VARG I FÅRAKLÄDER, ELLER? FÖR EN FÖRHÖJD UPPLEVELSE
+        Den färgstarka gnistan i samhället. Woland är satan, en revolutionär som vänder upp och ned på samhället och skapar tumult med hennes befriande närvaro. En varg i fårakläder, eller?
         </string>
 
     <string name="pilatusinfo">
-        DIKTATORN SOM, LIKT VLADIMIR PUTIN, STYR SAMHÄLLET MED EN HJÄRNHAND. HANS LEDSAGARE ÄR ELITEN, DET RENA VITA FOLKET, SOM OVETANDES LEVER I MAKTENS FÖRTRYCK.
+        Diktatorn som, likt Vladimir Putin, styr samhället med en hjärnhand. Hans ledsagare är eliten, det rena vita folket, som ovetandes lever i maktens förtryck.
     </string>
 
     <string name="margaritainfo">
-        JESUS I FÖRKLÄDNAD. MARGARITA ÄR EN UPPRORSMAKARE SOM TIDIGARE HAR KORSAT VÄGAR MED WOLAND. SOM TILL FÖLJD AV HENNES UPPROR
-        MOT DET AUKTORITÄRA SAMHÄLLET GÅR HON MOT SAMMA ÖDE SOM JESUS.
+        Jesus i förklädnad. Margarita är en upprorsmakare som tidigare har korsat vägar med Woland. Som till följd av hennes uppror mot det auktoritära samhället går hon mot samma öde som Jesus.
     </string>
 
     <string name="docinfo">
-        DOKTORN SOM UNDER SITT LIV HJÄLPT BEFOLKNINGEN MED SINA ÅKOMMOR, HAR TAPPAT SIN FÖRMÅGA ATT VARA BEGRIPLIG.
-        MED HJÄLP AV TUMSTOCK OCH HÄFTPISTOLER UNDERSÖKER HON SINA PATIENTER OCH BERÄTTAR SAGOR SOM INNEHÅLLER SANNINGAR SOM ÄR FÖRBJUDNA.
+        Doktorn som under sitt liv hjälpt befolkningen med sina åkommor, har tappat sin förmåga att vara begriplig. Med hjälp av tumstock och häftpistoler undersöker hon sina patienter och berättar sagor som innehåller sanningar som är förbjudna.
     </string>
 
     <string name="aklagarinfo">
-        ÅKLAGAREN TROR PÅ DEMOKRATINS STRUKTUR. VID SIDAN AV SINA STRIKTA FÖRHÅLLNINGSREGLER, FINNS SEXUELLA DRAGNINGAR TILL ATT STÄNDIGT STRAFFA SIG SJÄLV GENOM
-        FÖRÖDMJUKELSE OCH DIVERSE SEXUELLA REDSKAP. I SITT HEM OCH PÅ SITT KONTOR FINNS HEMLIGA RUM OCH VERKTYG.
+        Åklagaren tror på demokratins struktur. Vid sidan av sina strikta förhållningsregler, finns sexuella dragningar till att ständigt straffa sig själv genom förödmjukelse och diverse sexuella redskap. I sitt hem och på sitt kontor finns hemliga rum och verktyg.
     </string>
+
+        <string name="summaryinfo">"Illusionen av demokrati skymmer Pontius Pilatus diktatur, folk lever i ovetskapens förtryck. Här finns eliten, tjänstemännens strikta hierarki och konstnärerna som,istället för det fria uttrycket, ägnar all kreativitet åt underhållning. Men här finns också en tro, en gnista av hopp. Här finns Woland.
+
+Pontius Pilatus väljs likt en Kim Jong Un, till ledare av folket. I paritet står Woland, en motståndare som triggar uppror som ett svar på det snedvridna valet,  som yän till Pilatus yon råder hon över godhet när det finns ont. En Pussy riot i Sovjets ruiner. Men är Woland alltid bara god?
+
+Margarita, journalistkårens Messias, planterar oroande från i Pontius sinne. I Jesu famn lägger han sitt huvud, han vill ge upp. Men säkerhetspolisen i den diktatoriska demokratin avger den riktiga domen, och journalisten går samma öde till mötes som sin nämne, ett öde mot det oundvikliga slutet, döden. Men är döden verkligen slutet för messias?
+
+I skuggan av Eliten och dess drama, knaprar invånarna tabletter. Tabletter skapade av specialisten, doktorn. En drog som skärmar av, som förhöjer, och ger en känsla av frihet i denna karga och cirkusliknande miljö.
+
+Satans demokrati behöver bränsle, en kraft som blottar, en Woland. Allt vi ser strävar mot kaos, och det är i kaoset tron på gott och ont lever vidare..." </string>
+
 </resources>
