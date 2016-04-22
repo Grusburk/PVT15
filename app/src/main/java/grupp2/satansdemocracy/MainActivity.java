@@ -1,5 +1,7 @@
 package grupp2.satansdemocracy;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Fragment;
@@ -10,12 +12,13 @@ import android.bluetooth.le.*;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -32,8 +35,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements WikiFragment.OnFragmentInteractionListener,
         InformationFragment.OnFragmentInteractionListener, NyheterFragment.OnFragmentInteractionListener{
-    private AlertDialog.Builder warningDialog;
-    private AlertDialog.Builder ziggyDialog;
+    private android.support.v7.app.AlertDialog.Builder warningDialog;
+    private android.support.v7.app.AlertDialog.Builder ziggyDialog;
     private Button beaconButton;
     private ImageSwitcher lampSwitcher;
     private boolean beaconMode;
@@ -57,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
     private ScanFilter aDonnyFilter = new ScanFilter.Builder().setDeviceAddress(aDonny).build();
     private List<ScanFilter> filterList;
     private ScanCallback scanCallback;
+    private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
     private ScanSettings scanSettings = new ScanSettings.Builder()
             .setScanMode(ScanSettings.SCAN_MODE_LOW_POWER)
             .build();
@@ -80,11 +84,11 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
         beaconButton = (Button) findViewById(R.id.beacons_button);
         beaconButton.setText("AKTIVERA FÖRESTÄLLNINGSLÄGE");
         lampSwitcher = (ImageSwitcher) findViewById(R.id.lamp_switcher);
-        warningDialog = new AlertDialog.Builder(MainActivity.this,R.style.WarningDialogTheme);
+        warningDialog = new android.support.v7.app.AlertDialog.Builder(MainActivity.this,R.style.WarningDialogTheme);
         addDrawerItems();
         setUpDrawer();
         uiStuff();
-        ziggyDialog = new AlertDialog.Builder(MainActivity.this, R.style.WarningDialogTheme);
+        ziggyDialog = new android.support.v7.app.AlertDialog.Builder(MainActivity.this, R.style.WarningDialogTheme);
 
         /**
          * Beacon related initiation
@@ -96,6 +100,24 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
         filterList.add(jDonnyFilter);
         filterList.add(aZiggyFilter);
         filterList.add(aDonnyFilter);
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("blabla");
+                builder.setMessage("blabla");
+                builder.setPositiveButton("ok",null);
+                builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    @TargetApi(Build.VERSION_CODES.M)
+                    public void onDismiss(DialogInterface dialog) {
+                        requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_COARSE_LOCATION);
+                    }
+                });
+                builder.show();
+            }
+        }
     }
 
     /**
@@ -231,8 +253,6 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
     public void onFragmentInteraction(Uri uri) {
     }
 
-    }
-
     public void ziggyBeaconDialog() {
         Vibrator vibrator = (Vibrator) this.getSystemService(VIBRATOR_SERVICE);
         vibrator.vibrate(1000);
@@ -274,8 +294,18 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
                     case jDonny:
                         break;
                     case aZiggy:
+                        if(!used.contains(aZiggy)) {
+                            ziggyBeaconDialog();
+                            assert used.contains(result.getDevice().getAddress());
+
+                        }
                         break;
                     case aDonny:
+                        if(!used.contains(aDonny)) {
+                            ziggyBeaconDialog();
+                            assert used.contains(result.getDevice().getAddress());
+
+                        }
                         break;
                     default:
                         break;
@@ -295,7 +325,6 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
         bluetoothLeScanner.startScan(filterList, scanSettings, scanCallback);
     }
 
-}
     private void uiStuff () {
         Animation in = AnimationUtils.loadAnimation(MainActivity.this,android.R.anim.fade_in);
         Animation out = AnimationUtils.loadAnimation(MainActivity.this,android.R.anim.fade_out);
@@ -340,4 +369,31 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
         });
         warningDialog.show();
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSION_REQUEST_COARSE_LOCATION: {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                } else {
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle("Functionality limited");
+                    builder.setMessage("Since location access has not been granted, this app will not be able to discover beacons when in the background.");
+                    builder.setPositiveButton(android.R.string.ok, null);
+                    builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                        }
+
+                    });
+                    builder.show();
+                }
+                return;
+            }
+        }
+    }
+
 }
