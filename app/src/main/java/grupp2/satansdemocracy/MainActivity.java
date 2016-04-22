@@ -1,11 +1,7 @@
 package grupp2.satansdemocracy;
 
 import android.Manifest;
-import android.annotation.TargetApi;
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.*;
@@ -35,8 +31,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements WikiFragment.OnFragmentInteractionListener,
         InformationFragment.OnFragmentInteractionListener, NyheterFragment.OnFragmentInteractionListener{
-    private android.support.v7.app.AlertDialog.Builder warningDialog;
-    private android.support.v7.app.AlertDialog.Builder ziggyDialog;
+    private AlertDialog.Builder warningDialog, ziggyDialog;
     private Button beaconButton;
     private ImageSwitcher lampSwitcher;
     private boolean beaconMode;
@@ -82,13 +77,10 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         mDrawerList = (ListView) findViewById(R.id.navList);
         beaconButton = (Button) findViewById(R.id.beacons_button);
-        beaconButton.setText("AKTIVERA FÖRESTÄLLNINGSLÄGE");
+        beaconButton.setText("SÄTT PÅ");
         lampSwitcher = (ImageSwitcher) findViewById(R.id.lamp_switcher);
-        warningDialog = new android.support.v7.app.AlertDialog.Builder(MainActivity.this,R.style.WarningDialogTheme);
         addDrawerItems();
         setUpDrawer();
-        uiStuff();
-        ziggyDialog = new android.support.v7.app.AlertDialog.Builder(MainActivity.this, R.style.WarningDialogTheme);
 
         /**
          * Beacon related initiation
@@ -112,6 +104,16 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
         }
     }
 
+
+    /**
+     * Called for marshmallow access for permissions
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+
+    }
+
+
     /**
      * Called upon finishing the application or shutting down.
      */
@@ -134,6 +136,9 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
     @Override
     protected void onPostCreate(final Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
+        uiStuff();
+        warningDialog = new AlertDialog.Builder(MainActivity.this,R.style.WarningDialogTheme);
+        ziggyDialog = new AlertDialog.Builder(MainActivity.this, R.style.WarningDialogTheme);
         mDrawerToggle.syncState();
 
     }
@@ -336,7 +341,7 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
             public void onClick(View v) {
                 if (!beaconMode){
                     lampSwitcher.setImageResource(R.drawable.lamp_on);
-                    beaconButton.setText("AVAKTIVERA FÖRESTÄLLNINGLÄGE");
+                    beaconButton.setText("Stäng av");
                     beaconMode = true;
                     beaconHandler(isBtEnable);
                 } else {
@@ -348,44 +353,18 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
 
     private void setWarningDialog (){
         warningDialog.setMessage("Är du säker på att du vill avbryta föreställnigsläge?");
-        warningDialog.setPositiveButton("NEJ", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-            }
-        });
-        warningDialog.setNegativeButton("JA", new DialogInterface.OnClickListener() {
+        warningDialog.setPositiveButton("JA", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 lampSwitcher.setImageResource(R.drawable.lamp_off);
-                beaconButton.setText("AKTIVERA FÖRESTÄLLNINGLÄGE");
+                beaconButton.setText("SÄTT PÅ");
                 beaconMode = false;
             }
         });
-        warningDialog.show();
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case PERMISSION_REQUEST_COARSE_LOCATION: {
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                } else {
-                    final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setTitle("Functionality limited");
-                    builder.setMessage("Since location access has not been granted, this app will not be able to discover beacons when in the background.");
-                    builder.setPositiveButton(android.R.string.ok, null);
-                    builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-
-                        @Override
-                        public void onDismiss(DialogInterface dialog) {
-                        }
-
-                    });
-                    builder.show();
-                }
-                return;
+        warningDialog.setNegativeButton("NEJ", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
             }
-        }
+        });
+        warningDialog.show();
     }
 
 }
