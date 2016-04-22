@@ -31,7 +31,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements WikiFragment.OnFragmentInteractionListener,
         InformationFragment.OnFragmentInteractionListener, NyheterFragment.OnFragmentInteractionListener{
-    private AlertDialog.Builder warningDialog, ziggyDialog;
+
+    private AlertDialog.Builder warningDialog, welcomeDialog, activateDialog, ziggyDialog;
     private Button beaconButton;
     private ImageSwitcher lampSwitcher;
     private boolean beaconMode;
@@ -81,6 +82,9 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
         lampSwitcher = (ImageSwitcher) findViewById(R.id.lamp_switcher);
         addDrawerItems();
         setUpDrawer();
+        welcomeDialog = new AlertDialog.Builder(MainActivity.this,R.style.WarningDialogTheme);
+        setWelcomeDialog();
+
 
         /**
          * Beacon related initiation
@@ -139,7 +143,9 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
         uiStuff();
         warningDialog = new AlertDialog.Builder(MainActivity.this,R.style.WarningDialogTheme);
         ziggyDialog = new AlertDialog.Builder(MainActivity.this, R.style.WarningDialogTheme);
+        activateDialog = new AlertDialog.Builder(MainActivity.this,R.style.WarningDialogTheme);
         mDrawerToggle.syncState();
+
 
     }
 
@@ -165,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
      * Then using a switch statement to set up the headers.
      */
     private void addDrawerItems() {
-        String[] drawerArray = {"START", "#SATANSDEMOKRATI", "INFORMATION ", "WIKI", "LOGGA UT"};
+        String[] drawerArray = {"FÖRESTÄLLNING", "#SATANSDEMOKRATI", "INFORMATION ", "WIKI", "LOGGA UT"};
         mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, drawerArray);
         mDrawerList.setAdapter(mAdapter);
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -323,7 +329,7 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
     }
 
     private void uiStuff () {
-        Animation in = AnimationUtils.loadAnimation(MainActivity.this,android.R.anim.fade_in);
+        Animation in = AnimationUtils.loadAnimation(MainActivity.this, android.R.anim.fade_in);
         Animation out = AnimationUtils.loadAnimation(MainActivity.this,android.R.anim.fade_out);
         lampSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
             @Override
@@ -339,11 +345,12 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
         beaconButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!beaconMode){
+                if (!beaconMode) {
+                    setActivateDialog();
                     lampSwitcher.setImageResource(R.drawable.lamp_on);
                     beaconButton.setText("Stäng av");
                     beaconMode = true;
-                    beaconHandler(isBtEnable);
+                    //beaconHandler(isBtEnable);
                 } else {
                     setWarningDialog();
                 }
@@ -367,4 +374,25 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
         warningDialog.show();
     }
 
+    private void setWelcomeDialog (){
+        welcomeDialog.setMessage(R.string.welcomeInfo);
+        welcomeDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+            }
+        });
+
+        welcomeDialog.show();
+    }
+
+    private void setActivateDialog (){
+        activateDialog.setMessage(R.string.activateInfo);
+        activateDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+            }
+        });
+
+        activateDialog.show();
+    }
 }

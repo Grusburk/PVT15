@@ -54,4 +54,17 @@ I skuggan av Eliten och dess drama, knaprar invånarna tabletter. Tabletter skap
 
 Satans demokrati behöver bränsle, en kraft som blottar, en Woland. Allt vi ser strävar mot kaos, och det är i kaoset tron på gott och ont lever vidare..." </string>
 
+    <string name="welcomeInfo">
+        "VÄLKOMEN TILL SATANS DEMOKRATI. FÖRESTÄLLNINGSLÄGET SKA DU AKTIVERA NÄR DU ÄR PÅ PLATS.
+
+TITTA GÄRNA RUNT I MENYN SÅ LÄNGE!"
+   </string>
+
+    <string name="activateInfo">
+        "FÖRESTÄLLNINGSLÄGE ÄR NU AKTIVERAT.
+
+DU KOMMER FÅ INFORMATION AV OSS SOM BERÄTTAR VAD DU SKA GÖRA"
+
+   </string>
+
 </resources>
