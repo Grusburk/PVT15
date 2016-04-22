@@ -4,61 +4,62 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothManager;
+import android.bluetooth.le.*;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.RemoteException;
-import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentManager;
+import android.os.Vibrator;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ImageSwitcher;
-import android.widget.ImageView;
-import android.widget.ListView;
-
-import android.widget.Toast;
-import android.widget.ViewSwitcher;
-
+import android.widget.*;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements WikiFragment.OnFragmentInteractionListener,
         InformationFragment.OnFragmentInteractionListener, NyheterFragment.OnFragmentInteractionListener{
     private AlertDialog.Builder warningDialog;
+    private AlertDialog.Builder ziggyDialog;
     private Button beaconButton;
     private ImageSwitcher lampSwitcher;
     private boolean beaconMode;
-    private Fragment fragment;
     private Toolbar toolbar;
     private ListView mDrawerList;
     private ArrayAdapter<String> mAdapter;
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
     private final String TAG = MainActivity.class.getSimpleName();
+    private List<String> found = new ArrayList<>();
+    private List<String> used = new ArrayList<>();
+    private BluetoothAdapter bluetoothAdapter;
+    private boolean isBtEnable = false;
+    private final String jZiggy = "CC:69:C6:5B:13:D7";
+    private final String jDonny = "FF:FF:50:01:25:63";
+    private final String aZiggy = "F2:E1:A3:7E:CF:BC";
+    private final String aDonny = "FF:FF:70:01:4C:E6";
+    private ScanFilter jZiggyFilter = new ScanFilter.Builder().setDeviceAddress(jZiggy).build();
+    private ScanFilter jDonnyFilter = new ScanFilter.Builder().setDeviceAddress(jDonny).build();
+    private ScanFilter aZiggyFilter = new ScanFilter.Builder().setDeviceAddress(aZiggy).build();
+    private ScanFilter aDonnyFilter = new ScanFilter.Builder().setDeviceAddress(aDonny).build();
+    private List<ScanFilter> filterList;
+    private ScanCallback scanCallback;
+    private ScanSettings scanSettings = new ScanSettings.Builder()
+            .setScanMode(ScanSettings.SCAN_MODE_LOW_POWER)
+            .build();
 
     /**
      * Sets up an instance oc the mainActivity class upon first creation.
@@ -83,6 +84,18 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
         addDrawerItems();
         setUpDrawer();
         uiStuff();
+        ziggyDialog = new AlertDialog.Builder(MainActivity.this, R.style.WarningDialogTheme);
+
+        /**
+         * Beacon related initiation
+         */
+        final BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+        bluetoothAdapter = bluetoothManager.getAdapter();
+        filterList = new ArrayList<>();
+        filterList.add(jZiggyFilter);
+        filterList.add(jDonnyFilter);
+        filterList.add(aZiggyFilter);
+        filterList.add(aDonnyFilter);
     }
 
     /**
@@ -202,6 +215,7 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
 
     /**
      * TODO: Förklara när den här metoden kallas.
+     *
      * @param item
      * @return TODO: Vad är det som returneras? Drawern som blev tryckt på?
      */
@@ -211,13 +225,77 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
     }
 
     /**
-     *
      * @param uri
      */
     @Override
     public void onFragmentInteraction(Uri uri) {
     }
 
+    }
+
+    public void ziggyBeaconDialog() {
+        Vibrator vibrator = (Vibrator) this.getSystemService(VIBRATOR_SERVICE);
+        vibrator.vibrate(1000);
+        ziggyDialog.setMessage("Du har gått in i dödsrummet. Du hittar en tidning. Wanna read?");
+        ziggyDialog.setPositiveButton("JA", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // TODO: Visa bilden
+            }
+        });
+        ziggyDialog.setNegativeButton("NEJ", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                return;
+            }
+        });
+        ziggyDialog.show();
+        used.add(jZiggy);
+    }
+
+    public void beaconHandler(boolean b) {
+
+        final BluetoothLeScanner bluetoothLeScanner = bluetoothAdapter.getBluetoothLeScanner();
+        this.scanCallback = new ScanCallback() {
+            @Override
+            public void onScanResult(int callbackType, ScanResult result) {
+                super.onScanResult(callbackType, result);
+                if(!found.contains(result.getDevice().getAddress())) {
+                    found.add(result.getDevice().getAddress());
+                }
+                switch (result.getDevice().getAddress()) {
+                    case jZiggy:
+                        if(!used.contains(jZiggy)) {
+                            ziggyBeaconDialog();
+                            assert used.contains(result.getDevice().getAddress());
+
+                        }
+                        break;
+                    case jDonny:
+                        break;
+                    case aZiggy:
+                        break;
+                    case aDonny:
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            @Override
+            public void onBatchScanResults(List<ScanResult> results) {
+                super.onBatchScanResults(results);
+            }
+
+            @Override
+            public void onScanFailed(int errorCode) {
+                super.onScanFailed(errorCode);
+            }
+        };
+        bluetoothLeScanner.startScan(filterList, scanSettings, scanCallback);
+    }
+
+}
     private void uiStuff () {
         Animation in = AnimationUtils.loadAnimation(MainActivity.this,android.R.anim.fade_in);
         Animation out = AnimationUtils.loadAnimation(MainActivity.this,android.R.anim.fade_out);
@@ -239,6 +317,7 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
                     lampSwitcher.setImageResource(R.drawable.lamp_on);
                     beaconButton.setText("AVAKTIVERA FÖRESTÄLLNINGLÄGE");
                     beaconMode = true;
+                    beaconHandler(isBtEnable);
                 } else {
                     setWarningDialog();
                 }
