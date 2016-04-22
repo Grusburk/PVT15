@@ -101,21 +101,13 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
         filterList.add(aZiggyFilter);
         filterList.add(aDonnyFilter);
 
+        /**
+         * Request access for Beacon Searching
+         */
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("blabla");
-                builder.setMessage("blabla");
-                builder.setPositiveButton("ok",null);
-                builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    @TargetApi(Build.VERSION_CODES.M)
-                    public void onDismiss(DialogInterface dialog) {
-                        requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_COARSE_LOCATION);
-                    }
-                });
-                builder.show();
+                requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_COARSE_LOCATION);
             }
         }
     }
