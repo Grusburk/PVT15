@@ -2,6 +2,7 @@ package grupp2.satansdemocracy;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.NotificationManager;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.*;
@@ -16,6 +17,7 @@ import android.os.Vibrator;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,13 +34,12 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements WikiFragment.OnFragmentInteractionListener,
         InformationFragment.OnFragmentInteractionListener, NyheterFragment.OnFragmentInteractionListener{
 
-    private AlertDialog.Builder warningDialog, welcomeDialog, activateDialog, ziggyDialog;
+    private NotificationCompat.Builder notificationBuilder;
+    private AlertDialog.Builder forestallningsDialog, ziggyDialog;
     private Button beaconButton;
     private ImageSwitcher lampSwitcher;
     private boolean beaconMode;
-    private Toolbar toolbar;
     private ListView mDrawerList;
-    private ArrayAdapter<String> mAdapter;
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
     private final String TAG = MainActivity.class.getSimpleName();
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_main);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -82,9 +83,8 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
         lampSwitcher = (ImageSwitcher) findViewById(R.id.lamp_switcher);
         addDrawerItems();
         setUpDrawer();
-        welcomeDialog = new AlertDialog.Builder(MainActivity.this,R.style.WarningDialogTheme);
-        setWelcomeDialog();
-
+        notificationBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(getApplicationContext());
+        forestallningsDialog = new AlertDialog.Builder(MainActivity.this,R.style.WarningDialogTheme);
 
         /**
          * Beacon related initiation
@@ -141,12 +141,8 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
     protected void onPostCreate(final Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         uiStuff();
-        warningDialog = new AlertDialog.Builder(MainActivity.this,R.style.WarningDialogTheme);
         ziggyDialog = new AlertDialog.Builder(MainActivity.this, R.style.WarningDialogTheme);
-        activateDialog = new AlertDialog.Builder(MainActivity.this,R.style.WarningDialogTheme);
         mDrawerToggle.syncState();
-
-
     }
 
     /**
@@ -172,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
      */
     private void addDrawerItems() {
         String[] drawerArray = {"FÖRESTÄLLNING", "#SATANSDEMOKRATI", "INFORMATION ", "WIKI", "LOGGA UT"};
-        mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, drawerArray);
+        ArrayAdapter<String> mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, drawerArray);
         mDrawerList.setAdapter(mAdapter);
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -256,6 +252,15 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
     public void onFragmentInteraction(Uri uri) {
     }
 
+    private void ziggyBeaconNotification () {
+        Vibrator vibrator = (Vibrator) this.getSystemService(VIBRATOR_SERVICE);
+        vibrator.vibrate(1000);
+        notificationBuilder.setSmallIcon(android.R.drawable.stat_notify_chat)
+                .setContentTitle("Du har gått in i dödsrummet")
+                .setContentText("Du hittar en tidning. Wanna read?");
+        getNotificationBuilder ();
+    }
+
     public void ziggyBeaconDialog() {
         Vibrator vibrator = (Vibrator) this.getSystemService(VIBRATOR_SERVICE);
         vibrator.vibrate(1000);
@@ -289,6 +294,7 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
                 switch (result.getDevice().getAddress()) {
                     case jZiggy:
                         if(!used.contains(jZiggy)) {
+                            ziggyBeaconNotification();
                             ziggyBeaconDialog();
                             assert used.contains(result.getDevice().getAddress());
 
@@ -298,6 +304,7 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
                         break;
                     case aZiggy:
                         if(!used.contains(aZiggy)) {
+                            ziggyBeaconNotification();
                             ziggyBeaconDialog();
                             assert used.contains(result.getDevice().getAddress());
 
@@ -305,6 +312,7 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
                         break;
                     case aDonny:
                         if(!used.contains(aDonny)) {
+                            ziggyBeaconNotification();
                             ziggyBeaconDialog();
                             assert used.contains(result.getDevice().getAddress());
 
@@ -346,53 +354,45 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
             @Override
             public void onClick(View v) {
                 if (!beaconMode) {
-                    setActivateDialog();
-                    lampSwitcher.setImageResource(R.drawable.lamp_on);
-                    beaconButton.setText("Stäng av");
-                    beaconMode = true;
-                    //beaconHandler(isBtEnable);
+                    forestallningsDialog.setMessage(R.string.activateInfo);
+                    forestallningsDialog();
+                    notificationBuilder.setSmallIcon(android.R.drawable.stat_notify_chat)
+                            .setContentTitle("Ledtråd funnen")
+                            .setContentText("Du har hittat en tidning");
+                    getNotificationBuilder ();
                 } else {
-                    setWarningDialog();
+                    forestallningsDialog.setMessage("Är du säker på att du vill avbryta föreställnigsläge?");
+                    forestallningsDialog();
                 }
             }
         });
     }
 
-    private void setWarningDialog (){
-        warningDialog.setMessage("Är du säker på att du vill avbryta föreställnigsläge?");
-        warningDialog.setPositiveButton("JA", new DialogInterface.OnClickListener() {
+    private void forestallningsDialog(){
+        forestallningsDialog.setPositiveButton("JA", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                lampSwitcher.setImageResource(R.drawable.lamp_off);
-                beaconButton.setText("SÄTT PÅ");
-                beaconMode = false;
+                if (!beaconMode) {
+                    lampSwitcher.setImageResource(R.drawable.lamp_on);
+                    beaconButton.setText("Stäng av");
+                    beaconMode = true;
+                    //beaconHandler(isBtEnable);
+                } else {
+                    lampSwitcher.setImageResource(R.drawable.lamp_off);
+                    beaconButton.setText("SÄTT PÅ");
+                    beaconMode = false;
+                }
             }
         });
-        warningDialog.setNegativeButton("NEJ", new DialogInterface.OnClickListener() {
+
+        forestallningsDialog.setNegativeButton("NEJ", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
             }
         });
-        warningDialog.show();
+        forestallningsDialog.show();
     }
 
-    private void setWelcomeDialog (){
-        welcomeDialog.setMessage(R.string.welcomeInfo);
-        welcomeDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-
-            }
-        });
-
-        welcomeDialog.show();
-    }
-
-    private void setActivateDialog (){
-        activateDialog.setMessage(R.string.activateInfo);
-        activateDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-
-            }
-        });
-
-        activateDialog.show();
+    private void getNotificationBuilder () {
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.notify(1, notificationBuilder.build());
     }
 }
