@@ -10,8 +10,12 @@ import org.json.JSONObject;
 public class DBHandler {
 
 
-    /** calls for ApiMessageClass "MessageModel" **/
+    /**
+     * calls for ApiMessageClass "MessageModel"
+     **/
     private MessageModel model = new MessageModel("https://people.dsv.su.se/~anth3046/SatansDemokrati/api/v1/");
+    private MessageModel modelIdToDB = new MessageModel("https://people.dsv.su.se/~anth3046/SatansDemokrati/api/v2/");
+    private MessageModel modelMessageFromDB = new MessageModel("URL_Y");
 
 
     public DBHandler() {
@@ -53,12 +57,32 @@ public class DBHandler {
         /**
          * Call the API(MessageModel) with the JSonUserData.
          */
-       try {
-           JSONObject response = model.apiPost("add_user/", new JSONObject(userJson));
-           Log.d("LoginActivity", String.valueOf(response));
-       } catch (Exception e){
-           e.printStackTrace();
-       }
+        try {
+            JSONObject response = model.apiPost("add_user/", new JSONObject(userJson));
+            Log.d("LoginActivity", String.valueOf(response));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void postIDToMessageDB(Profile profile) {
+
+        String userJson = "{'id':\"" + profile.getId() + "\"}";
+
+        try {
+            JSONObject response = modelIdToDB.apiPost("add_id/", new JSONObject(userJson));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getMessageFromDB(Profile profile) {
+
+        try {
+            JSONObject jMessage = modelMessageFromDB.apiGet("get_message/" + profile.getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
