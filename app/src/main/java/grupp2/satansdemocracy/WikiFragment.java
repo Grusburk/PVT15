@@ -15,14 +15,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link WikiFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link WikiFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class WikiFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -34,8 +27,6 @@ public class WikiFragment extends Fragment {
     private String mParam2;
     private ImageButton wolandButton, pilatusButton, margaritaButton, aklagarButton, docButton, summaryButton;
     private TextView charName, charInfo;
-
-    private OnFragmentInteractionListener mListener;
 
     public WikiFragment() {
         // Required empty public constructor
@@ -137,32 +128,4 @@ public class WikiFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_wiki, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
 }

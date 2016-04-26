@@ -60,10 +60,19 @@ Satans demokrati behöver bränsle, en kraft som blottar, en Woland. Allt vi ser
 TITTA GÄRNA RUNT I MENYN SÅ LÄNGE!"
    </string>
 
+    <string-array name="voteoptions">
+        <item>PONTIUS</item>
+        <item>MARGARITA</item>
+        <item>WOLAND</item>
+    </string-array>
+
     <string name="activateInfo">
         "FÖRESTÄLLNINGSLÄGET SKA DU AKTIVERA NÄR DU ÄR PÅ PLATS.
 ÄR DU SÄKER PÅ ATT DU VILL AKTIVERA FÖRESTÄLLNINGSLÄGE?"
 
    </string>
+    
+    <string name="vote_text">Woland har bjudit in till omröstning! Vem tycker du ska styra landet? Gillar du festligheter och champagne eller föredrar du envälde och byråkrati?
+        Do you want to make satans democracy great again? Do you like my hair? tell me, darling, tell me...</string>
 
 </resources>

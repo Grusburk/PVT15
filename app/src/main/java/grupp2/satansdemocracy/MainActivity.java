@@ -2,7 +2,9 @@ package grupp2.satansdemocracy;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.*;
@@ -10,6 +12,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,7 +20,6 @@ import android.os.Vibrator;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,10 +33,11 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements WikiFragment.OnFragmentInteractionListener,
-        InformationFragment.OnFragmentInteractionListener, NyheterFragment.OnFragmentInteractionListener{
+public class MainActivity extends AppCompatActivity {
 
-    private NotificationCompat.Builder notificationBuilder;
+    private Intent notificationIntent;
+    private PendingIntent pendingIntent;
+    private Notification.Builder notificationBuilder;
     private AlertDialog.Builder forestallningsDialog, ziggyDialog;
     private Button beaconButton;
     private ImageSwitcher lampSwitcher;
@@ -42,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
+    private String notificationID = "1";
     private final String TAG = MainActivity.class.getSimpleName();
     private List<String> found = new ArrayList<>();
     private List<String> used = new ArrayList<>();
@@ -79,16 +83,17 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         mDrawerList = (ListView) findViewById(R.id.navList);
         beaconButton = (Button) findViewById(R.id.beacons_button);
-        beaconButton.setText("SÄTT PÅ");
         lampSwitcher = (ImageSwitcher) findViewById(R.id.lamp_switcher);
         addDrawerItems();
         setUpDrawer();
-        notificationBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(getApplicationContext());
-        forestallningsDialog = new AlertDialog.Builder(MainActivity.this,R.style.WarningDialogTheme);
+        uiStuff();
+        notificationBuilder = (Notification.Builder) new Notification.Builder(getApplicationContext());
+        forestallningsDialog = new AlertDialog.Builder(MainActivity.this,android.R.style.Theme_Holo_Dialog_NoActionBar);
 
         /**
          * Beacon related initiation
          */
+
         final BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
         bluetoothAdapter = bluetoothManager.getAdapter();
         filterList = new ArrayList<>();
@@ -140,8 +145,8 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
     @Override
     protected void onPostCreate(final Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        uiStuff();
-        ziggyDialog = new AlertDialog.Builder(MainActivity.this, R.style.WarningDialogTheme);
+
+        ziggyDialog = new AlertDialog.Builder(MainActivity.this, android.R.style.Theme_Holo_Dialog_NoActionBar);
         mDrawerToggle.syncState();
     }
 
@@ -245,13 +250,6 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
         return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
-    /**
-     * @param uri
-     */
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-    }
-
     private void ziggyBeaconNotification () {
         Vibrator vibrator = (Vibrator) this.getSystemService(VIBRATOR_SERVICE);
         vibrator.vibrate(1000);
@@ -297,7 +295,6 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
                             ziggyBeaconNotification();
                             ziggyBeaconDialog();
                             assert used.contains(result.getDevice().getAddress());
-
                         }
                         break;
                     case jDonny:
@@ -307,7 +304,6 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
                             ziggyBeaconNotification();
                             ziggyBeaconDialog();
                             assert used.contains(result.getDevice().getAddress());
-
                         }
                         break;
                     case aDonny:
@@ -356,12 +352,9 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
                 if (!beaconMode) {
                     forestallningsDialog.setMessage(R.string.activateInfo);
                     forestallningsDialog();
-                    notificationBuilder.setSmallIcon(android.R.drawable.stat_notify_chat)
-                            .setContentTitle("Ledtråd funnen")
-                            .setContentText("Du har hittat en tidning");
-                    getNotificationBuilder ();
                 } else {
                     forestallningsDialog.setMessage("Är du säker på att du vill avbryta föreställnigsläge?");
+
                     forestallningsDialog();
                 }
             }
@@ -375,11 +368,21 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
                     lampSwitcher.setImageResource(R.drawable.lamp_on);
                     beaconButton.setText("Stäng av");
                     beaconMode = true;
+                    notificationID = "1";
+                    notificationBuilder
+                            .setContentTitle("Du har hittat en tidning.")
+                            .setContentText("Vill du läsa den?");
+                    getNotificationBuilder ();
                     //beaconHandler(isBtEnable);
                 } else {
                     lampSwitcher.setImageResource(R.drawable.lamp_off);
                     beaconButton.setText("SÄTT PÅ");
                     beaconMode = false;
+                    notificationID = "2";
+                    notificationBuilder
+                            .setContentTitle("Woland har bjudit in till omröstning!")
+                            .setContentText("Vill du delta?");
+                    getNotificationBuilder ();
                 }
             }
         });
@@ -392,7 +395,15 @@ public class MainActivity extends AppCompatActivity implements WikiFragment.OnFr
     }
 
     private void getNotificationBuilder () {
+        Vibrator vibrator = (Vibrator) this.getSystemService(VIBRATOR_SERVICE);
+        vibrator.vibrate(1000);
+        notificationIntent = new Intent(this, NotificationActivity.class);
+        notificationIntent.putExtra("key", notificationID);
+        pendingIntent = PendingIntent.getActivity(this, 0,notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        notificationBuilder.setSmallIcon(android.R.drawable.stat_notify_chat).setContentIntent(pendingIntent)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.summary_bw))
+                .setAutoCancel(true);
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.notify(1, notificationBuilder.build());
+        notificationManager.notify(0, notificationBuilder.build());
     }
 }
