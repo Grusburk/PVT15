@@ -13,48 +13,43 @@ if ($conn->connect_error) {
 
 // This is the API to possibility show the user list, and show a specific user by action.
 
-function get_user_by_id($id)
+function add_ID()
 {
-  global $conn;
-  
-  if ($stmt = $conn->prepare("SELECT * FROM Users WHERE id=? LIMIT 1")) {
-
-    /* bind parameters for markers */
-    $stmt->bind_param("s", $id);
-
-    /* execute query */
-    $stmt->execute();
-	$response = $stmt->get_result()->fetch_array(MYSQLI_ASSOC);
-	if($response)
-	  return responsify($response);
-    return errorify("Could not find user");
-  } else {
+	global $conn;
+	$data = json_decode(file_get_contents('php://input'), true);
+	if(!($data['id'])) {
+		return errorify("Missing data for ID creation: " .(!$data['id']?"id, ":'')." || DATA RECIEVED: ".file_get_contents('php://input'));		
+	}
+	if ($stmt = $conn->prepare("INSERT INTO Active_ID (id) VALUES(?) ON DUPLICATE KEY UPDATE timestamp = NOW()")){
+		$stmt->bind_param("s", $data['id']);
+		if($stmt->execute())
+			return responsify();
+		return errorify("ID already exists.");
+	} else {
 	  return errorify("Could not prepare SQL statement: ".$conn->error);
   }
 }
 
-function add_user()
+function get_IDs()
 {
-  global $conn;
-  $data = json_decode(file_get_contents('php://input'), true);
-  if(!($data['id'] && isset($data['firstName']) && isset($data['middleName']) && isset($data['lastName']) && isset($data['name']) && $data['linkUri'])) {
-	return errorify("Missing data for user creation: ".(!$data['id']?"id, ":'').(!isset($data['firstName'])?"firstName, ":'').(!isset($data['middleName'])?"middleName, ":'').(!isset($data['lastName'])?"lastName, ":'').(!isset($data['name'])?"name, ":'').(!$data['linkUri']?"linkUri, ":'')." || DATA RECIEVED: ".file_get_contents('php://input'));
-  }
-  if ($stmt = $conn->prepare("INSERT INTO Users (id, firstName, middleName, lastName, name, linkUri) VALUES (?, ?, ?, ?, ?, ?)")) {
-
-    /* bind parameters for markers */
-    $stmt->bind_param("ssssss", $data['id'],
-								$data['firstName'],
-								$data['middleName'], 
-								$data['lastName'],
-								$data['name'],
-								$data['linkUri']);
-
-    /* execute query */
-	if($stmt->execute())
-	  return responsify();
-    return errorify("User already exists.");
-  } else {
+	global $conn;
+	$data = json_decode(file_get_contents('php://input'), true);
+	$age = '00:30:00';
+	$age = isset($data['age'])?$data['age']:$age;
+	if ($stmt = $conn->prepare("SELECT id FROM Active_ID WHERE timestamp > SUBTIME(NOW(),?)")){
+		$stmt->bind_param("s", $age);
+		if($stmt->execute()) {
+			$ids = Array();
+			if($result = $stmt->get_result()) {
+				while($response = $result->fetch_array(MYSQLI_ASSOC)) {
+					array_push($ids, $response['id']);
+				}
+			}
+			return responsify($ids);
+		} else
+			return errorify("ID already exists.");
+		
+	} else {
 	  return errorify("Could not prepare SQL statement: ".$conn->error);
   }
 }
@@ -78,11 +73,12 @@ if (isset($_GET["action"]))
   $params = explode("/",$_GET["action"],2);
   switch ($params[0])
     {
-      case "get_user":
-        $value = get_user_by_id($params[1]);
+		case "add_ID":
+		$value = add_ID($params[1]);
         break;
-	  case "add_user":
-        $value = add_user($params[1]);
+		
+		case "get_IDs":
+		$value = get_IDs($params[1]);
         break;
     }
 }
