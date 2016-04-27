@@ -48,10 +48,4 @@ public class MessageModel {
         Response response = client.newCall(request).execute();
         return new JSONObject(response.body().string());
     }
-
-    JSONObject apiDelete(String url) throws IOException, JSONException {
-        Request request = new Request.Builder().url(baseUrl + url).delete().build();
-        Response response = client.newCall(request).execute();
-        return new JSONObject(response.body().string());
-    }
 }
