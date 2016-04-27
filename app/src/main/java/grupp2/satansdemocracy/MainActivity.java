@@ -250,35 +250,6 @@ public class MainActivity extends AppCompatActivity {
         return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
-    private void ziggyBeaconNotification () {
-        Vibrator vibrator = (Vibrator) this.getSystemService(VIBRATOR_SERVICE);
-        vibrator.vibrate(1000);
-        notificationBuilder.setSmallIcon(android.R.drawable.stat_notify_chat)
-                .setContentTitle("Du har gått in i dödsrummet")
-                .setContentText("Du hittar en tidning. Wanna read?");
-        getNotificationBuilder ();
-    }
-
-    public void ziggyBeaconDialog() {
-        Vibrator vibrator = (Vibrator) this.getSystemService(VIBRATOR_SERVICE);
-        vibrator.vibrate(1000);
-        ziggyDialog.setMessage("Du har gått in i dödsrummet. Du hittar en tidning. Wanna read?");
-        ziggyDialog.setPositiveButton("JA", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // TODO: Visa bilden
-            }
-        });
-        ziggyDialog.setNegativeButton("NEJ", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                return;
-            }
-        });
-        ziggyDialog.show();
-        used.add(jZiggy);
-    }
-
     public void beaconHandler(boolean b) {
 
         final BluetoothLeScanner bluetoothLeScanner = bluetoothAdapter.getBluetoothLeScanner();
@@ -292,26 +263,31 @@ public class MainActivity extends AppCompatActivity {
                 switch (result.getDevice().getAddress()) {
                     case jZiggy:
                         if(!used.contains(jZiggy)) {
-                            ziggyBeaconNotification();
-                            ziggyBeaconDialog();
+                            notificationID = "2";
+                            notificationBuilder
+                                    .setContentTitle("Woland har bjudit in till omröstning!")
+                                    .setContentText("Vill du delta?");
+                            getNotificationBuilder ();
+                            used.add(jZiggy);
                             assert used.contains(result.getDevice().getAddress());
                         }
                         break;
                     case jDonny:
+                        if(!used.contains(aZiggy)) {
+                            used.add(jZiggy);
+                            assert used.contains(result.getDevice().getAddress());
+                        }
                         break;
                     case aZiggy:
                         if(!used.contains(aZiggy)) {
-                            ziggyBeaconNotification();
-                            ziggyBeaconDialog();
+                            used.add(jZiggy);
                             assert used.contains(result.getDevice().getAddress());
                         }
                         break;
                     case aDonny:
                         if(!used.contains(aDonny)) {
-                            ziggyBeaconNotification();
-                            ziggyBeaconDialog();
+                            used.add(jZiggy);
                             assert used.contains(result.getDevice().getAddress());
-
                         }
                         break;
                     default:
@@ -368,12 +344,7 @@ public class MainActivity extends AppCompatActivity {
                     lampSwitcher.setImageResource(R.drawable.lamp_on);
                     beaconButton.setText("Stäng av");
                     beaconMode = true;
-                    notificationID = "1";
-                    notificationBuilder
-                            .setContentTitle("Du har hittat en tidning.")
-                            .setContentText("Vill du läsa den?");
-                    getNotificationBuilder ();
-                    //beaconHandler(isBtEnable);
+                    beaconHandler(isBtEnable);
                 } else {
                     lampSwitcher.setImageResource(R.drawable.lamp_off);
                     beaconButton.setText("SÄTT PÅ");
@@ -395,14 +366,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getNotificationBuilder () {
-        Vibrator vibrator = (Vibrator) this.getSystemService(VIBRATOR_SERVICE);
-        vibrator.vibrate(1000);
         notificationIntent = new Intent(this, NotificationActivity.class);
         notificationIntent.putExtra("key", notificationID);
         pendingIntent = PendingIntent.getActivity(this, 0,notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         notificationBuilder.setSmallIcon(android.R.drawable.stat_notify_chat).setContentIntent(pendingIntent)
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.summary_bw))
-                .setAutoCancel(true);
+                .setAutoCancel(true).setPriority(Notification.PRIORITY_MAX).setDefaults(Notification.DEFAULT_VIBRATE);
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.notify(0, notificationBuilder.build());
     }

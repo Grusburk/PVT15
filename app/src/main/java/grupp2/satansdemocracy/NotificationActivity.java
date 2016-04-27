@@ -13,7 +13,7 @@ import android.widget.FrameLayout;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class NotificationActivity extends AppCompatActivity {
-
+    private String snackBarText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,29 +26,30 @@ public class NotificationActivity extends AppCompatActivity {
         voteFrame.setVisibility(View.INVISIBLE);
         newspaperFrame.setVisibility(View.INVISIBLE);
 
-        Bundle test = getIntent().getExtras();
-        if (test != null) {
-            if (test.getString("key").equals("1")){
+        Bundle intentPerformer = getIntent().getExtras();
+        if (intentPerformer != null) {
+            if (intentPerformer.getString("key").equals("1")){
                 newspaperFrame.setVisibility(View.VISIBLE);
-            }else if (test.get("key").equals("2")){
+            }else if (intentPerformer.get("key").equals("2")){
                 voteFrame.setVisibility(View.VISIBLE);
                 if (voteButton != null) {
                     voteButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            finish();
+                            snackBarText = "Din röst är registrerad";
+                            getSnackBar();
                         }
                     });
                 }
 //                setVoteDialog();
 
-            }else if (test.equals("3")){
+            }else if (intentPerformer.equals("3")){
 
-            }else if (test.equals("4")){
+            }else if (intentPerformer.equals("4")){
 
-            }else if (test.equals("5")){
+            }else if (intentPerformer.equals("5")){
 
-            }else if (test.equals("6")){
+            }else if (intentPerformer.equals("6")){
 
             }
         }
@@ -59,26 +60,44 @@ public class NotificationActivity extends AppCompatActivity {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
-    private void setVoteDialog () {
-        final AlertDialog.Builder voteDialog = new AlertDialog.Builder(NotificationActivity.this,android.R.style.Theme_Holo_Dialog_NoActionBar);
-        CharSequence[] array = getResources().getStringArray(R.array.voteoptions);
+
+
+    private void getSnackBar () {
         final View parentLayout = findViewById(R.id.notificationFrame);
-        voteDialog.setTitle("Vem tycker du skulle bli bäst stadsminisiter");
-        voteDialog.setSingleChoiceItems(array, -1, new DialogInterface.OnClickListener() {
+        Snackbar.make(parentLayout, snackBarText, Snackbar.LENGTH_SHORT).setCallback(new Snackbar.Callback() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                Snackbar.make(parentLayout, "Din röst är registrerad", Snackbar.LENGTH_SHORT).setCallback(new Snackbar.Callback() {
-                    @Override
-                    public void onDismissed(Snackbar snackbar, int event) {
-                        super.onDismissed(snackbar, event);
-                        if (event == DISMISS_EVENT_TIMEOUT){
-                            finish();
-                        }
-                    }
-                }).show();
+            public void onDismissed(Snackbar snackbar, int event) {
+                super.onDismissed(snackbar, event);
+                if (event == DISMISS_EVENT_TIMEOUT){
+                    finish();
+                }
             }
-        });
-        voteDialog.show();
+        }).show();
     }
+
+
+    //    private void setVoteDialog () {
+//        final AlertDialog.Builder voteDialog = new AlertDialog.Builder(NotificationActivity.this,android.R.style.Theme_Holo_Dialog_NoActionBar);
+//        CharSequence[] array = getResources().getStringArray(R.array.voteoptions);
+//        final View parentLayout = findViewById(R.id.notificationFrame);
+//        voteDialog.setTitle("Vem tycker du skulle bli bäst stadsminisiter");
+//        voteDialog.setSingleChoiceItems(array, -1, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                dialog.dismiss();
+//                Snackbar.make(parentLayout, "Din röst är registrerad", Snackbar.LENGTH_SHORT).setCallback(new Snackbar.Callback() {
+//                    @Override
+//                    public void onDismissed(Snackbar snackbar, int event) {
+//                        super.onDismissed(snackbar, event);
+//                        if (event == DISMISS_EVENT_TIMEOUT){
+//                            finish();
+//                        }
+//                    }
+//                }).show();
+//            }
+//        });
+//        voteDialog.show();
+//    }
+
+
 }
