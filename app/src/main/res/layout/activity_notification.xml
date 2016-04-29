@@ -5,6 +5,7 @@
     android:id="@+id/notificationFrame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/notification_bg"
     tools:context="grupp2.satansdemocracy.NotificationActivity">
 
     <FrameLayout
@@ -115,6 +116,9 @@
                 android:layout_alignParentBottom="true"
                 android:layout_margin="15dp"/>
         </RelativeLayout>
+
+
+
     </FrameLayout>
 
     <FrameLayout

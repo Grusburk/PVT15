@@ -29,17 +29,17 @@ import android.widget.*;
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
 import com.facebook.login.LoginManager;
+import org.w3c.dom.Text;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-
+    private TextView infoText;
     private Intent notificationIntent;
     private PendingIntent pendingIntent;
     private Notification.Builder notificationBuilder;
-    private AlertDialog.Builder forestallningsDialog, ziggyDialog;
+    private AlertDialog.Builder forestallningsDialog;
     private Button beaconButton;
     private ImageSwitcher lampSwitcher;
     private boolean beaconMode;
@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
     private String notificationID = "1";
+    private String notificationTitle, notificationText;
     private final String TAG = MainActivity.class.getSimpleName();
     private List<String> found = new ArrayList<>();
     private List<String> used = new ArrayList<>();
@@ -84,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+        infoText = (TextView) findViewById(R.id.show_info);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         mDrawerList = (ListView) findViewById(R.id.navList);
         beaconButton = (Button) findViewById(R.id.beacons_button);
@@ -91,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
         addDrawerItems();
         setUpDrawer();
         uiStuff();
+        mDrawerToggle.syncState();
         notificationBuilder = (Notification.Builder) new Notification.Builder(getApplicationContext());
         forestallningsDialog = new AlertDialog.Builder(MainActivity.this,android.R.style.Theme_Holo_Dialog_NoActionBar);
 
@@ -126,7 +129,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     /**
      * Called for marshmallow access for permissions
      */
@@ -136,48 +138,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    /**
-     * Called upon finishing the application or shutting down.
-     */
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-    }
-
-    /**
-     * Called upon completion of onCreate().
-     * Syncs the navigation drawer.
-     *
-     * @param savedInstanceState
-     */
-    @Override
-    protected void onPostCreate(final Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-
-        ziggyDialog = new AlertDialog.Builder(MainActivity.this, android.R.style.Theme_Holo_Dialog_NoActionBar);
-        mDrawerToggle.syncState();
-    }
-
-    /**
-     * Called when the application is opened again after being paused
-     */
-    @Override
-    protected void onResume() {
-        // till för framtiden kanske
-        super.onResume();
-    }
-
-    /**
-     * Called when the application is inactive (minimized).
-     */
-    @Override
-    protected void onPause() {
-        super.onPause();
     }
 
     /**
@@ -203,18 +166,30 @@ public class MainActivity extends AppCompatActivity {
                                 .replace(R.id.main_frame, new NyheterFragment())
                                 .addToBackStack(null).commit();
                         mDrawerLayout.closeDrawers();
+                        notificationID = "4";
+                        notificationTitle = "SATANS DEMOKRATI - HÄNDELSE";
+                        notificationText = "ÖPPNA FÖR ATT DELTA";
+                        getNotificationBuilder ();
                         break;
                     case 2:
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.main_frame, new InformationFragment())
                                 .addToBackStack(null).commit();
                         mDrawerLayout.closeDrawers();
+                        notificationID = "5";
+                        notificationTitle = "SATANS DEMOKRATI - HÄNDELSE";
+                        notificationText = "ÖPPNA FÖR ATT DELTA";
+                        getNotificationBuilder ();
                         break;
                     case 3:
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.main_frame, new WikiFragment())
                                 .addToBackStack(null).commit();
                         mDrawerLayout.closeDrawers();
+                        notificationID = "3";
+                        notificationTitle = "SATANS DEMOKRATI - HÄNDELSE";
+                        notificationText = "ÖPPNA FÖR ATT DELTA";
+                        getNotificationBuilder ();
                         break;
                     case 4:
                         LoginManager.getInstance().logOut();
@@ -278,9 +253,8 @@ public class MainActivity extends AppCompatActivity {
                         if(!used.contains(jZiggy)) {
                             dbHandler.postIDToMessageDB(profileID);
                             notificationID = "2";
-                            notificationBuilder
-                                    .setContentTitle("Woland har bjudit in till omröstning!")
-                                    .setContentText("Vill du delta?");
+                            notificationTitle = "Woland har bjudit in till omröstning!";
+                            notificationText = "Vill du delta?";
                             getNotificationBuilder ();
                             used.add(jZiggy);
                             assert used.contains(result.getDevice().getAddress());
@@ -347,7 +321,6 @@ public class MainActivity extends AppCompatActivity {
                     forestallningsDialog();
                 } else {
                     forestallningsDialog.setMessage("Är du säker på att du vill avbryta föreställnigsläge?");
-
                     forestallningsDialog();
                 }
             }
@@ -359,19 +332,24 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int id) {
                 if (!beaconMode) {
                     lampSwitcher.setImageResource(R.drawable.lamp_on);
-                    beaconButton.setText("Stäng av");
+                    beaconButton.setText("STÄNG AV FÖRESTÄLLNINGSLÄGE");
+                    infoText.setText(R.string.showinfooff);
                     beaconMode = true;
+                    notificationID = "1";
+                    notificationTitle = "Woland har bjudit in till omröstning!";
+                    notificationText = "Vill du delta?";
+                    getNotificationBuilder ();
                     //messageHandler.lookForMessage();
                     //messageHandler.longTimer();
-                    beaconHandler();
+//                    beaconHandler();
                 } else {
                     lampSwitcher.setImageResource(R.drawable.lamp_off);
-                    beaconButton.setText("SÄTT PÅ");
+                    beaconButton.setText("AKTIVERA FÖRESTÄLLNINGSLÄGE");
+                    infoText.setText(R.string.showinfoon);
                     beaconMode = false;
                     notificationID = "2";
-                    notificationBuilder
-                            .setContentTitle("Woland har bjudit in till omröstning!")
-                            .setContentText("Vill du delta?");
+                    notificationTitle = "Woland känner att något är fel";
+                    notificationText = "Man kanske skulle göra sig av med någon?";
                     getNotificationBuilder ();
                     //messageHandler.stopSearch();
                 }
@@ -391,7 +369,8 @@ public class MainActivity extends AppCompatActivity {
         pendingIntent = PendingIntent.getActivity(this, 0,notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         notificationBuilder.setSmallIcon(android.R.drawable.stat_notify_chat).setContentIntent(pendingIntent)
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.summary_bw))
-                .setAutoCancel(true).setPriority(Notification.PRIORITY_MAX).setDefaults(Notification.DEFAULT_VIBRATE);
+                .setAutoCancel(true).setPriority(Notification.PRIORITY_MAX).setDefaults(Notification.DEFAULT_VIBRATE)
+                .setContentTitle(notificationTitle).setContentText(notificationText);
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.notify(0, notificationBuilder.build());
     }

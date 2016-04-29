@@ -22,7 +22,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="wikititle">WIKI</string>
     <string name="charinfo">TRYCK PÅ EN AV BILDERNA NEDAN FÖR ATT LÄRA DIG MER</string>
-    <string name="showinfo">SÄTT IGÅNG FÖRESTÄLLNINGSLÄGE FÖR EN BÄTTRE UPPLEVELSE</string>
+    <string name="showinfoon">FÖRESTÄLLNINGSLÄGE ANVÄNDS PÅ PLATS FÖR EN BÄTTRE UPPLEVELSE. BLUETOOTH MÅSTE VARA TILLGÄNGLIGT.</string>
+    <string name="showinfooff">FÖRESTÄLLNINGSLÄGET ÄR NU IGÅNG. DET SKALL BARA VARA AKTIVERAT NÄR DU ÄR PÅ PLATS.</string>
 
     <string name="wolandinfo">
         Den färgstarka gnistan i samhället. Woland är satan, en revolutionär som vänder upp och ned på samhället och skapar tumult med hennes befriande närvaro. En varg i fårakläder, eller?
@@ -71,8 +72,10 @@ TITTA GÄRNA RUNT I MENYN SÅ LÄNGE!"
 ÄR DU SÄKER PÅ ATT DU VILL AKTIVERA FÖRESTÄLLNINGSLÄGE?"
 
    </string>
-    
     <string name="vote_text">Woland har bjudit in till omröstning! Vem tycker du ska styra landet? Gillar du festligheter och champagne eller föredrar du envälde och byråkrati?
         Do you want to make satans democracy great again? Do you like my hair? tell me, darling, tell me...</string>
+    <string name="vote_text2">Oh, I do love having you all here, but some people just...don’t belong. I don’t know about you, nor do I care, but I think we should thin out the herd and get rid of some lame people!
+
+Vem tycker du ska bannlysas?</string>
 
 </resources>

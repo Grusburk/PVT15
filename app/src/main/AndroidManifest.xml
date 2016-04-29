@@ -48,7 +48,8 @@
 
         </activity>
 
-        <activity android:name=".NotificationActivity"
+        <activity
+            android:name=".NotificationActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>

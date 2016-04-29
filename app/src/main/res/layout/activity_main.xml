@@ -48,7 +48,7 @@
                     android:id="@+id/beacons_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="SÄTT PÅ"
+                    android:text="AKTIVERA FÖRESTÄLLNINGSLÄGE"
                     android:layout_centerHorizontal="true"
                     />
                 <!-- TODO: Update blank fragment layout -->
@@ -63,7 +63,7 @@
                         android:id="@+id/show_info"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="@string/showinfo"
+                        android:text="@string/showinfoon"
                         android:textColor="@color/colorAccent"
                         android:textSize="20sp" />
                 </FrameLayout>
