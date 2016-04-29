@@ -27,6 +27,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.*;
 import com.facebook.FacebookSdk;
+import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -65,6 +66,9 @@ public class MainActivity extends AppCompatActivity {
     private ScanSettings scanSettings = new ScanSettings.Builder()
             .setScanMode(ScanSettings.SCAN_MODE_LOW_POWER)
             .build();
+    private DBHandler dbHandler = new DBHandler();
+    private MessageHandler messageHandler;
+    private String profileID;
 
     /**
      * Sets up an instance oc the mainActivity class upon first creation.
@@ -101,6 +105,15 @@ public class MainActivity extends AppCompatActivity {
         filterList.add(jDonnyFilter);
         filterList.add(aZiggyFilter);
         filterList.add(aDonnyFilter);
+
+        /**
+         * Get profile ID from LoginActivity
+         */
+        Bundle extras = getIntent().getExtras();
+        if(extras != null) {
+            profileID = extras.getString("id");
+        }
+        messageHandler = new MessageHandler(profileID);
 
         /**
          * Request access for Beacon Searching
@@ -250,7 +263,7 @@ public class MainActivity extends AppCompatActivity {
         return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
-    public void beaconHandler(boolean b) {
+    public void beaconHandler() {
 
         final BluetoothLeScanner bluetoothLeScanner = bluetoothAdapter.getBluetoothLeScanner();
         this.scanCallback = new ScanCallback() {
@@ -263,6 +276,7 @@ public class MainActivity extends AppCompatActivity {
                 switch (result.getDevice().getAddress()) {
                     case jZiggy:
                         if(!used.contains(jZiggy)) {
+                            dbHandler.postIDToMessageDB(profileID);
                             notificationID = "2";
                             notificationBuilder
                                     .setContentTitle("Woland har bjudit in till omröstning!")
@@ -274,18 +288,21 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case jDonny:
                         if(!used.contains(aZiggy)) {
+                            dbHandler.postIDToMessageDB(profileID);
                             used.add(jZiggy);
                             assert used.contains(result.getDevice().getAddress());
                         }
                         break;
                     case aZiggy:
                         if(!used.contains(aZiggy)) {
+                            dbHandler.postIDToMessageDB(profileID);
                             used.add(jZiggy);
                             assert used.contains(result.getDevice().getAddress());
                         }
                         break;
                     case aDonny:
                         if(!used.contains(aDonny)) {
+                            dbHandler.postIDToMessageDB(profileID);
                             used.add(jZiggy);
                             assert used.contains(result.getDevice().getAddress());
                         }
@@ -344,7 +361,9 @@ public class MainActivity extends AppCompatActivity {
                     lampSwitcher.setImageResource(R.drawable.lamp_on);
                     beaconButton.setText("Stäng av");
                     beaconMode = true;
-                    beaconHandler(isBtEnable);
+                    //messageHandler.lookForMessage();
+                    //messageHandler.longTimer();
+                    beaconHandler();
                 } else {
                     lampSwitcher.setImageResource(R.drawable.lamp_off);
                     beaconButton.setText("SÄTT PÅ");
@@ -354,6 +373,7 @@ public class MainActivity extends AppCompatActivity {
                             .setContentTitle("Woland har bjudit in till omröstning!")
                             .setContentText("Vill du delta?");
                     getNotificationBuilder ();
+                    //messageHandler.stopSearch();
                 }
             }
         });

@@ -2,6 +2,7 @@ package grupp2.satansdemocracy;
 
 import android.util.Log;
 import com.facebook.Profile;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -10,8 +11,12 @@ import org.json.JSONObject;
 public class DBHandler {
 
 
-    /** calls for ApiMessageClass "MessageModel" **/
+    /**
+     * calls for ApiMessageClass "MessageModel"
+     **/
     private MessageModel model = new MessageModel("https://people.dsv.su.se/~anth3046/SatansDemokrati/api/v1/");
+    private MessageModel modelId = new MessageModel("https://people.dsv.su.se/~anth3046/SatansDemokrati/api/v2/");
+    private MessageModel modelMessage = new MessageModel("https://people.dsv.su.se/~joso8829/Satansdemokrati/api/v1/");
 
 
     public DBHandler() {
@@ -53,12 +58,41 @@ public class DBHandler {
         /**
          * Call the API(MessageModel) with the JSonUserData.
          */
-       try {
-           JSONObject response = model.apiPost("add_user/", new JSONObject(userJson));
-           Log.d("LoginActivity", String.valueOf(response));
-       } catch (Exception e){
-           e.printStackTrace();
-       }
+        try {
+            JSONObject response = model.apiPost("add_user/", new JSONObject(userJson));
+            Log.d("LoginActivity", String.valueOf(response));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void postIDToMessageDB(String id) {
+
+        String userJson = "{'id':\"" + id + "\"}";
+
+        try {
+            JSONObject response = modelId.apiPost("add_id/", new JSONObject(userJson));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public JSONObject getMessageFromDB(String id, String UUID) {
+        JSONObject jMessage = null;
+        try {
+            jMessage = modelMessage.apiGet("get_message/" + id + "+" + UUID);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return jMessage;
+    }
+
+    public void getMessageID(String id) {
+        try {
+            JSONObject messageUID = modelMessage.apiGet("get_ids/" + id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
