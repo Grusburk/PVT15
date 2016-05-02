@@ -166,30 +166,30 @@ public class MainActivity extends AppCompatActivity {
                                 .replace(R.id.main_frame, new NyheterFragment())
                                 .addToBackStack(null).commit();
                         mDrawerLayout.closeDrawers();
-                        notificationID = "4";
-                        notificationTitle = "SATANS DEMOKRATI - HÄNDELSE";
-                        notificationText = "ÖPPNA FÖR ATT DELTA";
-                        getNotificationBuilder ();
+//                        notificationID = "6";
+//                        notificationTitle = "SATANS DEMOKRATI - FÖREMÅL HITTAT";
+//                        notificationText = "VILL DU SE?";
+//                        getNotificationBuilder ();
                         break;
                     case 2:
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.main_frame, new InformationFragment())
                                 .addToBackStack(null).commit();
                         mDrawerLayout.closeDrawers();
-                        notificationID = "5";
-                        notificationTitle = "SATANS DEMOKRATI - HÄNDELSE";
-                        notificationText = "ÖPPNA FÖR ATT DELTA";
-                        getNotificationBuilder ();
+//                        notificationID = "5";
+//                        notificationTitle = "SATANS DEMOKRATI - HÄNDELSE";
+//                        notificationText = "ÖPPNA FÖR ATT DELTA";
+//                        getNotificationBuilder ();
                         break;
                     case 3:
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.main_frame, new WikiFragment())
                                 .addToBackStack(null).commit();
                         mDrawerLayout.closeDrawers();
-                        notificationID = "3";
-                        notificationTitle = "SATANS DEMOKRATI - HÄNDELSE";
-                        notificationText = "ÖPPNA FÖR ATT DELTA";
-                        getNotificationBuilder ();
+//                        notificationID = "3";
+//                        notificationTitle = "SATANS DEMOKRATI - HÄNDELSE";
+//                        notificationText = "ÖPPNA FÖR ATT DELTA";
+//                        getNotificationBuilder ();
                         break;
                     case 4:
                         LoginManager.getInstance().logOut();
@@ -261,15 +261,20 @@ public class MainActivity extends AppCompatActivity {
                         }
                         break;
                     case jDonny:
-                        if(!used.contains(aZiggy)) {
+                        if(!used.contains(jDonny)) {
                             dbHandler.postIDToMessageDB(profileID);
-                            used.add(jZiggy);
+                        notificationID = "4";
+                        notificationTitle = "SATANS DEMOKRATI - HÄNDELSE";
+                        notificationText = "ÖPPNA FÖR ATT DELTA";
+                        getNotificationBuilder ();
+                            used.add(jDonny);
                             assert used.contains(result.getDevice().getAddress());
                         }
                         break;
                     case aZiggy:
                         if(!used.contains(aZiggy)) {
                             dbHandler.postIDToMessageDB(profileID);
+
                             used.add(jZiggy);
                             assert used.contains(result.getDevice().getAddress());
                         }
@@ -277,6 +282,7 @@ public class MainActivity extends AppCompatActivity {
                     case aDonny:
                         if(!used.contains(aDonny)) {
                             dbHandler.postIDToMessageDB(profileID);
+
                             used.add(jZiggy);
                             assert used.contains(result.getDevice().getAddress());
                         }
@@ -335,22 +341,22 @@ public class MainActivity extends AppCompatActivity {
                     beaconButton.setText("STÄNG AV FÖRESTÄLLNINGSLÄGE");
                     infoText.setText(R.string.showinfooff);
                     beaconMode = true;
-                    notificationID = "1";
-                    notificationTitle = "Woland har bjudit in till omröstning!";
-                    notificationText = "Vill du delta?";
-                    getNotificationBuilder ();
+//                    notificationID = "1";
+//                    notificationTitle = "Woland har bjudit in till omröstning!";
+//                    notificationText = "Vill du delta?";
+//                    getNotificationBuilder ();
                     //messageHandler.lookForMessage();
                     //messageHandler.longTimer();
-//                    beaconHandler();
+                    beaconHandler();
                 } else {
                     lampSwitcher.setImageResource(R.drawable.lamp_off);
                     beaconButton.setText("AKTIVERA FÖRESTÄLLNINGSLÄGE");
                     infoText.setText(R.string.showinfoon);
                     beaconMode = false;
-                    notificationID = "2";
-                    notificationTitle = "Woland känner att något är fel";
-                    notificationText = "Man kanske skulle göra sig av med någon?";
-                    getNotificationBuilder ();
+//                    notificationID = "2";
+//                    notificationTitle = "Woland känner att något är fel";
+//                    notificationText = "Man kanske skulle göra sig av med någon?";
+//                    getNotificationBuilder ();
                     //messageHandler.stopSearch();
                 }
             }
