@@ -9,13 +9,14 @@
         android:id="@+id/kalender_frame"
         android:layout_width="match_parent"
         android:layout_height="350dp"
-        android:background="@color/colorPrimary">
+        >
 
         <TextView
+            android:id="@+id/kalender_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Här ska kalenderna vara!"
-            android:textSize="40sp"
+            android:text="@string/infotext"
+            android:textSize="20sp"
             android:textColor="@color/colorAccent"
             />
 
