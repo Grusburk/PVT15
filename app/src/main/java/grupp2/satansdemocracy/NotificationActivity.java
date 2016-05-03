@@ -38,7 +38,7 @@ public class NotificationActivity extends AppCompatActivity {
         if (intentPerformer != null) {
 
             /**
-            *Omröstningar
+             * Omröstningar
              */
 
             if (intentPerformer.getString("key").equals("1")){

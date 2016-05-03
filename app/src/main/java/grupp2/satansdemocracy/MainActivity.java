@@ -114,14 +114,13 @@ public class MainActivity extends AppCompatActivity {
          */
         Bundle extras = getIntent().getExtras();
         if(extras != null) {
-            profileID = extras.getString("id");
+            profileID = extras.getString("facebookID");
         }
         messageHandler = new MessageHandler(profileID);
 
         /**
          * Request access for Beacon Searching
          */
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_COARSE_LOCATION);
