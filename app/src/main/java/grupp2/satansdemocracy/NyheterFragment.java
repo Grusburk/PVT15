@@ -8,6 +8,9 @@ import android.os.StrictMode;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,24 +37,17 @@ public class NyheterFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private List<Tweet> tweetList = new ArrayList<>();
+    private RecyclerView recyclerView;
+    private Tweetadapter mAdapter;
     private ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
     private ListView twitterView;
-    private TextView username, message, testView;
     private final String TAG = MainActivity.class.getSimpleName();
 
     public NyheterFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment NyheterFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static NyheterFragment newInstance(String param1, String param2) {
         NyheterFragment fragment = new NyheterFragment();
         Bundle args = new Bundle();
@@ -64,19 +60,10 @@ public class NyheterFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-
-
-
-
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
-
     }
 
     @Override
@@ -89,16 +76,20 @@ public class NyheterFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        mAdapter = new Tweetadapter(tweetList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(mAdapter);
+        preprareTweetData();
+    }
 
-//        twitterView = (ListView) getView().findViewById(R.id.twitter_view);
-        username = (TextView) getView().findViewById(R.id.text1);
-        message = (TextView) getView().findViewById(R.id.text2);
-        testView = new TextView(getContext());
-        testView.setTextColor(Color.CYAN);
+    /**
+     * Set up for the authentication with twitter
+     */
 
-        /**
-         * Set up for the authentication with twitter
-         */
+    private void preprareTweetData () {
         configurationBuilder.setDebugEnabled(true)
                 .setOAuthConsumerKey("GDG916Hf5d7RfYH1DdoLSvRjI")
                 .setOAuthConsumerSecret("kdK7efW38xOMURyDtlqHoZzFVV2Z8v2j0rQzj9lRMWuAeXsEHW")
@@ -107,24 +98,23 @@ public class NyheterFragment extends Fragment {
         TwitterFactory twitterFactory = new TwitterFactory(configurationBuilder.build());
         Twitter twitter = twitterFactory.getInstance();
         try {
-            Query query = new Query("satansdemokrati");
-            query.setCount(100);
+            Query query = new Query("svpol");
             query.setSince("2014-05-25");
+            query.setCount(500);
             QueryResult result;
             result = twitter.search(query);
             List<Status> users = result.getTweets();
-            System.out.println(users);
+            System.out.println(query.getSince() + " " + query.getCount());
+//            System.out.println(users);
             for (Status tweet : users) {
-//                twitterView.addHeaderView(testView);
-//                twitterView.addFooterView(testView);
-                username.setText(tweet.getUser().getName());
-//                testView.setTextSize(25);
-                message.setText(tweet.getText());
+                Tweet tweetData = new Tweet(tweet.getUser().getName(), tweet.getText());
+                tweetList.add(tweetData);
+                mAdapter.notifyDataSetChanged();
             }
-
         } catch (TwitterException te) {
             te.printStackTrace();
         }
+
 
     }
 }
