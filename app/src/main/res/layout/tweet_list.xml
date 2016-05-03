@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusable="true"
@@ -11,31 +12,53 @@
     android:background="?android:attr/selectableItemBackground"
     android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/userpicture"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:background="@drawable/aklagaren"
-        />
+    <!--<ImageView-->
+        <!--android:id="@+id/userpicture"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:background="@drawable/aklagaren"-->
+        <!--/>-->
 
     <TextView
-        android:layout_toRightOf="@+id/userpicture"
+        android:layout_below="@+id/divider_frame2"
         android:id="@+id/username"
         android:textColor="@color/colorAccent"
-        android:textSize="16dp"
+        android:textAlignment="center"
+        android:textSize="20dp"
         android:textStyle="bold"
-        android:text="2wdfwefwef"
-        android:layout_alignParentTop="true"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/usermessage"
-        android:layout_toRightOf="@+id/userpicture"
+        android:textAlignment="center"
         android:layout_below="@id/username"
+        android:textColor="@color/colorAccent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+    <FrameLayout
+        android:layout_below="@+id/usermessage"
+        android:id="@+id/divider_frame1"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginBottom="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@color/colorAccent"/>
+
+    <FrameLayout
+        android:layout_alignParentTop="true"
+        android:id="@+id/divider_frame2"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginBottom="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@color/colorAccent"/>
 
 
 </RelativeLayout>
