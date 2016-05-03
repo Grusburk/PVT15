@@ -1,11 +1,7 @@
 package grupp2.satansdemocracy;
 
-import android.content.Context;
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -15,14 +11,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import twitter4j.*;
 import twitter4j.conf.ConfigurationBuilder;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +27,6 @@ public class NyheterFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
     private List<Tweet> tweetList = new ArrayList<>();
     private RecyclerView recyclerView;
     private Tweetadapter mAdapter;
@@ -82,30 +72,33 @@ public class NyheterFragment extends Fragment {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
-        preprareTweetData();
+        prepareTweetData();
     }
 
     /**
      * Set up for the authentication with twitter
      */
-
-    private void preprareTweetData () {
-        configurationBuilder.setDebugEnabled(true)
+    private void prepareTweetData() {
+        configurationBuilder.setPrettyDebugEnabled(true)
                 .setOAuthConsumerKey("GDG916Hf5d7RfYH1DdoLSvRjI")
                 .setOAuthConsumerSecret("kdK7efW38xOMURyDtlqHoZzFVV2Z8v2j0rQzj9lRMWuAeXsEHW")
                 .setOAuthAccessToken("1014739988-RKSvYmCAanERT98Wz0iKf5oCcZ9xQ0169YcegKJ")
                 .setOAuthAccessTokenSecret("nSrkfuYXMA2Cyk0dCH4tzgoyDmK46EMI5baWxDYNyU402");
         TwitterFactory twitterFactory = new TwitterFactory(configurationBuilder.build());
         Twitter twitter = twitterFactory.getInstance();
+        Query query = new Query("#obama");
+
+        query.setResultType(Query.ResultType.recent);
+        query.setCount(80);
+        query.setSince("2015-01-01");
         try {
-            Query query = new Query("svpol");
-            query.setSince("2014-05-25");
-            query.setCount(500);
-            QueryResult result;
-            result = twitter.search(query);
+            QueryResult result = twitter.search(query);
+            Log.i("TAG", "Size: " + result.getCount());
+            Log.i("TAG", "Limit: " + result.getTweets().size());
             List<Status> users = result.getTweets();
+            System.out.println(users.size());
             System.out.println(query.getSince() + " " + query.getCount());
-//            System.out.println(users);
+            System.out.println(users);
             for (Status tweet : users) {
                 Tweet tweetData = new Tweet(tweet.getUser().getName(), tweet.getText());
                 tweetList.add(tweetData);
@@ -114,7 +107,5 @@ public class NyheterFragment extends Fragment {
         } catch (TwitterException te) {
             te.printStackTrace();
         }
-
-
     }
 }

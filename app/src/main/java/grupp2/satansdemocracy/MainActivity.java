@@ -21,6 +21,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
@@ -34,7 +35,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MessageListener{
     private TextView infoText;
     private Intent notificationIntent;
     private PendingIntent pendingIntent;
@@ -50,7 +51,8 @@ public class MainActivity extends AppCompatActivity {
     private String notificationTitle, notificationText;
     private final String TAG = MainActivity.class.getSimpleName();
     private List<String> found = new ArrayList<>();
-    private List<String> used = new ArrayList<>();
+    private List<String> usedBeacon = new ArrayList<>();
+    private List<String> receivedNotification = new ArrayList<>();
     private BluetoothAdapter bluetoothAdapter;
     private boolean isBtEnable = false;
     private final String jZiggy = "CC:69:C6:5B:13:D7";
@@ -70,6 +72,8 @@ public class MainActivity extends AppCompatActivity {
     private DBHandler dbHandler = new DBHandler();
     private MessageHandler messageHandler;
     private String profileID;
+    private BluetoothLeScanner bluetoothLeScanner;
+
 
     /**
      * Sets up an instance oc the mainActivity class upon first creation.
@@ -117,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
             profileID = extras.getString("facebookID");
         }
         messageHandler = new MessageHandler(profileID);
+        messageHandler.setListnener(this);
 
         /**
          * Request access for Beacon Searching
@@ -165,30 +170,18 @@ public class MainActivity extends AppCompatActivity {
                                 .replace(R.id.main_frame, new NyheterFragment())
                                 .addToBackStack(null).commit();
                         mDrawerLayout.closeDrawers();
-//                        notificationID = "6";
-//                        notificationTitle = "SATANS DEMOKRATI - FÖREMÅL HITTAT";
-//                        notificationText = "VILL DU SE?";
-//                        getNotificationBuilder ();
                         break;
                     case 2:
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.main_frame, new InformationFragment())
                                 .addToBackStack(null).commit();
                         mDrawerLayout.closeDrawers();
-//                        notificationID = "5";
-//                        notificationTitle = "SATANS DEMOKRATI - HÄNDELSE";
-//                        notificationText = "ÖPPNA FÖR ATT DELTA";
-//                        getNotificationBuilder ();
                         break;
                     case 3:
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.main_frame, new WikiFragment())
                                 .addToBackStack(null).commit();
                         mDrawerLayout.closeDrawers();
-//                        notificationID = "3";
-//                        notificationTitle = "SATANS DEMOKRATI - HÄNDELSE";
-//                        notificationText = "ÖPPNA FÖR ATT DELTA";
-//                        getNotificationBuilder ();
                         break;
                     case 4:
                         LoginManager.getInstance().logOut();
@@ -239,7 +232,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void beaconHandler() {
 
-        final BluetoothLeScanner bluetoothLeScanner = bluetoothAdapter.getBluetoothLeScanner();
+        bluetoothLeScanner = bluetoothAdapter.getBluetoothLeScanner();
         this.scanCallback = new ScanCallback() {
             @Override
             public void onScanResult(int callbackType, ScanResult result) {
@@ -249,41 +242,45 @@ public class MainActivity extends AppCompatActivity {
                 }
                 switch (result.getDevice().getAddress()) {
                     case jZiggy:
-                        if(!used.contains(jZiggy)) {
+                        if(!usedBeacon.contains(jZiggy)) {
                             dbHandler.postIDToMessageDB(profileID);
+
+//                            notificationID = "6";
+//                            notificationTitle = "SATANS DEMOKRATI - FÖREMÅL HITTAT";
+//                            notificationText = "VILL DU SE?";
+//                            getNotificationBuilder ();
+
                             notificationID = "2";
                             notificationTitle = "Woland har bjudit in till omröstning!";
                             notificationText = "Vill du delta?";
                             getNotificationBuilder ();
-                            used.add(jZiggy);
-                            assert used.contains(result.getDevice().getAddress());
+                            usedBeacon.add(jZiggy);
+                            assert usedBeacon.contains(result.getDevice().getAddress());
                         }
                         break;
                     case jDonny:
-                        if(!used.contains(jDonny)) {
+                        if(!usedBeacon.contains(jDonny)) {
                             dbHandler.postIDToMessageDB(profileID);
                         notificationID = "4";
                         notificationTitle = "SATANS DEMOKRATI - HÄNDELSE";
                         notificationText = "ÖPPNA FÖR ATT DELTA";
                         getNotificationBuilder ();
-                            used.add(jDonny);
-                            assert used.contains(result.getDevice().getAddress());
+                            usedBeacon.add(jDonny);
+                            assert usedBeacon.contains(result.getDevice().getAddress());
                         }
                         break;
                     case aZiggy:
-                        if(!used.contains(aZiggy)) {
+                        if(!usedBeacon.contains(aZiggy)) {
                             dbHandler.postIDToMessageDB(profileID);
-
-                            used.add(jZiggy);
-                            assert used.contains(result.getDevice().getAddress());
+                            usedBeacon.add(aZiggy);
+                            assert usedBeacon.contains(result.getDevice().getAddress());
                         }
                         break;
                     case aDonny:
-                        if(!used.contains(aDonny)) {
+                        if(!usedBeacon.contains(aDonny)) {
                             dbHandler.postIDToMessageDB(profileID);
-
-                            used.add(jZiggy);
-                            assert used.contains(result.getDevice().getAddress());
+                            usedBeacon.add(aDonny);
+                            assert usedBeacon.contains(result.getDevice().getAddress());
                         }
                         break;
                     default:
@@ -302,6 +299,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         bluetoothLeScanner.startScan(filterList, scanSettings, scanCallback);
+
     }
 
     private void uiStuff () {
@@ -317,7 +315,6 @@ public class MainActivity extends AppCompatActivity {
         lampSwitcher.setImageResource(R.drawable.lamp_off);
         lampSwitcher.setInAnimation(in);
         lampSwitcher.setOutAnimation(out);
-
         beaconButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -340,23 +337,18 @@ public class MainActivity extends AppCompatActivity {
                     beaconButton.setText("STÄNG AV FÖRESTÄLLNINGSLÄGE");
                     infoText.setText(R.string.showinfooff);
                     beaconMode = true;
-//                    notificationID = "1";
-//                    notificationTitle = "Woland har bjudit in till omröstning!";
-//                    notificationText = "Vill du delta?";
-//                    getNotificationBuilder ();
-                    //messageHandler.lookForMessage();
-                    //messageHandler.longTimer();
-                    beaconHandler();
+                    messageHandler.lookForMessage();
+//                    beaconHandler();
                 } else {
                     lampSwitcher.setImageResource(R.drawable.lamp_off);
                     beaconButton.setText("AKTIVERA FÖRESTÄLLNINGSLÄGE");
                     infoText.setText(R.string.showinfoon);
                     beaconMode = false;
-//                    notificationID = "2";
-//                    notificationTitle = "Woland känner att något är fel";
-//                    notificationText = "Man kanske skulle göra sig av med någon?";
-//                    getNotificationBuilder ();
-                    //messageHandler.stopSearch();
+                    messageHandler.stopSearch();
+                    if (bluetoothLeScanner != null) {
+                        bluetoothLeScanner.stopScan(scanCallback);
+                    }
+
                 }
             }
         });
@@ -368,10 +360,77 @@ public class MainActivity extends AppCompatActivity {
         forestallningsDialog.show();
     }
 
-    private void getNotificationBuilder () {
+    public void getNotificationBuilder () {
         notificationIntent = new Intent(this, NotificationActivity.class);
         notificationIntent.putExtra("key", notificationID);
         pendingIntent = PendingIntent.getActivity(this, 0,notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        notificationBuilder.setSmallIcon(android.R.drawable.stat_notify_chat).setContentIntent(pendingIntent)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.summary_bw))
+                .setAutoCancel(true).setPriority(Notification.PRIORITY_MAX).setDefaults(Notification.DEFAULT_VIBRATE)
+                .setContentTitle(notificationTitle).setContentText(notificationText);
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.notify(0, notificationBuilder.build());
+    }
+
+    @Override
+    public void didRecieveEventID(int id) {
+        switch (id) {
+            case 1:
+                if (receivedNotification.contains("notification1")){
+                    notificationID = "1";
+                    notificationTitle = "Woland har bjudit in till omröstning!";
+                    notificationText = "Vill du delta?";
+                    getNotificationBuilder ();
+                    receivedNotification.add("notification1");
+                }
+
+                break;
+            case 2:
+                if (receivedNotification.contains("notification2")){
+                notificationID = "2";
+                notificationTitle = "Woland känner att något är fel";
+                notificationText = "Man kanske skulle göra sig av med någon?";
+                getNotificationBuilder ();
+                    receivedNotification.add("notification2");
+                }
+                break;
+            case 3:
+                if (receivedNotification.contains("notification3")){
+                notificationID = "3";
+                notificationTitle = "SATANS DEMOKRATI - HÄNDELSE";
+                notificationText = "ÖPPNA FÖR ATT DELTA";
+                getNotificationBuilder ();
+                    receivedNotification.add("notification3");
+                }
+                break;
+            case 4:
+                if (receivedNotification.contains("notification4")){
+                notificationID = "4";
+                notificationTitle = "SATANS DEMOKRATI - HÄNDELSE";
+                notificationText = "ÖPPNA FÖR ATT DELTA";
+                getNotificationBuilder ();
+                receivedNotification.add("notification4");
+        }
+                break;
+            case 5:
+                if (receivedNotification.contains("notification5")){
+                notificationID = "5";
+                notificationTitle = "SATANS DEMOKRATI - HÄNDELSE";
+                notificationText = "ÖPPNA FÖR ATT DELTA";
+                getNotificationBuilder ();
+                    receivedNotification.add("notification5");
+                }
+                break;
+            case 6:
+                break;
+        }
+    }
+
+    @Override
+    public void didReceiveMessage(String message) {
+        Log.i(TAG, message);
+        notificationTitle = "Viktigt meddelande";
+        notificationText = message;
         notificationBuilder.setSmallIcon(android.R.drawable.stat_notify_chat).setContentIntent(pendingIntent)
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.summary_bw))
                 .setAutoCancel(true).setPriority(Notification.PRIORITY_MAX).setDefaults(Notification.DEFAULT_VIBRATE)

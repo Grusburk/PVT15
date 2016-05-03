@@ -1,7 +1,8 @@
 package grupp2.satansdemocracy;
 
-import org.json.JSONObject;
+import android.os.StrictMode;
 
+import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +10,12 @@ import java.util.List;
  * Created by Joakim on 2016-04-29.
  */
 public class MessageHandler extends Thread {
+
+    private MessageListener listnener;
+
+    public void setListnener(MessageListener listnener) {
+        this.listnener = listnener;
+    }
 
     private DBHandler dbHandler = new DBHandler();
     private List<String> eventIDs = new ArrayList<>();
@@ -28,6 +35,10 @@ public class MessageHandler extends Thread {
     }
 
     public void lookForMessage() {
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
         running = true;
         timestart = System.currentTimeMillis();
 
@@ -41,31 +52,19 @@ public class MessageHandler extends Thread {
                         messages[i] = messageResponse.getJSONArray("data").getString(i);
                     }
                     for (int i = 0; i < messages.length; i++){
-                        //KICK.IT(messages[i]);
+                        listnener.didReceiveMessage(messages[i]);
                     }
-                }
-                if(!eventResponse.getBoolean("error") && eventResponse.has("data")) {
+                }else if(!eventResponse.getBoolean("error") && eventResponse.has("data")) {
                     for (int i = 0; i < eventResponse.getJSONArray("data").length(); i++) {
                         int eventID = eventResponse.getJSONArray("data").getInt(i);
                         if (!eventIDs.contains(eventID)) {
-                            switch (eventID) {
-
-                                case 1:
-                                    //SEND TO ....
-                                    break;
-
-                                case 2:
-                                    //SEND TO ....
-                                    break;
-
-                            }
+                            listnener.didRecieveEventID(eventID);
                         }
                     }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            completeTask();
         }
     }
 
@@ -75,12 +74,12 @@ public class MessageHandler extends Thread {
 
     public boolean completeTask() {
 
-        try {
-            this.sleep(30 * 1000);
-        } catch (InterruptedException e) {
-            running = false;
-            e.printStackTrace();
-        }
+//        try {
+//            this.sleep(30 * 1000);
+//        } catch (InterruptedException e) {
+//            running = false;
+//            e.printStackTrace();
+//        }
         long timeran = System.currentTimeMillis()-timestart;
         if(timeran > 4*1000*60*60)
             running = false;
