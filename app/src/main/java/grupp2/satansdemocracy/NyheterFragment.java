@@ -99,18 +99,18 @@ public class NyheterFragment extends Fragment {
         Twitter twitter = twitterFactory.getInstance();
         try {
             Query query = new Query("svpol");
-            query.setCount(100);
             query.setSince("2014-05-25");
+            query.setCount(500);
             QueryResult result;
             result = twitter.search(query);
             List<Status> users = result.getTweets();
-            System.out.println(users);
+            System.out.println(query.getSince() + " " + query.getCount());
+//            System.out.println(users);
             for (Status tweet : users) {
                 Tweet tweetData = new Tweet(tweet.getUser().getName(), tweet.getText());
                 tweetList.add(tweetData);
                 mAdapter.notifyDataSetChanged();
             }
-
         } catch (TwitterException te) {
             te.printStackTrace();
         }
