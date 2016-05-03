@@ -16,7 +16,7 @@ public class DBHandler {
      **/
     private MessageModel model = new MessageModel("https://people.dsv.su.se/~anth3046/SatansDemokrati/api/v1/");
     private MessageModel modelId = new MessageModel("https://people.dsv.su.se/~anth3046/SatansDemokrati/api/v2/");
-    private MessageModel modelMessage = new MessageModel("https://people.dsv.su.se/~joso8829/Satansdemokrati/api/v1/");
+    private MessageModel modelMessageAndEvent = new MessageModel("https://people.dsv.su.se/~anth3046/SatansDemokrati/api/v3/");
 
 
     public DBHandler() {
@@ -77,22 +77,24 @@ public class DBHandler {
         }
     }
 
-    public JSONObject getMessageFromDB(String id, String UUID) {
+    public JSONObject getMessageFromDB(String id) {
         JSONObject jMessage = null;
         try {
-            jMessage = modelMessage.apiGet("get_message/" + id + "+" + UUID);
+            jMessage = modelMessageAndEvent.apiGet("get_message/" + id);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return jMessage;
     }
 
-    public void getMessageID(String id) {
-        try {
-            JSONObject messageUID = modelMessage.apiGet("get_ids/" + id);
+    public JSONObject getEvent() {
+        JSONObject jEvent = null;
+        try{
+            jEvent = modelMessageAndEvent.apiGet("get_event/");
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return jEvent;
     }
 
 }
