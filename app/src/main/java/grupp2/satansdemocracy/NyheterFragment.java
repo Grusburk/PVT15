@@ -82,9 +82,9 @@ public class NyheterFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        twitterView = (ListView) getView().findViewById(R.id.twitter_view);
-        //username = (TextView) getView().findViewById(R.id.username);
-        //message = (TextView) getView().findViewById(R.id.message);
+//        twitterView = (ListView) getView().findViewById(R.id.twitter_view);
+        username = (TextView) getView().findViewById(R.id.text1);
+        message = (TextView) getView().findViewById(R.id.text2);
         testView = new TextView(getContext());
         testView.setTextColor(Color.CYAN);
 
@@ -107,11 +107,11 @@ public class NyheterFragment extends Fragment {
             List<Status> users = result.getTweets();
             System.out.println(users);
             for (Status tweet : users) {
-                twitterView.addHeaderView(testView);
-                twitterView.addFooterView(testView);
-                testView.setText(tweet.getUser().getName());
-                testView.setTextSize(25);
-                //message.setText(tweet.getText());
+//                twitterView.addHeaderView(testView);
+//                twitterView.addFooterView(testView);
+                username.setText(tweet.getUser().getName());
+//                testView.setTextSize(25);
+                message.setText(tweet.getText());
             }
 
         } catch (TwitterException te) {
