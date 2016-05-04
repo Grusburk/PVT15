@@ -1,6 +1,7 @@
 package grupp2.satansdemocracy;
 
 import android.os.StrictMode;
+import android.util.Log;
 
 import org.json.JSONObject;
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public class MessageHandler extends Thread {
     }
 
     private DBHandler dbHandler = new DBHandler();
-    private List<String> eventIDs = new ArrayList<>();
+    private List<Integer> eventIDs = new ArrayList<>();
     private String facebookID;
     private boolean running;
     private long timestart;
@@ -54,7 +55,8 @@ public class MessageHandler extends Thread {
                     for (int i = 0; i < messages.length; i++){
                         listnener.didReceiveMessage(messages[i]);
                     }
-                }else if(!eventResponse.getBoolean("error") && eventResponse.has("data")) {
+                }else
+                if(!eventResponse.getBoolean("error") && eventResponse.has("data")) {
                     for (int i = 0; i < eventResponse.getJSONArray("data").length(); i++) {
                         int eventID = eventResponse.getJSONArray("data").getInt(i);
                         if (!eventIDs.contains(eventID)) {
@@ -65,6 +67,7 @@ public class MessageHandler extends Thread {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            completeTask();
         }
     }
 
@@ -74,12 +77,13 @@ public class MessageHandler extends Thread {
 
     public boolean completeTask() {
 
-//        try {
-//            this.sleep(30 * 1000);
-//        } catch (InterruptedException e) {
-//            running = false;
-//            e.printStackTrace();
-//        }
+        try {
+            this.sleep(30 * 1000);
+            Log.i("test", "30 seccccccc");
+        } catch (InterruptedException e) {
+            running = false;
+            e.printStackTrace();
+        }
         long timeran = System.currentTimeMillis()-timestart;
         if(timeran > 4*1000*60*60)
             running = false;

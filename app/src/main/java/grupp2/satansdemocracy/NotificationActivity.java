@@ -16,6 +16,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class NotificationActivity extends AppCompatActivity {
     private String snackBarText, dialogText;
+    private String message;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,13 +36,17 @@ public class NotificationActivity extends AppCompatActivity {
         newspaperFrame.setVisibility(View.INVISIBLE);
 
         Bundle intentPerformer = getIntent().getExtras();
+        message = getIntent().getStringExtra("special");
         if (intentPerformer != null) {
 
             /**
              * Omröstningar
              */
+            if (message != null) {
+                dialogText = message;
+                setVoteDialog();
 
-            if (intentPerformer.getString("key").equals("1")){
+            } else if (intentPerformer.getString("key").equals("1")){
                 voteText.setText(R.string.vote_text);
                 candidate1.setImageResource(R.drawable.woland_selector);
                 candidate2.setImageResource(R.drawable.pontius_selector);
@@ -86,6 +91,10 @@ public class NotificationActivity extends AppCompatActivity {
             }else if (intentPerformer.getString("key").equals("8")){
 
             }else if (intentPerformer.getString("key").equals("9")){
+
+            }else if (message == null){
+
+            }else {
 
             }
         }

@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
@@ -337,7 +338,12 @@ public class MainActivity extends AppCompatActivity implements MessageListener{
                     beaconButton.setText("STÄNG AV FÖRESTÄLLNINGSLÄGE");
                     infoText.setText(R.string.showinfooff);
                     beaconMode = true;
-                    messageHandler.lookForMessage();
+                    AsyncTask.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            messageHandler.lookForMessage();
+                        }
+                    });
 //                    beaconHandler();
                 } else {
                     lampSwitcher.setImageResource(R.drawable.lamp_off);
@@ -376,50 +382,40 @@ public class MainActivity extends AppCompatActivity implements MessageListener{
     public void didRecieveEventID(int id) {
         switch (id) {
             case 1:
-                if (receivedNotification.contains("notification1")){
                     notificationID = "1";
                     notificationTitle = "Woland har bjudit in till omröstning!";
                     notificationText = "Vill du delta?";
                     getNotificationBuilder ();
-                    receivedNotification.add("notification1");
-                }
 
                 break;
             case 2:
-                if (receivedNotification.contains("notification2")){
                 notificationID = "2";
                 notificationTitle = "Woland känner att något är fel";
                 notificationText = "Man kanske skulle göra sig av med någon?";
                 getNotificationBuilder ();
-                    receivedNotification.add("notification2");
-                }
                 break;
             case 3:
-                if (receivedNotification.contains("notification3")){
-                notificationID = "3";
-                notificationTitle = "SATANS DEMOKRATI - HÄNDELSE";
-                notificationText = "ÖPPNA FÖR ATT DELTA";
-                getNotificationBuilder ();
-                    receivedNotification.add("notification3");
-                }
+                    notificationID = "3";
+                    notificationTitle = "SATANS DEMOKRATI - HÄNDELSE";
+                    notificationText = "ÖPPNA FÖR ATT DELTA";
+                    getNotificationBuilder ();
+
                 break;
             case 4:
-                if (receivedNotification.contains("notification4")){
+                    receivedNotification.add("notification4");
                 notificationID = "4";
                 notificationTitle = "SATANS DEMOKRATI - HÄNDELSE";
                 notificationText = "ÖPPNA FÖR ATT DELTA";
                 getNotificationBuilder ();
-                receivedNotification.add("notification4");
-        }
+
                 break;
             case 5:
-                if (receivedNotification.contains("notification5")){
+                receivedNotification.add("notification5");
                 notificationID = "5";
                 notificationTitle = "SATANS DEMOKRATI - HÄNDELSE";
                 notificationText = "ÖPPNA FÖR ATT DELTA";
                 getNotificationBuilder ();
-                    receivedNotification.add("notification5");
-                }
+
                 break;
             case 6:
                 break;
@@ -430,7 +426,10 @@ public class MainActivity extends AppCompatActivity implements MessageListener{
     public void didReceiveMessage(String message) {
         Log.i(TAG, message);
         notificationTitle = "Viktigt meddelande";
-        notificationText = message;
+        notificationText = "Nu måste du känna dig speciell :)?";
+        notificationIntent = new Intent(this, NotificationActivity.class);
+        notificationIntent.putExtra("special", message);
+        pendingIntent = PendingIntent.getActivity(this, 0,notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         notificationBuilder.setSmallIcon(android.R.drawable.stat_notify_chat).setContentIntent(pendingIntent)
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.summary_bw))
                 .setAutoCancel(true).setPriority(Notification.PRIORITY_MAX).setDefaults(Notification.DEFAULT_VIBRATE)
