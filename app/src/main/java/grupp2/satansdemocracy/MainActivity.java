@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements MessageListener{
 
 
     /**
-     * Sets up an instance oc the mainActivity class upon first creation.
+     * Sets up an instance of the mainActivity class upon first creation.
      *
      * @param savedInstanceState
      */
@@ -105,7 +105,6 @@ public class MainActivity extends AppCompatActivity implements MessageListener{
         /**
          * Beacon related initiation
          */
-
         final BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
         bluetoothAdapter = bluetoothManager.getAdapter();
         filterList = new ArrayList<>();
@@ -115,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements MessageListener{
         filterList.add(aDonnyFilter);
 
         /**
-         * Get profile ID from LoginActivity
+         * Get facebook profile ID from LoginActivity
          */
         Bundle extras = getIntent().getExtras();
         if(extras != null) {
@@ -139,10 +138,13 @@ public class MainActivity extends AppCompatActivity implements MessageListener{
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-
+        /** Empty method */
     }
 
-
+    /**
+     * Sets up the font for the application
+     * @param newBase
+     */
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
@@ -231,6 +233,9 @@ public class MainActivity extends AppCompatActivity implements MessageListener{
         return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
+    /**
+     * TODO: Kalla på den här metoden?
+     */
     public void beaconHandler() {
 
         bluetoothLeScanner = bluetoothAdapter.getBluetoothLeScanner();
@@ -300,7 +305,6 @@ public class MainActivity extends AppCompatActivity implements MessageListener{
             }
         };
         bluetoothLeScanner.startScan(filterList, scanSettings, scanCallback);
-
     }
 
     private void uiStuff () {

@@ -84,9 +84,17 @@ public class NyheterFragment extends Fragment {
                 .setOAuthConsumerSecret("kdK7efW38xOMURyDtlqHoZzFVV2Z8v2j0rQzj9lRMWuAeXsEHW")
                 .setOAuthAccessToken("1014739988-RKSvYmCAanERT98Wz0iKf5oCcZ9xQ0169YcegKJ")
                 .setOAuthAccessTokenSecret("nSrkfuYXMA2Cyk0dCH4tzgoyDmK46EMI5baWxDYNyU402");
+//        TwitterStream twitterStream = new TwitterStreamFactory(configurationBuilder.build()).getInstance();
+//        StatusListener statusListener = createStatusListener();
+//        FilterQuery filterQuery = new FilterQuery();
+//        String[] keywords = {"#satansdemokrati"};
+//        filterQuery.track(keywords);
+//        filterQuery.filterLevel("none");
+//        twitterStream.addListener(statusListener);
+//        twitterStream.filter(filterQuery);
         TwitterFactory twitterFactory = new TwitterFactory(configurationBuilder.build());
         Twitter twitter = twitterFactory.getInstance();
-        Query query = new Query("#obama");
+        Query query = new Query("#satan");
 
         query.setResultType(Query.ResultType.recent);
         query.setCount(80);
@@ -108,4 +116,47 @@ public class NyheterFragment extends Fragment {
             te.printStackTrace();
         }
     }
+
+//    private StatusListener createStatusListener() {
+//        return new StatusListener() {
+//            @Override
+//            public void onStatus(Status status) {
+//                System.out.println(status.getUser().getName());
+//
+//                final Tweet tweetData = new Tweet(status.getUser().getName(), status.getText());
+//                recyclerView.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        tweetList.add(tweetData);
+//                        mAdapter.notifyDataSetChanged();
+//                    }
+//                });
+//            }
+//
+//            @Override
+//            public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice) {
+//                System.out.println("DELETIONNOTICE");
+//            }
+//
+//            @Override
+//            public void onTrackLimitationNotice(int numberOfLimitedStatuses) {
+//
+//            }
+//
+//            @Override
+//            public void onScrubGeo(long userId, long upToStatusId) {
+//
+//            }
+//
+//            @Override
+//            public void onStallWarning(StallWarning warning) {
+//
+//            }
+//
+//            @Override
+//            public void onException(Exception ex) {
+//                ex.printStackTrace();
+//            }
+//        };
+//    }
 }

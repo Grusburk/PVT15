@@ -7,11 +7,6 @@ public class Tweet {
     private String userName, userMessage;
 //    private URL userPicture;
 
-    public Tweet (){
-
-    }
-
-
     public Tweet (String userName, String userMessage){
         this.userName = userName;
         this.userMessage = userMessage;
