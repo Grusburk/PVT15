@@ -1,7 +1,7 @@
 package grupp2.satansdemocracy;
 
 import android.Manifest;
-import android.app.AlertDialog;
+import android.support.v7.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -346,15 +346,15 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
         popUpDialog.setPositiveButton("JA", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 if (!beaconMode) {
-//                    if (bluetoothAdapter == null) {
-//                        noBluetoothDialog.setMessage("DU MÅSTE AKTIVERA BLÅTAND")
-//                                .setNeutralButton("OK", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                            }
-//                        }).show();
-                        // Bluetooth is not enable :)
-//                    }else{
+                    if (bluetoothAdapter == null) {
+                        noBluetoothDialog.setMessage("DU MÅSTE AKTIVERA BLÅTAND")
+                                .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        }).show();
+//                         Bluetooth is not enable :)
+                    }else{
                         lampSwitcher.setImageResource(R.drawable.lamp_on);
                         beaconButton.setText("STÄNG AV FÖRESTÄLLNINGSLÄGE");
                         infoText.setText(R.string.showinfooff);
@@ -368,7 +368,7 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
                                 //                    beaconHandler();
                             }
                         });
-//                    }
+                    }
 
 
                 } else {
