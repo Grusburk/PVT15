@@ -24,7 +24,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
@@ -46,12 +45,12 @@ import java.util.List;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class MainActivity extends AppCompatActivity implements MessageListener{
+public class MainActivity extends AppCompatActivity implements MessageListener, BeaconListener{
     private TextView infoText;
     private Intent notificationIntent;
     private PendingIntent pendingIntent;
     private Notification.Builder notificationBuilder;
-    private AlertDialog.Builder forestallningsDialog;
+    private AlertDialog.Builder popUpDialog, noBluetoothDialog;
     private Button beaconButton;
     private ImageSwitcher lampSwitcher;
     private boolean beaconMode;
@@ -63,7 +62,6 @@ public class MainActivity extends AppCompatActivity implements MessageListener{
     private final String TAG = MainActivity.class.getSimpleName();
     private List<String> found = new ArrayList<>();
     private List<String> usedBeacon = new ArrayList<>();
-    private List<String> receivedNotification = new ArrayList<>();
     private BluetoothAdapter bluetoothAdapter;
     private boolean isBtEnable = false;
     private final String jZiggy = "CC:69:C6:5B:13:D7";
@@ -82,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements MessageListener{
             .build();
     private DBHandler dbHandler = new DBHandler();
     private MessageHandler messageHandler;
+    private BeaconHandler beaconHandlerTest;
     private String profileID;
     private BluetoothLeScanner bluetoothLeScanner;
 
@@ -110,8 +109,8 @@ public class MainActivity extends AppCompatActivity implements MessageListener{
         uiStuff();
         mDrawerToggle.syncState();
         notificationBuilder = (Notification.Builder) new Notification.Builder(getApplicationContext());
-        forestallningsDialog = new AlertDialog.Builder(MainActivity.this,android.R.style.Theme_Holo_Dialog_NoActionBar);
-
+        popUpDialog = new AlertDialog.Builder(MainActivity.this,android.R.style.Theme_Holo_Dialog_NoActionBar);
+        noBluetoothDialog = new AlertDialog.Builder(MainActivity.this,android.R.style.Theme_Holo_Dialog_NoActionBar);
         /**
          * Beacon related initiation
          */
@@ -132,6 +131,8 @@ public class MainActivity extends AppCompatActivity implements MessageListener{
         }
         messageHandler = new MessageHandler(profileID);
         messageHandler.setListnener(this);
+        beaconHandlerTest = new BeaconHandler(this);
+        beaconHandlerTest.setListnener(this);
 
         /**
          * Request access for Beacon Searching
@@ -260,10 +261,10 @@ public class MainActivity extends AppCompatActivity implements MessageListener{
                         if(!usedBeacon.contains(jZiggy)) {
                             dbHandler.postIDToMessageDB(profileID);
 
-//                            notificationID = "6";
-//                            notificationTitle = "SATANS DEMOKRATI - FÖREMÅL HITTAT";
-//                            notificationText = "VILL DU SE?";
-//                            getNotificationBuilder ();
+                            notificationID = "6";
+                            notificationTitle = "SATANS DEMOKRATI - FÖREMÅL HITTAT";
+                            notificationText = "VILL DU SE?";
+                            getNotificationBuilder ();
 
                             notificationID = "2";
                             notificationTitle = "Woland har bjudit in till omröstning!";
@@ -331,10 +332,10 @@ public class MainActivity extends AppCompatActivity implements MessageListener{
             @Override
             public void onClick(View v) {
                 if (!beaconMode) {
-                    forestallningsDialog.setMessage(R.string.activateInfo);
+                    popUpDialog.setMessage(R.string.activateInfo);
                     forestallningsDialog();
                 } else {
-                    forestallningsDialog.setMessage("Är du säker på att du vill avbryta föreställnigsläge?");
+                    popUpDialog.setMessage("Är du säker på att du vill avbryta föreställnigsläge?");
                     forestallningsDialog();
                 }
             }
@@ -342,37 +343,52 @@ public class MainActivity extends AppCompatActivity implements MessageListener{
     }
 
     private void forestallningsDialog(){
-        forestallningsDialog.setPositiveButton("JA", new DialogInterface.OnClickListener() {
+        popUpDialog.setPositiveButton("JA", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 if (!beaconMode) {
-                    lampSwitcher.setImageResource(R.drawable.lamp_on);
-                    beaconButton.setText("STÄNG AV FÖRESTÄLLNINGSLÄGE");
-                    infoText.setText(R.string.showinfooff);
-                    beaconMode = true;
-                    AsyncTask.execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            messageHandler.lookForMessage();
-                        }
-                    });
-//                    beaconHandler();
+//                    if (bluetoothAdapter == null) {
+//                        noBluetoothDialog.setMessage("DU MÅSTE AKTIVERA BLÅTAND")
+//                                .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                            }
+//                        }).show();
+                        // Bluetooth is not enable :)
+//                    }else{
+                        lampSwitcher.setImageResource(R.drawable.lamp_on);
+                        beaconButton.setText("STÄNG AV FÖRESTÄLLNINGSLÄGE");
+                        infoText.setText(R.string.showinfooff);
+                        beaconMode = true;
+                        AsyncTask.execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                messageHandler.lookForMessage();
+
+//                            beaconHandlerTest.BeaconSetUp();
+                                //                    beaconHandler();
+                            }
+                        });
+//                    }
+
+
                 } else {
                     lampSwitcher.setImageResource(R.drawable.lamp_off);
                     beaconButton.setText("AKTIVERA FÖRESTÄLLNINGSLÄGE");
                     infoText.setText(R.string.showinfoon);
                     beaconMode = false;
                     messageHandler.stopSearch();
+//                    beaconHandlerTest.stopSearch();
                     if (bluetoothLeScanner != null) {
                         bluetoothLeScanner.stopScan(scanCallback);
                     }
                 }
             }
         });
-        forestallningsDialog.setNegativeButton("NEJ", new DialogInterface.OnClickListener() {
+        popUpDialog.setNegativeButton("NEJ", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
             }
         });
-        forestallningsDialog.show();
+        popUpDialog.show();
     }
 
     public void getNotificationBuilder () {
@@ -391,43 +407,40 @@ public class MainActivity extends AppCompatActivity implements MessageListener{
     public void didRecieveEventID(int id) {
         switch (id) {
             case 1:
-                    notificationID = "1";
-                    notificationTitle = "Woland har bjudit in till omröstning!";
-                    notificationText = "Vill du delta?";
-                    getNotificationBuilder ();
-
+                notificationID = "1";
+                notificationTitle = "Woland har bjudit in till omröstning!";
+                notificationText = "Vill du delta?";
+                getNotificationBuilder ();
                 break;
             case 2:
-                    notificationID = "2";
-                    notificationTitle = "Woland känner att något är fel";
-                    notificationText = "Man kanske skulle göra sig av med någon?";
-                    getNotificationBuilder ();
+                notificationID = "2";
+                notificationTitle = "Woland känner att något är fel";
+                notificationText = "Man kanske skulle göra sig av med någon?";
+                getNotificationBuilder ();
                 break;
             case 3:
-                    notificationID = "3";
-                    notificationTitle = "SATANS DEMOKRATI - HÄNDELSE";
-                    notificationText = "ÖPPNA FÖR ATT DELTA";
-                    getNotificationBuilder ();
-
+                notificationID = "3";
+                questionNotificationText();
+                getNotificationBuilder ();
                 break;
             case 4:
-                receivedNotification.add("notification4");
                 notificationID = "4";
-                notificationTitle = "SATANS DEMOKRATI - HÄNDELSE";
-                notificationText = "ÖPPNA FÖR ATT DELTA";
+                questionNotificationText();
                 getNotificationBuilder ();
-
                 break;
             case 5:
-                receivedNotification.add("notification5");
                 notificationID = "5";
-                notificationTitle = "SATANS DEMOKRATI - HÄNDELSE";
-                notificationText = "ÖPPNA FÖR ATT DELTA";
+                questionNotificationText();
                 getNotificationBuilder ();
                 break;
             case 6:
                 break;
         }
+    }
+
+    private void questionNotificationText() {
+        notificationTitle = "SATANS DEMOKRATI - HÄNDELSE";
+        notificationText = "ÖPPNA FÖR ATT DELTA";
     }
 
     @Override
@@ -443,5 +456,31 @@ public class MainActivity extends AppCompatActivity implements MessageListener{
                 .setContentTitle(notificationTitle).setContentText(notificationText);
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.notify(0, notificationBuilder.build());
+    }
+
+    @Override
+    public void didRecieveBeaconEvent(int id) {
+        switch (id) {
+            case 1:
+                beaconEventNotification();
+                break;
+            case 2:
+                beaconEventNotification();
+                break;
+            case 3:
+                beaconEventNotification();
+                break;
+            case 4:
+                beaconEventNotification();
+                break;
+        }
+    }
+
+    private void beaconEventNotification() {
+        notificationID = "6";
+        notificationTitle = "SATANS DEMOKRATI - FÖREMÅL HITTAT";
+        notificationText = "VILL DU SE?";
+        getNotificationBuilder ();
+        dbHandler.postIDToMessageDB(profileID);
     }
 }

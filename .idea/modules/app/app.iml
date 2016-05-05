@@ -93,7 +93,7 @@
       <excludeFolder url="file://$MODULE_DIR$/../../../app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/23.3.0/jars" />
       <excludeFolder url="file://$MODULE_DIR$/../../../app/build/intermediates/exploded-aar/com.android.support/support-v4/23.3.0/jars" />
       <excludeFolder url="file://$MODULE_DIR$/../../../app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/23.3.0/jars" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../app/build/intermediates/exploded-aar/com.d4t/getoldtweetslibrary/0.0.3/jars" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../app/build/intermediates/exploded-aar/com.d4t/getoldtweetslibrary/0.0.5/jars" />
       <excludeFolder url="file://$MODULE_DIR$/../../../app/build/intermediates/exploded-aar/com.facebook.android/facebook-android-sdk/4.11.0/jars" />
       <excludeFolder url="file://$MODULE_DIR$/../../../app/build/intermediates/exploded-aar/uk.co.chrisjenx/calligraphy/2.1.0/jars" />
       <excludeFolder url="file://$MODULE_DIR$/../../../app/build/intermediates/incremental" />
@@ -112,10 +112,10 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 23 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="getoldtweetslibrary-0.0.3" level="project" />
     <orderEntry type="library" exported="" name="jsoup-1.9.1" level="project" />
     <orderEntry type="library" exported="" name="okio-1.6.0" level="project" />
     <orderEntry type="library" exported="" name="facebook-android-sdk-4.11.0" level="project" />
+    <orderEntry type="library" exported="" name="getoldtweetslibrary-0.0.5" level="project" />
     <orderEntry type="library" exported="" name="got" level="project" />
     <orderEntry type="library" exported="" name="design-23.3.0" level="project" />
     <orderEntry type="library" exported="" name="cardview-v7-23.2.1" level="project" />

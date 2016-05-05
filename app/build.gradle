@@ -37,5 +37,5 @@ dependencies {
     compile 'com.squareup.okio:okio:1.6.0'
     compile 'com.facebook.android:facebook-android-sdk:[4,5)'
     compile 'com.android.support:recyclerview-v7:23.3.0'
-    compile 'com.d4t:getoldtweetslibrary:0.0.3'
+    compile 'com.d4t:getoldtweetslibrary:0.0.5'
 }

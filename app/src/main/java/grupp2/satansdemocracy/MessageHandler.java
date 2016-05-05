@@ -2,7 +2,9 @@ package grupp2.satansdemocracy;
 
 import android.os.StrictMode;
 import android.util.Log;
+
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,10 +39,6 @@ public class MessageHandler extends Thread {
     }
 
     public void lookForMessage() {
-        if (android.os.Build.VERSION.SDK_INT > 9) {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-        }
         running = true;
         timestart = System.currentTimeMillis();
 

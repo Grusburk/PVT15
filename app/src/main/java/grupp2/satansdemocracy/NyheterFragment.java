@@ -1,7 +1,6 @@
 package grupp2.satansdemocracy;
 
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -17,7 +16,6 @@ import android.widget.ProgressBar;
 import com.d4t.getoldtweetslibrary.manager.TweetManager;
 import com.d4t.getoldtweetslibrary.model.Tweet;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -74,15 +72,11 @@ public class NyheterFragment extends Fragment {
         tweetManager.executeTwitterQuery("Satansdemokrati", 100, new TweetManager.TwitterCallback() {
             @Override
             public void onResponse(List<Tweet> tweets) {
+                Log.i("Tweets", "Size is: " + tweets.size());
                 mAdapter = new Tweetadapter(tweets);
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        recyclerView.setAdapter(mAdapter);
-                        progressBar.setVisibility(View.GONE);
-                        recyclerView.setVisibility(View.VISIBLE);
-                    }
-                });
+                recyclerView.setAdapter(mAdapter);
+                progressBar.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
             }
             @Override
             public void onFailure(Throwable t) {
