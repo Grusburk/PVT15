@@ -7,17 +7,19 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
-import android.bluetooth.le.*;
+import android.bluetooth.le.BluetoothLeScanner;
+import android.bluetooth.le.ScanCallback;
+import android.bluetooth.le.ScanFilter;
+import android.bluetooth.le.ScanResult;
+import android.bluetooth.le.ScanSettings;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Vibrator;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -27,14 +29,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageSwitcher;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.ViewSwitcher;
+
 import com.facebook.FacebookSdk;
-import com.facebook.Profile;
 import com.facebook.login.LoginManager;
-import org.w3c.dom.Text;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class MainActivity extends AppCompatActivity implements MessageListener{
     private TextView infoText;
@@ -237,7 +247,6 @@ public class MainActivity extends AppCompatActivity implements MessageListener{
      * TODO: Kalla på den här metoden?
      */
     public void beaconHandler() {
-
         bluetoothLeScanner = bluetoothAdapter.getBluetoothLeScanner();
         this.scanCallback = new ScanCallback() {
             @Override
@@ -293,12 +302,10 @@ public class MainActivity extends AppCompatActivity implements MessageListener{
                         break;
                 }
             }
-
             @Override
             public void onBatchScanResults(List<ScanResult> results) {
                 super.onBatchScanResults(results);
             }
-
             @Override
             public void onScanFailed(int errorCode) {
                 super.onScanFailed(errorCode);
@@ -358,11 +365,9 @@ public class MainActivity extends AppCompatActivity implements MessageListener{
                     if (bluetoothLeScanner != null) {
                         bluetoothLeScanner.stopScan(scanCallback);
                     }
-
                 }
             }
         });
-
         forestallningsDialog.setNegativeButton("NEJ", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
             }
@@ -393,10 +398,10 @@ public class MainActivity extends AppCompatActivity implements MessageListener{
 
                 break;
             case 2:
-                notificationID = "2";
-                notificationTitle = "Woland känner att något är fel";
-                notificationText = "Man kanske skulle göra sig av med någon?";
-                getNotificationBuilder ();
+                    notificationID = "2";
+                    notificationTitle = "Woland känner att något är fel";
+                    notificationText = "Man kanske skulle göra sig av med någon?";
+                    getNotificationBuilder ();
                 break;
             case 3:
                     notificationID = "3";
@@ -406,7 +411,7 @@ public class MainActivity extends AppCompatActivity implements MessageListener{
 
                 break;
             case 4:
-                    receivedNotification.add("notification4");
+                receivedNotification.add("notification4");
                 notificationID = "4";
                 notificationTitle = "SATANS DEMOKRATI - HÄNDELSE";
                 notificationText = "ÖPPNA FÖR ATT DELTA";
@@ -419,7 +424,6 @@ public class MainActivity extends AppCompatActivity implements MessageListener{
                 notificationTitle = "SATANS DEMOKRATI - HÄNDELSE";
                 notificationText = "ÖPPNA FÖR ATT DELTA";
                 getNotificationBuilder ();
-
                 break;
             case 6:
                 break;
@@ -428,7 +432,6 @@ public class MainActivity extends AppCompatActivity implements MessageListener{
 
     @Override
     public void didReceiveMessage(String message) {
-        Log.i(TAG, message);
         notificationTitle = "Viktigt meddelande";
         notificationText = "Nu måste du känna dig speciell :)?";
         notificationIntent = new Intent(this, NotificationActivity.class);

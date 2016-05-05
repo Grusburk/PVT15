@@ -6,6 +6,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.d4t.getoldtweetslibrary.model.*;
+
 import java.util.List;
 
 public class Tweetadapter extends RecyclerView.Adapter<Tweetadapter.MyViewHolder> {
@@ -37,10 +39,9 @@ public class Tweetadapter extends RecyclerView.Adapter<Tweetadapter.MyViewHolder
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
-        Tweet tweet = tweetList.get(position);
-        holder.userName.setText(tweet.getUserName());
-        holder.userMessage.setText(tweet.getUserMessage());
+    public void onBindViewHolder(MyViewHolder holder, int position) {Tweet tweet = tweetList.get(position);
+        holder.userName.setText(tweet.getDate());
+        holder.userMessage.setText(tweet.getText());
 //        holder.userPicture.(tweet.getUserPicture());
 
     }

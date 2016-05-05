@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="getoldtweetslibrary-0.0.3">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.d4t/getoldtweetslibrary/0.0.3/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.d4t/getoldtweetslibrary/0.0.3/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.d4t/getoldtweetslibrary/0.0.3/a65480760473d6f2ef44be8ec645d5170c310c2f/getoldtweetslibrary-0.0.3-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

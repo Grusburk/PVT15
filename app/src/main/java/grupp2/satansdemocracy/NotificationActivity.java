@@ -16,7 +16,6 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class NotificationActivity extends AppCompatActivity {
     private String snackBarText, dialogText;
-    private String message;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,12 +30,11 @@ public class NotificationActivity extends AppCompatActivity {
         TextView candidate2Name = (TextView) findViewById(R.id.pilatus_text);
         ImageButton candidate1 = (ImageButton) findViewById(R.id.button_woland);
         ImageButton candidate2 = (ImageButton) findViewById(R.id.button_pilatus);
-
-        voteFrame.setVisibility(View.INVISIBLE);
-        newspaperFrame.setVisibility(View.INVISIBLE);
+        voteFrame.setVisibility(View.GONE);
+        newspaperFrame.setVisibility(View.GONE);
 
         Bundle intentPerformer = getIntent().getExtras();
-        message = getIntent().getStringExtra("special");
+        String message = getIntent().getStringExtra("special");
         if (intentPerformer != null) {
 
             /**
@@ -87,15 +85,8 @@ public class NotificationActivity extends AppCompatActivity {
                 newspaperFrame.setVisibility(View.VISIBLE);
 
             }else if (intentPerformer.getString("key").equals("7")){
-
             }else if (intentPerformer.getString("key").equals("8")){
-
             }else if (intentPerformer.getString("key").equals("9")){
-
-            }else if (message == null){
-
-            }else {
-
             }
         }
     }

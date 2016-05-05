@@ -2,7 +2,6 @@ package grupp2.satansdemocracy;
 
 import android.os.StrictMode;
 import android.util.Log;
-
 import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,12 +9,14 @@ import java.util.List;
 /**
  * Created by Joakim on 2016-04-29.
  */
+
+
 public class MessageHandler extends Thread {
 
     private MessageListener listnener;
 
-    public void setListnener(MessageListener listnener) {
-        this.listnener = listnener;
+    public void setListnener(MessageListener listener) {
+        this.listnener = listener;
     }
 
     private DBHandler dbHandler = new DBHandler();
@@ -76,7 +77,6 @@ public class MessageHandler extends Thread {
     }
 
     public boolean completeTask() {
-
         try {
             this.sleep(30 * 1000);
             Log.i("test", "30 seccccccc");

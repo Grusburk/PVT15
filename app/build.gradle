@@ -21,6 +21,9 @@ android {
 
 repositories {
     mavenCentral()
+    maven {
+        url 'https://dl.bintray.com/doge/maven'
+    }
 }
 
 dependencies {
@@ -33,7 +36,6 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.2.0'
     compile 'com.squareup.okio:okio:1.6.0'
     compile 'com.facebook.android:facebook-android-sdk:[4,5)'
-    compile 'org.twitter4j:twitter4j-core:4.0.4'
-    compile 'org.twitter4j:twitter4j-stream:4.0.4'
     compile 'com.android.support:recyclerview-v7:23.3.0'
+    compile 'com.d4t:getoldtweetslibrary:0.0.3'
 }

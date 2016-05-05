@@ -12,8 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import twitter4j.*;
-import twitter4j.conf.ConfigurationBuilder;
+import android.widget.ProgressBar;
+
+import com.d4t.getoldtweetslibrary.manager.TweetManager;
+import com.d4t.getoldtweetslibrary.model.Tweet;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,18 +24,12 @@ import java.util.List;
 public class NyheterFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-    private List<Tweet> tweetList = new ArrayList<>();
     private RecyclerView recyclerView;
     private Tweetadapter mAdapter;
-    private ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
     private ListView twitterView;
     private final String TAG = MainActivity.class.getSimpleName();
+    private ProgressBar progressBar;
 
     public NyheterFragment() {
         // Required empty public constructor
@@ -41,8 +38,6 @@ public class NyheterFragment extends Fragment {
     public static NyheterFragment newInstance(String param1, String param2) {
         NyheterFragment fragment = new NyheterFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -50,10 +45,6 @@ public class NyheterFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (android.os.Build.VERSION.SDK_INT > 9) {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-        }
     }
 
     @Override
@@ -67,96 +58,35 @@ public class NyheterFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        mAdapter = new Tweetadapter(tweetList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(mAdapter);
+        progressBar = (ProgressBar) view.findViewById(R.id.progress_bar) ;
         prepareTweetData();
     }
 
     /**
-     * Set up for the authentication with twitter
+     * Använder Mattes egengjorda biblotek
      */
     private void prepareTweetData() {
-        configurationBuilder.setPrettyDebugEnabled(true)
-                .setOAuthConsumerKey("GDG916Hf5d7RfYH1DdoLSvRjI")
-                .setOAuthConsumerSecret("kdK7efW38xOMURyDtlqHoZzFVV2Z8v2j0rQzj9lRMWuAeXsEHW")
-                .setOAuthAccessToken("1014739988-RKSvYmCAanERT98Wz0iKf5oCcZ9xQ0169YcegKJ")
-                .setOAuthAccessTokenSecret("nSrkfuYXMA2Cyk0dCH4tzgoyDmK46EMI5baWxDYNyU402");
-//        TwitterStream twitterStream = new TwitterStreamFactory(configurationBuilder.build()).getInstance();
-//        StatusListener statusListener = createStatusListener();
-//        FilterQuery filterQuery = new FilterQuery();
-//        String[] keywords = {"#satansdemokrati"};
-//        filterQuery.track(keywords);
-//        filterQuery.filterLevel("none");
-//        twitterStream.addListener(statusListener);
-//        twitterStream.filter(filterQuery);
-        TwitterFactory twitterFactory = new TwitterFactory(configurationBuilder.build());
-        Twitter twitter = twitterFactory.getInstance();
-        Query query = new Query("#satan");
-
-        query.setResultType(Query.ResultType.recent);
-        query.setCount(80);
-        query.setSince("2015-01-01");
-        try {
-            QueryResult result = twitter.search(query);
-            Log.i("TAG", "Size: " + result.getCount());
-            Log.i("TAG", "Limit: " + result.getTweets().size());
-            List<Status> users = result.getTweets();
-            System.out.println(users.size());
-            System.out.println(query.getSince() + " " + query.getCount());
-            System.out.println(users);
-            for (Status tweet : users) {
-                Tweet tweetData = new Tweet(tweet.getUser().getName(), tweet.getText());
-                tweetList.add(tweetData);
-                mAdapter.notifyDataSetChanged();
+        recyclerView.setVisibility(View.GONE);
+        TweetManager tweetManager = new TweetManager();
+        tweetManager.executeTwitterQuery("Satansdemokrati", 100, new TweetManager.TwitterCallback() {
+            @Override
+            public void onResponse(List<Tweet> tweets) {
+                mAdapter = new Tweetadapter(tweets);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        recyclerView.setAdapter(mAdapter);
+                        progressBar.setVisibility(View.GONE);
+                        recyclerView.setVisibility(View.VISIBLE);
+                    }
+                });
             }
-        } catch (TwitterException te) {
-            te.printStackTrace();
-        }
+            @Override
+            public void onFailure(Throwable t) {
+            }
+        });
     }
-
-//    private StatusListener createStatusListener() {
-//        return new StatusListener() {
-//            @Override
-//            public void onStatus(Status status) {
-//                System.out.println(status.getUser().getName());
-//
-//                final Tweet tweetData = new Tweet(status.getUser().getName(), status.getText());
-//                recyclerView.post(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        tweetList.add(tweetData);
-//                        mAdapter.notifyDataSetChanged();
-//                    }
-//                });
-//            }
-//
-//            @Override
-//            public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice) {
-//                System.out.println("DELETIONNOTICE");
-//            }
-//
-//            @Override
-//            public void onTrackLimitationNotice(int numberOfLimitedStatuses) {
-//
-//            }
-//
-//            @Override
-//            public void onScrubGeo(long userId, long upToStatusId) {
-//
-//            }
-//
-//            @Override
-//            public void onStallWarning(StallWarning warning) {
-//
-//            }
-//
-//            @Override
-//            public void onException(Exception ex) {
-//                ex.printStackTrace();
-//            }
-//        };
-//    }
 }
