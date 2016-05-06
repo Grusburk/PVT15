@@ -36,7 +36,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
-
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 
@@ -259,13 +258,6 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
                 switch (result.getDevice().getAddress()) {
                     case jZiggy:
                         if(!usedBeacon.contains(jZiggy)) {
-                            dbHandler.postIDToMessageDB(profileID);
-
-                            notificationID = "6";
-                            notificationTitle = "SATANS DEMOKRATI - FÖREMÅL HITTAT";
-                            notificationText = "VILL DU SE?";
-                            getNotificationBuilder ();
-
                             notificationID = "2";
                             notificationTitle = "Woland har bjudit in till omröstning!";
                             notificationText = "Vill du delta?";
@@ -362,9 +354,9 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
                         AsyncTask.execute(new Runnable() {
                             @Override
                             public void run() {
-                                messageHandler.lookForMessage();
+                            messageHandler.lookForMessage();
 
-//                            beaconHandlerTest.BeaconSetUp();
+                            beaconHandlerTest.BeaconSetUp();
                                 //                    beaconHandler();
                             }
                         });
@@ -377,7 +369,7 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
                     infoText.setText(R.string.showinfoon);
                     beaconMode = false;
                     messageHandler.stopSearch();
-//                    beaconHandlerTest.stopSearch();
+                    beaconHandlerTest.stopSearch();
                     if (bluetoothLeScanner != null) {
                         bluetoothLeScanner.stopScan(scanCallback);
                     }

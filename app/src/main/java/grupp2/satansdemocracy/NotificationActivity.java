@@ -83,10 +83,6 @@ public class NotificationActivity extends AppCompatActivity {
 
             }else if (intentPerformer.getString("key").equals("6")){
                 newspaperFrame.setVisibility(View.VISIBLE);
-
-            }else if (intentPerformer.getString("key").equals("7")){
-            }else if (intentPerformer.getString("key").equals("8")){
-            }else if (intentPerformer.getString("key").equals("9")){
             }
         }
     }
