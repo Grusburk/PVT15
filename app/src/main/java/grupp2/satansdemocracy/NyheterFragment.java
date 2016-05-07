@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,11 +19,8 @@ import java.util.List;
 
 
 public class NyheterFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    // TODO: Rename and change types of parameters
     private RecyclerView recyclerView;
-    private Tweetadapter mAdapter;
+    private TweetAdapter mAdapter;
     private ListView twitterView;
     private final String TAG = MainActivity.class.getSimpleName();
     private ProgressBar progressBar;
@@ -72,8 +68,7 @@ public class NyheterFragment extends Fragment {
         tweetManager.executeTwitterQuery("Satansdemokrati", 100, new TweetManager.TwitterCallback() {
             @Override
             public void onResponse(List<Tweet> tweets) {
-                Log.i("Tweets", "Size is: " + tweets.size());
-                mAdapter = new Tweetadapter(tweets);
+                mAdapter = new TweetAdapter(tweets);
                 recyclerView.setAdapter(mAdapter);
                 progressBar.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);

@@ -45,13 +45,14 @@ import java.util.List;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class MainActivity extends AppCompatActivity implements MessageListener, BeaconListener{
-    private TextView infoText;
+    private TextView infoText, twittertitel;
     private Intent notificationIntent;
     private PendingIntent pendingIntent;
     private Notification.Builder notificationBuilder;
     private AlertDialog.Builder popUpDialog, noBluetoothDialog;
     private Button beaconButton;
     private ImageSwitcher lampSwitcher;
+    ImageView twitter;
     private boolean beaconMode;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -72,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
     private ScanFilter aZiggyFilter = new ScanFilter.Builder().setDeviceAddress(aZiggy).build();
     private ScanFilter aDonnyFilter = new ScanFilter.Builder().setDeviceAddress(aDonny).build();
     private List<ScanFilter> filterList;
+    private Toolbar toolbar;
     private ScanCallback scanCallback;
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
     private ScanSettings scanSettings = new ScanSettings.Builder()
@@ -94,10 +96,14 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+        twitter = (ImageView) toolbar.findViewById(R.id.twitterlogo);
+        twittertitel = (TextView) toolbar.findViewById(R.id.twittertitle);
+        twitter.setVisibility(View.GONE);
+        twittertitel.setVisibility(View.GONE);
         infoText = (TextView) findViewById(R.id.show_info);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         mDrawerList = (ListView) findViewById(R.id.navList);
@@ -165,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
      * Then using a switch statement to set up the headers.
      */
     private void addDrawerItems() {
-        String[] drawerArray = {"FÖRESTÄLLNING", "#SATANSDEMOKRATI", "INFORMATION ", "WIKI", "LOGGA UT"};
+        String[] drawerArray = {"FÖRESTÄLLNING", "#SATANSDEMOKRATI", "INFORMATION", "OM OSS", "LOGGA UT"};
         ArrayAdapter<String> mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, drawerArray);
         mDrawerList.setAdapter(mAdapter);
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -177,24 +183,35 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
                             getSupportFragmentManager().popBackStackImmediate();
                         }
                         mDrawerLayout.closeDrawers();
+                        toolbar.setTitle("SATANS DEMOKRATI");
+                        twitter.setVisibility(View.GONE);
+                        twittertitel.setVisibility(View.GONE);
                         break;
                     case 1:
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.main_frame, new NyheterFragment())
                                 .addToBackStack(null).commit();
                         mDrawerLayout.closeDrawers();
+                        twittertitel.setVisibility(View.VISIBLE);
+                        twitter.setVisibility(View.VISIBLE);
                         break;
                     case 2:
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.main_frame, new InformationFragment())
-                                .addToBackStack(null).commit();
-                        mDrawerLayout.closeDrawers();
-                        break;
-                    case 3:
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.main_frame, new WikiFragment())
                                 .addToBackStack(null).commit();
                         mDrawerLayout.closeDrawers();
+                        toolbar.setTitle("INFORMATION");
+                        twitter.setVisibility(View.GONE);
+                        twittertitel.setVisibility(View.GONE);
+                        break;
+                    case 3:
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.main_frame, new InformationFragment())
+                                .addToBackStack(null).commit();
+                        mDrawerLayout.closeDrawers();
+                        toolbar.setTitle("OM OSS");
+                        twitter.setVisibility(View.GONE);
+                        twittertitel.setVisibility(View.GONE);
                         break;
                     case 4:
                         LoginManager.getInstance().logOut();
@@ -361,8 +378,6 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
                             }
                         });
                     }
-
-
                 } else {
                     lampSwitcher.setImageResource(R.drawable.lamp_off);
                     beaconButton.setText("AKTIVERA FÖRESTÄLLNINGSLÄGE");

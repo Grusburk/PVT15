@@ -10,7 +10,7 @@ import com.d4t.getoldtweetslibrary.model.*;
 
 import java.util.List;
 
-public class Tweetadapter extends RecyclerView.Adapter<Tweetadapter.MyViewHolder> {
+public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.MyViewHolder> {
 
     private List<Tweet> tweetList;
 
@@ -26,7 +26,7 @@ public class Tweetadapter extends RecyclerView.Adapter<Tweetadapter.MyViewHolder
     }
 
 
-    public Tweetadapter(List<Tweet> tweetList) {
+    public TweetAdapter(List<Tweet> tweetList) {
         this.tweetList = tweetList;
     }
 

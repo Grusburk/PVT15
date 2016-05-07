@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.Toolbar
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="?android:attr/actionBarSize"
     android:background="@color/colorPrimaryDark"
@@ -8,4 +9,30 @@
     android:elevation="4dp"
     >
 
+    <RelativeLayout
+        android:id="@+id/toolbarmenucontainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#80000000" >
+
+        <TextView
+            android:id="@+id/twittertitle"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="#SATANSDEMOKRATI"
+            android:textColor="@color/colorAccent"
+            android:textSize="20sp"
+            android:layout_centerVertical="true"/>
+
+        <ImageView
+            android:id="@+id/twitterlogo"
+            android:layout_alignParentRight="true"
+            android:layout_margin="10dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/twitterlogo"/>
+
+    </RelativeLayout>
 </android.support.v7.widget.Toolbar>
