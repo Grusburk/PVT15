@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
     private String notificationID = "1", notificationTitle, notificationText, profileID;
-    private BluetoothAdapter bluetoothAdapter;
     private Toolbar toolbar;
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
     private DBHandler dbHandler = new DBHandler();
@@ -138,19 +137,16 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
                         while (getSupportFragmentManager().getBackStackEntryCount() > 0) {
                             getSupportFragmentManager().popBackStackImmediate();
                         }
-                        mDrawerLayout.closeDrawers();
                         toolbar.setTitle("SATANS DEMOKRATI");
                         updateToolbarName();
                         break;
                     case 1:
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, new WikiFragment()).addToBackStack(null).commit();
-                        mDrawerLayout.closeDrawers();
                         toolbar.setTitle("BAKGRUND");
                         updateToolbarName();
                         break;
                     case 2:
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, new NyheterFragment()).addToBackStack(null).commit();
-                        mDrawerLayout.closeDrawers();
                         twitterTitel.setVisibility(View.VISIBLE);
                         twitter.setVisibility(View.VISIBLE);
                         break;
@@ -158,20 +154,18 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
                         Intent ticketIntent = new Intent(Intent.ACTION_VIEW,
                                 Uri.parse("https://kulturbiljetter.se/evenemang/satans-delirium-del-2-i-satans-trilogi-2269"));
                         startActivity(ticketIntent);
-                        mDrawerLayout.closeDrawers();
                         break;
                     case 4:
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, new InformationFragment()).addToBackStack(null).commit();
-                        mDrawerLayout.closeDrawers();
                         toolbar.setTitle("OM OSS");
                         updateToolbarName();
                         break;
                     case 5:
                         LoginManager.getInstance().logOut();
                         startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                        mDrawerLayout.closeDrawers();
                         break;
                 }
+                mDrawerLayout.closeDrawers();
             }
         });
     }
@@ -240,6 +234,7 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
     }
 
     private void forestallningsDialog(){
+        final BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         popUpDialog.setPositiveButton("JA", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 if (!beaconMode) {
@@ -259,9 +254,10 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
                             @Override
                             public void run() {
                             messageHandler.lookForMessage();
+                            beaconHandlerTest.BeaconSetUp();
                             }
                         });
-                        beaconHandlerTest.BeaconSetUp();
+
                     }
                 } else {
                     lampSwitcher.setImageResource(R.drawable.lamp_off);

@@ -63,10 +63,10 @@ public class BeaconHandler extends Thread{
         filterList.add(jDonnyFilter);
         filterList.add(aZiggyFilter);
         filterList.add(aDonnyFilter);
-//      while (running) {
+      while (running) {
             BeaconScanner(bluetoothAdapter);
-//        }
-//        completeTask()
+        }
+        completeTask();
     }
 
     private void BeaconScanner(BluetoothAdapter bluetoothAdapter) {
