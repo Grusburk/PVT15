@@ -2,7 +2,8 @@
     <string name="app_name">Satans demokrati</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
-    <string name="kontaktinfo">KONTAKTINFORMATION:\r\nMAIL: SATAN@DEMOKRATI.SE\r\nTELEFONNUMMER: 08-666 666\r\nÖPPETIDER: xx - xx</string>
+    <string name="kontaktinfo">KONTAKTINFORMATION:
+        \r\nMAIL: SATAN@DEMOKRATI.SE\r\nTELEFONNUMMER: 08-666 666\r\nÖPPETIDER: xx - xx</string>
     <!-- Strings related to login -->
     <string name="prompt_email">EMAIL</string>
     <string name="prompt_password">PASSWORD (OPTIONAL)</string>
@@ -23,7 +24,7 @@
     <string name="wikititle">WIKI</string>
     <string name="charinfo">TRYCK PÅ EN AV BILDERNA NEDAN FÖR ATT LÄRA DIG MER</string>
     <string name="showinfoon">FÖRESTÄLLNINGSLÄGE ANVÄNDS PÅ PLATS FÖR EN BÄTTRE UPPLEVELSE. BLUETOOTH MÅSTE VARA TILLGÄNGLIGT.</string>
-    <string name="showinfooff">FÖRESTÄLLNINGSLÄGET ÄR NU IGÅNG. DET SKALL BARA VARA AKTIVERAT NÄR DU ÄR PÅ PLATS.</string>
+    <string name="showinfooff">FÖRESTÄLLNINGSLÄGET ÄR AKTIVERAT.</string>
 
     <string name="wolandinfo">
         Den färgstarka gnistan i samhället. Woland är satan, en revolutionär som vänder upp och ned på samhället och skapar tumult med hennes befriande närvaro. En varg i fårakläder, eller?
