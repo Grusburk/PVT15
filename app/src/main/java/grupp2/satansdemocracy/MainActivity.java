@@ -1,5 +1,4 @@
 package grupp2.satansdemocracy;
-
 import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -30,14 +29,12 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
-
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
-
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class MainActivity extends AppCompatActivity implements MessageListener, BeaconListener{
-    private TextView infoText, twittertitel;
+    private TextView infoText, twitterTitel;
     private Intent notificationIntent;
     private PendingIntent pendingIntent;
     private Notification.Builder notificationBuilder;
@@ -51,13 +48,11 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
     private DrawerLayout mDrawerLayout;
     private String notificationID = "1", notificationTitle, notificationText, profileID;
     private BluetoothAdapter bluetoothAdapter;
-    private boolean isBtEnable = false;
     private Toolbar toolbar;
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
     private DBHandler dbHandler = new DBHandler();
     private MessageHandler messageHandler;
     private BeaconHandler beaconHandlerTest;
-
     /**
      * Sets up an instance of the mainActivity class upon first creation.
      *
@@ -73,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         twitter = (ImageView) toolbar.findViewById(R.id.twitterlogo);
-        twittertitel = (TextView) toolbar.findViewById(R.id.twittertitle);
+        twitterTitel = (TextView) toolbar.findViewById(R.id.twittertitle);
         infoText = (TextView) findViewById(R.id.show_info);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         mDrawerList = (ListView) findViewById(R.id.navList);
@@ -90,7 +85,6 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
         messageHandler.setListnener(this);
         beaconHandlerTest = new BeaconHandler(this);
         beaconHandlerTest.setListnener(this);
-
         /**
          * Get facebook profile ID from LoginActivity
          */
@@ -98,7 +92,6 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
         if(extras != null) {
             profileID = extras.getString("facebookID");
         }
-
         /**
          * Request access for Beacon Searching
          */
@@ -114,7 +107,6 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.summary_bw)).setAutoCancel(true).setPriority(Notification.PRIORITY_MAX)
                 .setDefaults(Notification.DEFAULT_VIBRATE).setContentTitle(notificationTitle).setContentText(notificationText);
     }
-
     /**
      * Called for marshmallow access for permissions
      */
@@ -122,7 +114,6 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         /** Empty method */
     }
-
     /**
      * Sets up the font for the application
      * @param newBase
@@ -131,7 +122,6 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
-
     /**
      * Creates an array for the navigation drawer in which to add headers.
      * Then using a switch statement to set up the headers.
@@ -161,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
                     case 2:
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, new NyheterFragment()).addToBackStack(null).commit();
                         mDrawerLayout.closeDrawers();
-                        twittertitel.setVisibility(View.VISIBLE);
+                        twitterTitel.setVisibility(View.VISIBLE);
                         twitter.setVisibility(View.VISIBLE);
                         break;
                     case 3:
@@ -188,9 +178,8 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
 
     private void updateToolbarName() {
         twitter.setVisibility(View.GONE);
-        twittertitel.setVisibility(View.GONE);
+        twitterTitel.setVisibility(View.GONE);
     }
-
     /**
      * Called when user presses back
      */
@@ -198,7 +187,6 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
     public void onBackPressed() {
         moveTaskToBack(true);
     }
-
     /**
      * Sets up the navigation drawer
      */
@@ -216,10 +204,8 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
-
     /**
      * TODO: Förklara när den här metoden kallas.
-     *
      * @param item
      * @return TODO: Vad är det som returneras? Drawern som blev tryckt på?
      */
@@ -264,7 +250,6 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
                             public void onClick(DialogInterface dialog, int which) {
                             }
                         }).show();
-//                         Bluetooth is not enable :)
                     }else{
                         lampSwitcher.setImageResource(R.drawable.lamp_on);
                         beaconButton.setText("STÄNG AV FÖRESTÄLLNINGSLÄGE");
@@ -276,7 +261,7 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
                             messageHandler.lookForMessage();
                             }
                         });
-//                        beaconHandlerTest.BeaconSetUp();
+                        beaconHandlerTest.BeaconSetUp();
                     }
                 } else {
                     lampSwitcher.setImageResource(R.drawable.lamp_off);
