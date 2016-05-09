@@ -3,7 +3,8 @@
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="kontaktinfo">KONTAKTINFORMATION:
-        \r\nMAIL: SATAN@DEMOKRATI.SE\r\nTELEFONNUMMER: 08-666 666\r\nÖPPETIDER: xx - xx</string>
+
+    MAIL: SATAN@DEMOKRATI.SE</string>
     <!-- Strings related to login -->
     <string name="prompt_email">EMAIL</string>
     <string name="prompt_password">PASSWORD (OPTIONAL)</string>
@@ -23,7 +24,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="wikititle">WIKI</string>
     <string name="charinfo">TRYCK PÅ EN AV BILDERNA NEDAN FÖR ATT LÄRA DIG MER</string>
-    <string name="showinfoon">FÖRESTÄLLNINGSLÄGE ANVÄNDS PÅ PLATS FÖR EN BÄTTRE UPPLEVELSE. BLUETOOTH MÅSTE VARA TILLGÄNGLIGT.</string>
+    <string name="showinfoon">FÖR ATT KUNNA AKTIVERA MÅSTE BLUETOOTH VARA PÅSLAGET</string>
     <string name="showinfooff">FÖRESTÄLLNINGSLÄGET ÄR AKTIVERAT.</string>
 
     <string name="wolandinfo">
@@ -31,11 +32,11 @@
         </string>
 
     <string name="pilatusinfo">
-        Diktatorn som, likt Vladimir Putin, styr samhället med en hjärnhand. Hans ledsagare är eliten, det rena vita folket, som ovetandes lever i maktens förtryck.
+        Diktatorn som likt Vladimir Putin styr samhället med hjärnhand. Hans ledsagare är eliten, det rena vita folket, som ovetandes lever i maktens förtryck.
     </string>
 
     <string name="margaritainfo">
-        Jesus i förklädnad. Margarita är en upprorsmakare som tidigare har korsat vägar med Woland. Som till följd av hennes uppror mot det auktoritära samhället går hon mot samma öde som Jesus.
+        Jesus i förklädnad. Margarita är en upprorsmakare som tidigare korsat väg med Woland. Till följd av hennes uppror mot det auktoritära samhället går hon samma öde till mötes som sin skapare.
     </string>
 
     <string name="docinfo">
@@ -57,9 +58,11 @@ I skuggan av Eliten och dess drama, knaprar invånarna tabletter. Tabletter skap
 Satans demokrati behöver bränsle, en kraft som blottar, en Woland. Allt vi ser strävar mot kaos, och det är i kaoset tron på gott och ont lever vidare..." </string>
 
     <string name="welcomeInfo">
-        "VÄLKOMEN TILL SATANS DEMOKRATI. FÖRESTÄLLNINGSLÄGET SKA DU AKTIVERA NÄR DU ÄR PÅ PLATS.
+        "VÄLKOMEN TILL SATANS DEMOKRATI.
 
-TITTA GÄRNA RUNT I MENYN SÅ LÄNGE!"
+        FÖRESTÄLLNINGSLÄGET SKA DU AKTIVERA NÄR DU ÄR PÅ PLATS.
+
+LOGGA GÄRNA IN OCH TITTA  RUNT I MENYN SÅ LÄNGE!"
    </string>
 
     <string-array name="voteoptions">
@@ -69,8 +72,9 @@ TITTA GÄRNA RUNT I MENYN SÅ LÄNGE!"
     </string-array>
 
     <string name="activateInfo">
-        "FÖRESTÄLLNINGSLÄGET SKA DU AKTIVERA NÄR DU ÄR PÅ PLATS.
-ÄR DU SÄKER PÅ ATT DU VILL AKTIVERA FÖRESTÄLLNINGSLÄGE?"
+        "FÖRESTÄLLNINGSLÄGET SKA AKTIVERAS PÅ PLATS.
+
+ÄR DU SÄKER"
 
    </string>
     <string name="vote_text">Woland har bjudit in till omröstning! Vem tycker du ska styra landet? Gillar du festligheter och champagne eller föredrar du envälde och byråkrati?
@@ -81,12 +85,16 @@ Vem tycker du ska bannlysas?</string>
 
 
 <string name="infotext">"FÖRESTÄLLNINGSINFORMATION
+
 1 OKTOBER - 31 DECEMBER
 VARJE ONSDAG TILL LÖRDAG
 
-PRIS 150KR (ARBETAR BILJETT) / 750KR (ORDINARIE BILJETT)
+PRIS
+
+    ARBETAR BILJETT 150:-
+    ORDINARIE BILJETT 750:-
 ÅLDERSGRÄNS 16 ÅR
 
-FÖR ER INFORMATION GÅ VIDARE PÅ KÖP BILJETT"</string>
+</string>
 
 </resources>
