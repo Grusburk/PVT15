@@ -15,6 +15,7 @@
         android:textAlignment="center"
         android:textSize="28sp"
         android:textStyle="bold" />
+
     <FrameLayout
         android:layout_below="@+id/char_name_view"
         android:id="@+id/divider_frame1"
@@ -25,6 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="5dp"
         android:background="@color/colorAccent"/>
+
     <ScrollView
         android:layout_margin="10dp"
         android:fillViewport="true"
@@ -33,6 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_alignBottom="@+id/divider_frame">
+
         <TextView
             android:id="@+id/char_about_view"
             android:layout_width="match_parent"
@@ -42,6 +45,7 @@
             android:textColor="@color/colorAccent"
             android:textSize="20sp" />
     </ScrollView>
+
     <FrameLayout
         android:layout_above="@+id/char_picture_frame"
         android:id="@+id/divider_frame"
@@ -51,6 +55,7 @@
         android:layout_width="match_parent"
         android:layout_height="5dp"
         android:background="@color/colorAccent"/>
+
     <HorizontalScrollView
         android:scrollbarStyle="outsideInset"
         android:layout_alignParentBottom="true"

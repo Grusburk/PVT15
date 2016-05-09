@@ -1,6 +1,7 @@
 package grupp2.satansdemocracy;
 
 import android.Manifest;
+import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -24,6 +25,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
@@ -171,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
      * Then using a switch statement to set up the headers.
      */
     private void addDrawerItems() {
-        String[] drawerArray = {"FÖRESTÄLLNING", "#SATANSDEMOKRATI", "INFORMATION", "OM OSS", "LOGGA UT"};
+        String[] drawerArray = {"FÖRESTÄLLNING", "BAKGRUND", "TWITTERFLÖDE", "KÖP BILJETT","OM OSS","LOGGA UT"};
         ArrayAdapter<String> mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, drawerArray);
         mDrawerList.setAdapter(mAdapter);
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -189,22 +191,28 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
                         break;
                     case 1:
                         getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.main_frame, new WikiFragment())
+                                .addToBackStack(null).commit();
+                        mDrawerLayout.closeDrawers();
+                        toolbar.setTitle("BAKGRUND");
+                        twitter.setVisibility(View.GONE);
+                        twittertitel.setVisibility(View.GONE);
+                        break;
+                    case 2:
+                        getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.main_frame, new NyheterFragment())
                                 .addToBackStack(null).commit();
                         mDrawerLayout.closeDrawers();
                         twittertitel.setVisibility(View.VISIBLE);
                         twitter.setVisibility(View.VISIBLE);
                         break;
-                    case 2:
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.main_frame, new WikiFragment())
-                                .addToBackStack(null).commit();
-                        mDrawerLayout.closeDrawers();
-                        toolbar.setTitle("INFORMATION");
-                        twitter.setVisibility(View.GONE);
-                        twittertitel.setVisibility(View.GONE);
-                        break;
                     case 3:
+                        Intent ticketIntent = new Intent(Intent.ACTION_VIEW,
+                                Uri.parse("https://kulturbiljetter.se/evenemang/satans-delirium-del-2-i-satans-trilogi-2269"));
+                        startActivity(ticketIntent);
+                        mDrawerLayout.closeDrawers();
+                        break;
+                    case 4:
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.main_frame, new InformationFragment())
                                 .addToBackStack(null).commit();
@@ -213,7 +221,7 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
                         twitter.setVisibility(View.GONE);
                         twittertitel.setVisibility(View.GONE);
                         break;
-                    case 4:
+                    case 5:
                         LoginManager.getInstance().logOut();
                         startActivity(new Intent(MainActivity.this, LoginActivity.class));
                         mDrawerLayout.closeDrawers();
@@ -305,6 +313,10 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
                         if(!usedBeacon.contains(aDonny)) {
                             dbHandler.postIDToMessageDB(profileID);
                             usedBeacon.add(aDonny);
+                            notificationID = "4";
+                            notificationTitle = "SATANS DEMOKRATI - HÄNDELSE";
+                            notificationText = "ÖPPNA FÖR ATT DELTA";
+                            getNotificationBuilder ();
                             assert usedBeacon.contains(result.getDevice().getAddress());
                         }
                         break;
@@ -368,15 +380,15 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
                         beaconButton.setText("STÄNG AV FÖRESTÄLLNINGSLÄGE");
                         infoText.setText(R.string.showinfooff);
                         beaconMode = true;
+
+
                         AsyncTask.execute(new Runnable() {
                             @Override
                             public void run() {
                             messageHandler.lookForMessage();
-
-                            beaconHandlerTest.BeaconSetUp();
-                                //                    beaconHandler();
                             }
                         });
+                        beaconHandlerTest.BeaconSetUp();
                     }
                 } else {
                     lampSwitcher.setImageResource(R.drawable.lamp_off);

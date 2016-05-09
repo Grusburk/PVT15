@@ -20,7 +20,7 @@ public class InformationFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private Button directionButton, ticketButton;
+    private Button directionButton;
 
 
     public InformationFragment() {
@@ -57,7 +57,6 @@ public class InformationFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         directionButton = (Button) view.findViewById(R.id.hitta_hit_button);
-        ticketButton = (Button) view.findViewById(R.id.biljett_button);
 
         directionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,15 +64,6 @@ public class InformationFragment extends Fragment {
                 Intent directionIntent = new Intent(Intent.ACTION_VIEW,
                         Uri.parse("http://maps.google.com/maps?daddr=59.3046505,18.1178092"));
                 startActivity(directionIntent);
-            }
-        });
-
-        ticketButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent ticketIntent = new Intent(Intent.ACTION_VIEW,
-                        Uri.parse("https://kulturbiljetter.se/evenemang/satans-delirium-del-2-i-satans-trilogi-2269"));
-                startActivity(ticketIntent);
             }
         });
     }

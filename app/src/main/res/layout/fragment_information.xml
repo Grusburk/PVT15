@@ -35,25 +35,24 @@
         android:layout_marginTop="35dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:weightSum="2"
         >
 
-        <Button
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
-            android:id="@+id/biljett_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/colorAccent"
-            android:textColor="@color/colorPrimaryDark"
-            android:text="KÖP BILJETT"
-            android:textStyle="bold"
-            />
+        <!--<Button-->
+            <!--android:layout_marginRight="10dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:id="@+id/biljett_button"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="@color/colorAccent"-->
+            <!--android:textColor="@color/colorPrimaryDark"-->
+            <!--android:text="KÖP BILJETT"-->
+            <!--android:textStyle="bold"-->
+            <!--/>-->
 
         <Button
-            android:layout_weight="1"
+            android:layout_margin="10dp"
             android:id="@+id/hitta_hit_button"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorAccent"
             android:text="HITTA HIT"

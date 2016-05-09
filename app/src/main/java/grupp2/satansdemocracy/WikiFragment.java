@@ -71,6 +71,7 @@ public class WikiFragment extends Fragment {
                 charInfo.setText(R.string.summaryinfo);
             }
         });
+        summaryButton.requestFocus();
 
         wolandButton.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
