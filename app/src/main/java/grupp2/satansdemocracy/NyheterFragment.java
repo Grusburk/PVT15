@@ -57,7 +57,7 @@ public class NyheterFragment extends Fragment {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        progressBar = (ProgressBar) view.findViewById(R.id.progress_bar) ;
+        progressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
         prepareTweetData();
     }
 
@@ -75,6 +75,7 @@ public class NyheterFragment extends Fragment {
                 progressBar.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
             }
+
             @Override
             public void onFailure(Throwable t) {
             }

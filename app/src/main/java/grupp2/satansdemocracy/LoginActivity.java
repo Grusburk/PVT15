@@ -2,11 +2,11 @@ package grupp2.satansdemocracy;
 
 /**
  * OTHER: Server info:
- *          - Server:           mysql.dsv.su.se
- *          - Port:             3306 (default)
- *          - Database name:    joso8829
- *          - User name:        joso8829
- *          - Password:         vaeB3iebi9ro
+ * - Server:           mysql.dsv.su.se
+ * - Port:             3306 (default)
+ * - Database name:    joso8829
+ * - User name:        joso8829
+ * - Password:         vaeB3iebi9ro
  */
 
 import android.content.Context;
@@ -36,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
     /**
      * Called upon creation of this activity
      * Basic set-up
+     *
      * @param savedInstanceState
      */
     @Override
@@ -183,6 +184,7 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * Attaches the font in assets/fonts to the application
+     *
      * @param newBase
      */
     @Override

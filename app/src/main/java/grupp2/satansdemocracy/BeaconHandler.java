@@ -13,7 +13,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-class BeaconHandler extends Thread{
+class BeaconHandler extends Thread {
     private List<String> found = new ArrayList<>();
     private List<String> usedBeacon = new ArrayList<>();
     private List<ScanFilter> filterList;
@@ -58,7 +58,7 @@ class BeaconHandler extends Thread{
         filterList.add(jDonnyFilter);
         filterList.add(aZiggyFilter);
         filterList.add(aDonnyFilter);
-      while (running) {
+        while (running) {
             BeaconScanner(bluetoothAdapter);
         }
         completeTask();
@@ -136,8 +136,8 @@ class BeaconHandler extends Thread{
             running = false;
             e.printStackTrace();
         }
-        long timeRan = System.currentTimeMillis()-timestart;
-        if(timeRan > 4*1000*60*60)
+        long timeRan = System.currentTimeMillis() - timestart;
+        if (timeRan > 4 * 1000 * 60 * 60)
             running = false;
         return true;
     }

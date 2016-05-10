@@ -83,7 +83,7 @@ class DBHandler {
 
     JSONObject getEvent() {
         JSONObject jEvent = null;
-        try{
+        try {
             jEvent = modelMessageAndEvent.apiGet("get_event/");
         } catch (Exception e) {
             e.printStackTrace();

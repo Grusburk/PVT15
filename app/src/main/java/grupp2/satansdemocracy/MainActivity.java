@@ -1,4 +1,5 @@
 package grupp2.satansdemocracy;
+
 import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -34,7 +35,7 @@ import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class MainActivity extends AppCompatActivity implements MessageListener, BeaconListener{
+public class MainActivity extends AppCompatActivity implements MessageListener, BeaconListener {
     private TextView infoText, twitterTitel;
     private Intent notificationIntent;
     private PendingIntent pendingIntent;
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
     private DBHandler dbHandler = new DBHandler();
     private MessageHandler messageHandler;
     private BeaconHandler beaconHandlerTest;
+
     /**
      * Sets up an instance of the mainActivity class upon first creation.
      *
@@ -79,8 +81,8 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
         uiStuff();
         mDrawerToggle.syncState();
         notificationBuilder = (Notification.Builder) new Notification.Builder(getApplicationContext());
-        popUpDialog = new AlertDialog.Builder(MainActivity.this,android.R.style.Theme_Holo_Dialog_NoActionBar);
-        noBluetoothDialog = new AlertDialog.Builder(MainActivity.this,android.R.style.Theme_Holo_Dialog_NoActionBar);
+        popUpDialog = new AlertDialog.Builder(MainActivity.this, android.R.style.Theme_Holo_Dialog_NoActionBar);
+        noBluetoothDialog = new AlertDialog.Builder(MainActivity.this, android.R.style.Theme_Holo_Dialog_NoActionBar);
         messageHandler = new MessageHandler(profileID);
         messageHandler.setListener(this);
         beaconHandlerTest = new BeaconHandler(this);
@@ -89,24 +91,25 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
          * Get facebook profile ID from LoginActivity
          */
         Bundle extras = getIntent().getExtras();
-        if(extras != null) {
+        if (extras != null) {
             profileID = extras.getString("facebookID");
         }
         /**
          * Request access for Beacon Searching
          */
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-        if (this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_COARSE_LOCATION);
+            if (this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_COARSE_LOCATION);
+            }
         }
     }
-}
 
     private void notificationSettings() {
         notificationBuilder.setSmallIcon(android.R.drawable.stat_notify_chat).setContentIntent(pendingIntent)
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.summary_bw)).setAutoCancel(true).setPriority(Notification.PRIORITY_MAX)
                 .setDefaults(Notification.DEFAULT_VIBRATE).setContentTitle(notificationTitle).setContentText(notificationText);
     }
+
     /**
      * Called for marshmallow access for permissions
      */
@@ -114,20 +117,23 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         /** Empty method */
     }
+
     /**
      * Sets up the font for the application
+     *
      * @param newBase
      */
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
+
     /**
      * Creates an array for the navigation drawer in which to add headers.
      * Then using a switch statement to set up the headers.
      */
     private void addDrawerItems() {
-        String[] drawerArray = {"FÖRESTÄLLNING", "BAKGRUND", "TWITTERFLÖDE", "KÖP BILJETT","OM OSS","LOGGA UT"};
+        String[] drawerArray = {"FÖRESTÄLLNING", "BAKGRUND", "TWITTERFLÖDE", "KÖP BILJETT", "OM OSS", "LOGGA UT"};
         ArrayAdapter<String> mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, drawerArray);
         mDrawerList.setAdapter(mAdapter);
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -175,6 +181,7 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
         twitter.setVisibility(View.GONE);
         twitterTitel.setVisibility(View.GONE);
     }
+
     /**
      * Called when user presses back
      */
@@ -182,6 +189,7 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
     public void onBackPressed() {
         moveTaskToBack(true);
     }
+
     /**
      * Sets up the navigation drawer
      */
@@ -199,6 +207,7 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
+
     /**
      * @param item
      * @return
@@ -208,7 +217,7 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
         return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
-    private void uiStuff () {
+    private void uiStuff() {
         lampSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
             @Override
             public View makeView() {
@@ -217,7 +226,7 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
         });
         lampSwitcher.setImageResource(R.drawable.lamp_off);
         lampSwitcher.setInAnimation(AnimationUtils.loadAnimation(MainActivity.this, android.R.anim.fade_in));
-        lampSwitcher.setOutAnimation(AnimationUtils.loadAnimation(MainActivity.this,android.R.anim.fade_out));
+        lampSwitcher.setOutAnimation(AnimationUtils.loadAnimation(MainActivity.this, android.R.anim.fade_out));
         beaconButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -232,7 +241,7 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
         });
     }
 
-    private void forestallningsDialog(){
+    private void forestallningsDialog() {
         final BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         popUpDialog.setPositiveButton("JA", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
@@ -240,11 +249,11 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
                     if (bluetoothAdapter == null || !bluetoothAdapter.isEnabled()) {
                         noBluetoothDialog.setMessage("DU MÅSTE AKTIVERA BLÅTAND")
                                 .setNeutralButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                            }
-                        }).show();
-                    }else{
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                }).show();
+                    } else {
                         lampSwitcher.setImageResource(R.drawable.lamp_on);
                         beaconButton.setText("STÄNG AV FÖRESTÄLLNINGSLÄGE");
                         infoText.setText(R.string.showinfooff);
@@ -252,8 +261,8 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
                         AsyncTask.execute(new Runnable() {
                             @Override
                             public void run() {
-                            messageHandler.lookForMessage();
-                            beaconHandlerTest.BeaconSetUp();
+                                messageHandler.lookForMessage();
+                                beaconHandlerTest.BeaconSetUp();
                             }
                         });
 
@@ -278,7 +287,7 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
     private void getNotificationBuilder() {
         notificationIntent = new Intent(this, NotificationActivity.class);
         notificationIntent.putExtra("key", notificationID);
-        pendingIntent = PendingIntent.getActivity(this, 0,notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         notificationSettings();
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.notify(0, notificationBuilder.build());
@@ -291,28 +300,28 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
                 notificationID = "1";
                 notificationTitle = "Woland har bjudit in till omröstning!";
                 notificationText = "Vill du delta?";
-                getNotificationBuilder ();
+                getNotificationBuilder();
                 break;
             case 2:
                 notificationID = "2";
                 notificationTitle = "Woland känner att något är fel";
                 notificationText = "Man kanske skulle göra sig av med någon?";
-                getNotificationBuilder ();
+                getNotificationBuilder();
                 break;
             case 3:
                 notificationID = "3";
                 questionNotificationText();
-                getNotificationBuilder ();
+                getNotificationBuilder();
                 break;
             case 4:
                 notificationID = "4";
                 questionNotificationText();
-                getNotificationBuilder ();
+                getNotificationBuilder();
                 break;
             case 5:
                 notificationID = "5";
                 questionNotificationText();
-                getNotificationBuilder ();
+                getNotificationBuilder();
                 break;
         }
     }
@@ -328,7 +337,7 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
         notificationText = "Nu måste du känna dig speciell :)?";
         notificationIntent = new Intent(this, NotificationActivity.class);
         notificationIntent.putExtra("special", message);
-        pendingIntent = PendingIntent.getActivity(this, 0,notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         notificationSettings();
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.notify(0, notificationBuilder.build());
@@ -356,7 +365,7 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
         notificationID = "6";
         notificationTitle = "SATANS DEMOKRATI - FÖREMÅL HITTAT";
         notificationText = "VILL DU SE?";
-        getNotificationBuilder ();
+        getNotificationBuilder();
         dbHandler.postIDToMessageDB(profileID);
     }
 }

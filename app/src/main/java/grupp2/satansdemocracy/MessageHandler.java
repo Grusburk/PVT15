@@ -35,18 +35,17 @@ class MessageHandler extends Thread {
 
         while (running) {
             JSONObject messageResponse = dbHandler.getMessageFromDB(facebookID);
-            JSONObject eventResponse  = dbHandler.getEvent();
+            JSONObject eventResponse = dbHandler.getEvent();
             try {
                 if (!messageResponse.getBoolean("error") && messageResponse.has("data")) {
                     String[] messages = new String[messageResponse.getJSONArray("data").length()];
-                    for(int i = 0; i < messages.length; i++) {
+                    for (int i = 0; i < messages.length; i++) {
                         messages[i] = messageResponse.getJSONArray("data").getString(i);
                     }
-                    for(String message : messages) {
+                    for (String message : messages) {
                         listener.didReceiveMessage(message);
                     }
-                }else
-                if(!eventResponse.getBoolean("error") && eventResponse.has("data")) {
+                } else if (!eventResponse.getBoolean("error") && eventResponse.has("data")) {
                     for (int i = 0; i < eventResponse.getJSONArray("data").length(); i++) {
                         int eventID = eventResponse.getJSONArray("data").getInt(i);
                         if (!eventIDs.contains(eventID)) {
@@ -73,8 +72,8 @@ class MessageHandler extends Thread {
             running = false;
             e.printStackTrace();
         }
-        long timeRan = System.currentTimeMillis()-timeStart;
-        if(timeRan > 4*1000*60*60)
+        long timeRan = System.currentTimeMillis() - timeStart;
+        if (timeRan > 4 * 1000 * 60 * 60)
             running = false;
         return true;
     }

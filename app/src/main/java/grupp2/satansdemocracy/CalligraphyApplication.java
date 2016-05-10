@@ -10,9 +10,9 @@ public class CalligraphyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                        .setDefaultFontPath("fonts/BaronNeue.otf")
-                        .setFontAttrId(R.attr.fontPath)
-                        .build()
+                .setDefaultFontPath("fonts/BaronNeue.otf")
+                .setFontAttrId(R.attr.fontPath)
+                .build()
         );
     }
 }

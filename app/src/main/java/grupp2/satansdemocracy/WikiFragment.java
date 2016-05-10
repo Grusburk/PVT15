@@ -10,7 +10,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 
-
 public class WikiFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -25,6 +24,7 @@ public class WikiFragment extends Fragment {
     public WikiFragment() {
         // Required empty public constructor
     }
+
     // TODO: Rename and change types and number of parameters
     public static WikiFragment newInstance(String param1, String param2) {
         WikiFragment fragment = new WikiFragment();
@@ -70,7 +70,7 @@ public class WikiFragment extends Fragment {
         wolandButton.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus){
+                if (hasFocus) {
                     charName.setText("WOLAND");
                     charInfo.setText(R.string.wolandinfo);
                 }
