@@ -26,7 +26,9 @@ public class NyheterFragment extends Fragment {
     private ProgressBar progressBar;
 
     public NyheterFragment() {
-        // Required empty public constructor
+        /**
+         * EMPTY CONSTRUCTOR
+         */
     }
 
     public static NyheterFragment newInstance(String param1, String param2) {
@@ -60,7 +62,7 @@ public class NyheterFragment extends Fragment {
     }
 
     /**
-     * Använder Mattes egengjorda biblotek
+     * Home made library for searching twitter
      */
     private void prepareTweetData() {
         recyclerView.setVisibility(View.GONE);

@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -81,9 +82,9 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
         popUpDialog = new AlertDialog.Builder(MainActivity.this,android.R.style.Theme_Holo_Dialog_NoActionBar);
         noBluetoothDialog = new AlertDialog.Builder(MainActivity.this,android.R.style.Theme_Holo_Dialog_NoActionBar);
         messageHandler = new MessageHandler(profileID);
-        messageHandler.setListnener(this);
+        messageHandler.setListener(this);
         beaconHandlerTest = new BeaconHandler(this);
-        beaconHandlerTest.setListnener(this);
+        beaconHandlerTest.setListener(this);
         /**
          * Get facebook profile ID from LoginActivity
          */
@@ -110,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
      * Called for marshmallow access for permissions
      */
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         /** Empty method */
     }
     /**
@@ -199,9 +200,8 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
     /**
-     * TODO: Förklara när den här metoden kallas.
      * @param item
-     * @return TODO: Vad är det som returneras? Drawern som blev tryckt på?
+     * @return
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -212,8 +212,7 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
         lampSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
             @Override
             public View makeView() {
-                ImageView lampView = new ImageView(MainActivity.this);
-                return lampView;
+                return new ImageView(MainActivity.this);
             }
         });
         lampSwitcher.setImageResource(R.drawable.lamp_off);
@@ -276,7 +275,7 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
         popUpDialog.show();
     }
 
-    public void getNotificationBuilder () {
+    private void getNotificationBuilder() {
         notificationIntent = new Intent(this, NotificationActivity.class);
         notificationIntent.putExtra("key", notificationID);
         pendingIntent = PendingIntent.getActivity(this, 0,notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -286,7 +285,7 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
     }
 
     @Override
-    public void didRecieveEventID(int id) {
+    public void didReceiveEventID(int id) {
         switch (id) {
             case 1:
                 notificationID = "1";
@@ -336,7 +335,7 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
     }
 
     @Override
-    public void didRecieveBeaconEvent(int id) {
+    public void didReceiveBeaconEvent(int id) {
         switch (id) {
             case 1:
                 beaconEventNotification();

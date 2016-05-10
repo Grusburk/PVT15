@@ -1,16 +1,11 @@
 package grupp2.satansdemocracy;
 
-import android.content.Context;
-import android.content.Intent;
-import android.media.Image;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -25,7 +20,6 @@ public class WikiFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private ImageButton wolandButton, pilatusButton, margaritaButton, aklagarButton, docButton, summaryButton;
     private TextView charName, charInfo;
 
     public WikiFragment() {
@@ -57,12 +51,12 @@ public class WikiFragment extends Fragment {
         charName = (TextView) view.findViewById(R.id.char_name_view);
         charInfo = (TextView) view.findViewById(R.id.char_about_view);
 
-        summaryButton = (ImageButton) view.findViewById(R.id.button_summary);
-        wolandButton = (ImageButton) view.findViewById(R.id.button_woland);
-        pilatusButton = (ImageButton) view.findViewById(R.id.button_pilatus);
-        margaritaButton = (ImageButton) view.findViewById(R.id.button_margarita);
-        aklagarButton = (ImageButton) view.findViewById(R.id.button_aklagaren);
-        docButton = (ImageButton) view.findViewById(R.id.button_doctor);
+        ImageButton summaryButton = (ImageButton) view.findViewById(R.id.button_summary);
+        ImageButton wolandButton = (ImageButton) view.findViewById(R.id.button_woland);
+        ImageButton pilatusButton = (ImageButton) view.findViewById(R.id.button_pilatus);
+        ImageButton margaritaButton = (ImageButton) view.findViewById(R.id.button_margarita);
+        ImageButton aklagarButton = (ImageButton) view.findViewById(R.id.button_aklagaren);
+        ImageButton docButton = (ImageButton) view.findViewById(R.id.button_doctor);
 
         summaryButton.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override

@@ -2,13 +2,9 @@ package grupp2.satansdemocracy;
 
 import android.util.Log;
 import com.facebook.Profile;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-/**
- * Created by dödsadde on 2016-04-14.
- */
-public class DBHandler {
+class DBHandler {
 
 
     /**
@@ -19,17 +15,15 @@ public class DBHandler {
     private MessageModel modelMessageAndEvent = new MessageModel("https://people.dsv.su.se/~anth3046/SatansDemokrati/api/v3/");
 
 
-    public DBHandler() {
+    DBHandler() {
         /**
          * EMPTY CONSTRUCTOR
          */
     }
 
-    public boolean idExist(Profile profile) {
+    boolean idExist(Profile profile) {
         /**
-         * TODO: Send profileID to server/DB
          * Sends the user ID to the server
-         * (NOT DONE, JUST TEST)
          */
         boolean exists = false;
         try {
@@ -45,7 +39,7 @@ public class DBHandler {
     /**
      * Creates a new entry in the DB
      */
-    public void postNewProfileToDB(Profile profile) {
+    void postNewProfileToDB(Profile profile) {
 
         /** Adding data to JSONObjects */
         String userJson = "{'id':\"" + profile.getId()
@@ -66,7 +60,7 @@ public class DBHandler {
         }
     }
 
-    public void postIDToMessageDB(String id) {
+    void postIDToMessageDB(String id) {
 
         String userJson = "{'id':\"" + id + "\"}";
 
@@ -77,7 +71,7 @@ public class DBHandler {
         }
     }
 
-    public JSONObject getMessageFromDB(String id) {
+    JSONObject getMessageFromDB(String id) {
         JSONObject jMessage = null;
         try {
             jMessage = modelMessageAndEvent.apiGet("get_message/" + id);
@@ -87,7 +81,7 @@ public class DBHandler {
         return jMessage;
     }
 
-    public JSONObject getEvent() {
+    JSONObject getEvent() {
         JSONObject jEvent = null;
         try{
             jEvent = modelMessageAndEvent.apiGet("get_event/");

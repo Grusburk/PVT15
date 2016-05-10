@@ -29,10 +29,9 @@ import java.util.Arrays;
 public class LoginActivity extends AppCompatActivity {
 
     private CallbackManager callbackManager;
-    Profile profile;
-    DBHandler dbHandler = new DBHandler();
+    private Profile profile;
+    private DBHandler dbHandler = new DBHandler();
     private ProfileTracker mProfileTracker;
-    private AccessTokenTracker mAccessTokenTracker;
 
     /**
      * Called upon creation of this activity
@@ -176,9 +175,7 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * Method for changeing view to main.
-     * TODO : ta bort kommentaren
      */
-
     private void goToMain() {
         startActivity(new Intent(LoginActivity.this, MainActivity.class).putExtra("facebookID", profile.getId()));
         finish();

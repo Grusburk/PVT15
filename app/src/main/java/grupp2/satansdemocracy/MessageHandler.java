@@ -1,35 +1,26 @@
 package grupp2.satansdemocracy;
 
-import android.os.StrictMode;
 import android.util.Log;
-
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Joakim on 2016-04-29.
- */
+class MessageHandler extends Thread {
 
+    private MessageListener listener;
 
-public class MessageHandler extends Thread {
-
-    private MessageListener listnener;
-
-    public void setListnener(MessageListener listener) {
-        this.listnener = listener;
+    void setListener(MessageListener listener) {
+        this.listener = listener;
     }
 
     private DBHandler dbHandler = new DBHandler();
     private List<Integer> eventIDs = new ArrayList<>();
     private String facebookID;
     private boolean running;
-    private long timestart;
-    String UUID = "Vettig variabel här";
-    String event = "Vettig variabel här";
+    private long timeStart;
 
-    public MessageHandler(String facebookID) {
+    MessageHandler(String facebookID) {
         this.facebookID = facebookID;
     }
 
@@ -38,9 +29,9 @@ public class MessageHandler extends Thread {
         completeTask();
     }
 
-    public void lookForMessage() {
+    void lookForMessage() {
         running = true;
-        timestart = System.currentTimeMillis();
+        timeStart = System.currentTimeMillis();
 
         while (running) {
             JSONObject messageResponse = dbHandler.getMessageFromDB(facebookID);
@@ -51,15 +42,15 @@ public class MessageHandler extends Thread {
                     for(int i = 0; i < messages.length; i++) {
                         messages[i] = messageResponse.getJSONArray("data").getString(i);
                     }
-                    for (int i = 0; i < messages.length; i++){
-                        listnener.didReceiveMessage(messages[i]);
+                    for(String message : messages) {
+                        listener.didReceiveMessage(message);
                     }
                 }else
                 if(!eventResponse.getBoolean("error") && eventResponse.has("data")) {
                     for (int i = 0; i < eventResponse.getJSONArray("data").length(); i++) {
                         int eventID = eventResponse.getJSONArray("data").getInt(i);
                         if (!eventIDs.contains(eventID)) {
-                            listnener.didRecieveEventID(eventID);
+                            listener.didReceiveEventID(eventID);
                         }
                     }
                 }
@@ -70,20 +61,20 @@ public class MessageHandler extends Thread {
         }
     }
 
-    public void stopSearch() {
+    void stopSearch() {
         running = false;
     }
 
-    public boolean completeTask() {
+    private boolean completeTask() {
         try {
-            this.sleep(30 * 1000);
+            sleep(30 * 1000);
             Log.i("test", "30 seccccccc");
         } catch (InterruptedException e) {
             running = false;
             e.printStackTrace();
         }
-        long timeran = System.currentTimeMillis()-timestart;
-        if(timeran > 4*1000*60*60)
+        long timeRan = System.currentTimeMillis()-timeStart;
+        if(timeRan > 4*1000*60*60)
             running = false;
         return true;
     }

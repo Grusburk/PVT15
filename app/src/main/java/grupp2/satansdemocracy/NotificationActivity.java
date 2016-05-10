@@ -30,59 +30,69 @@ public class NotificationActivity extends AppCompatActivity {
         TextView candidate2Name = (TextView) findViewById(R.id.pilatus_text);
         ImageButton candidate1 = (ImageButton) findViewById(R.id.button_woland);
         ImageButton candidate2 = (ImageButton) findViewById(R.id.button_pilatus);
-        voteFrame.setVisibility(View.GONE);
-        newspaperFrame.setVisibility(View.GONE);
+        if (voteFrame != null) {
+            voteFrame.setVisibility(View.GONE);
+        }
+        if (newspaperFrame != null) {
+            newspaperFrame.setVisibility(View.GONE);
+        }
 
         Bundle intentPerformer = getIntent().getExtras();
         String message = getIntent().getStringExtra("special");
         if (intentPerformer != null) {
 
             /**
-             * Omröstningar
+             * TRY/CATCH clause here because almost every setter below may produce NPE.
              */
-            if (message != null) {
-                dialogText = message;
-                setVoteDialog();
+            try {
+                /**
+                 * Votes
+                 */
+                if (message != null) {
+                    dialogText = message;
+                    setVoteDialog();
 
-            } else if (intentPerformer.getString("key").equals("1")){
-                voteText.setText(R.string.vote_text);
-                candidate1.setImageResource(R.drawable.woland_selector);
-                candidate2.setImageResource(R.drawable.pontius_selector);
-                candidate1Name.setText("WOLAND");
-                candidate2Name.setText("PONTIUS");
-                voteFrameClickListener(voteFrame, voteButton);
+                } else if (intentPerformer.getString("key").equals("1")) {
+                    voteText.setText(R.string.vote_text);
+                    candidate1.setImageResource(R.drawable.woland_selector);
+                    candidate2.setImageResource(R.drawable.pontius_selector);
+                    candidate1Name.setText("WOLAND");
+                    candidate2Name.setText("PONTIUS");
+                    voteFrameClickListener(voteFrame, voteButton);
 
-            }else if (intentPerformer.get("key").equals("2")){
-                voteText.setText(R.string.vote_text2);
-                candidate1.setImageResource(R.drawable.aklagaren_selector);
-                candidate2.setImageResource(R.drawable.doc_selector);
-                candidate1Name.setText("ÅKLAGAREN");
-                candidate2Name.setText("DOKTORN");
-                voteFrameClickListener(voteFrame, voteButton);
+                } else if (intentPerformer.get("key").equals("2")) {
+                    voteText.setText(R.string.vote_text2);
+                    candidate1.setImageResource(R.drawable.aklagaren_selector);
+                    candidate2.setImageResource(R.drawable.doc_selector);
+                    candidate1Name.setText("ÅKLAGAREN");
+                    candidate2Name.setText("DOKTORN");
+                    voteFrameClickListener(voteFrame, voteButton);
 
-            /**
-            *Frågor
-             */
+                    /**
+                     * Questions
+                     */
+                } else if (intentPerformer.getString("key").equals("3")) {
+                    dialogText = "RÄCK UPP HANDEN OCH FRÅGA WOLAND: \r\nVARFÖR MÖRDADE DU JESUS?";
+                    setVoteDialog();
 
-            }else if (intentPerformer.getString("key").equals("3")){
-                dialogText = "RÄCK UPP HANDEN OCH FRÅGA WOLAND: \r\nVARFÖR MÖRDADE DU JESUS?";
-                setVoteDialog();
+                } else if (intentPerformer.getString("key").equals("4")) {
+                    dialogText = "Kan du spå in i framtiden? Vet du vad som ska hända innan det händer? Pirrar det i magen? Illamående? I wouldn’t know, " +
+                            "I drink too much.\n" + "\n" + "Om du kan se in i framtiden, erkänn det nu.";
+                    setVoteDialog();
 
-            }else if (intentPerformer.getString("key").equals("4")){
-                dialogText = "Kan du spå in i framtiden? Vet du vad som ska hända innan det händer? Pirrar det i magen? Illamående? I wouldn’t know, " +
-                        "I drink too much.\n" + "\n" + "Om du kan se in i framtiden, erkänn det nu.";
-                setVoteDialog();
+                } else if (intentPerformer.getString("key").equals("5")) {
+                    dialogText = "Börja bråka med Woland. Inled en konversation och försök att bli irriterad på henne tills ni hamnat i en argumentation.";
+                    setVoteDialog();
 
-            }else if (intentPerformer.getString("key").equals("5")){
-                dialogText = "Börja bråka med Woland. Inled en konversation och försök att bli irriterad på henne tills ni hamnat i en argumentation.";
-                setVoteDialog();
+                    /**
+                     *Beacons
+                     */
 
-            /**
-            *Beacons
-             */
-
-            }else if (intentPerformer.getString("key").equals("6")){
-                newspaperFrame.setVisibility(View.VISIBLE);
+                } else if (intentPerformer.getString("key").equals("6")) {
+                    newspaperFrame.setVisibility(View.VISIBLE);
+                }
+            } catch (NullPointerException npe) {
+                npe.printStackTrace();
             }
         }
     }
@@ -105,28 +115,28 @@ public class NotificationActivity extends AppCompatActivity {
         }
     }
 
-    private void getSnackBar () {
+    private void getSnackBar() {
         final View parentLayout = findViewById(R.id.notificationFrame);
         Snackbar.make(parentLayout, snackBarText, Snackbar.LENGTH_SHORT).setCallback(new Snackbar.Callback() {
             @Override
             public void onDismissed(Snackbar snackbar, int event) {
                 super.onDismissed(snackbar, event);
-                if (event == DISMISS_EVENT_TIMEOUT){
+                if (event == DISMISS_EVENT_TIMEOUT) {
                     finish();
                 }
             }
         }).show();
     }
 
-        private void setVoteDialog () {
-        final AlertDialog.Builder questionDialog = new AlertDialog.Builder(NotificationActivity.this,android.R.style.Theme_Holo_Dialog_NoActionBar);
+    private void setVoteDialog() {
+        final AlertDialog.Builder questionDialog = new AlertDialog.Builder(NotificationActivity.this, android.R.style.Theme_Holo_Dialog_NoActionBar);
         questionDialog.setMessage(dialogText).setCancelable(false)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                finish();
-            }
-        });
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                });
         questionDialog.show();
     }
 }

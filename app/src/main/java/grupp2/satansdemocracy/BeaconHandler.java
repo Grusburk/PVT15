@@ -13,15 +13,10 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Mattin on 2016-05-05.
- */
-public class BeaconHandler extends Thread{
+class BeaconHandler extends Thread{
     private List<String> found = new ArrayList<>();
     private List<String> usedBeacon = new ArrayList<>();
     private List<ScanFilter> filterList;
-    private ScanCallback scanCallback;
-    private BluetoothLeScanner bluetoothLeScanner;
     private final String jZiggy = "CC:69:C6:5B:13:D7";
     private final String jDonny = "FF:FF:50:01:25:63";
     private final String aZiggy = "F2:E1:A3:7E:CF:BC";
@@ -33,11 +28,11 @@ public class BeaconHandler extends Thread{
     private boolean running;
     private long timestart;
 
-    public BeaconHandler (Context mContext) {
+    BeaconHandler(Context mContext) {
         this.mContext = mContext;
     }
 
-    public void setListnener(BeaconListener listener) {
+    void setListener(BeaconListener listener) {
         this.listener = listener;
     }
 
@@ -46,7 +41,7 @@ public class BeaconHandler extends Thread{
         completeTask();
     }
 
-    public void BeaconSetUp() {
+    void BeaconSetUp() {
         scanSettings = new ScanSettings.Builder()
                 .setScanMode(ScanSettings.SCAN_MODE_LOW_POWER)
                 .build();
@@ -70,8 +65,8 @@ public class BeaconHandler extends Thread{
     }
 
     private void BeaconScanner(BluetoothAdapter bluetoothAdapter) {
-        bluetoothLeScanner = bluetoothAdapter.getBluetoothLeScanner();
-        this.scanCallback = new ScanCallback() {
+        BluetoothLeScanner bluetoothLeScanner = bluetoothAdapter.getBluetoothLeScanner();
+        ScanCallback scanCallback = new ScanCallback() {
             @Override
             public void onScanResult(int callbackType, ScanResult result) {
                 super.onScanResult(callbackType, result);
@@ -82,38 +77,38 @@ public class BeaconHandler extends Thread{
                     case jZiggy:
                         if (!usedBeacon.contains(jZiggy)) {
                             eventID = 1;
-                            listener.didRecieveBeaconEvent(eventID);
+                            listener.didReceiveBeaconEvent(eventID);
                             usedBeacon.add(jZiggy);
-                            assert usedBeacon.contains(result.getDevice().getAddress());
+                            if (!usedBeacon.contains(result.getDevice().getAddress())) throw new AssertionError();
                         }
                         break;
                     case jDonny:
                         if (!usedBeacon.contains(jDonny)) {
                             eventID = 2;
-                            listener.didRecieveBeaconEvent(eventID);
+                            listener.didReceiveBeaconEvent(eventID);
                             usedBeacon.add(jDonny);
-                            assert usedBeacon.contains(result.getDevice().getAddress());
+                            if (!usedBeacon.contains(result.getDevice().getAddress())) throw new AssertionError();
                         }
                         break;
                     case aZiggy:
                         if (!usedBeacon.contains(aZiggy)) {
                             eventID = 3;
-                            listener.didRecieveBeaconEvent(eventID);
+                            listener.didReceiveBeaconEvent(eventID);
                             usedBeacon.add(aZiggy);
-                            assert usedBeacon.contains(result.getDevice().getAddress());
+                            if (!usedBeacon.contains(result.getDevice().getAddress())) throw new AssertionError();
                         }
                         break;
                     case aDonny:
                         if (!usedBeacon.contains(aDonny)) {
                             eventID = 4;
-                            listener.didRecieveBeaconEvent(eventID);
+                            listener.didReceiveBeaconEvent(eventID);
                             usedBeacon.add(aDonny);
-                            assert usedBeacon.contains(result.getDevice().getAddress());
+                            if (!usedBeacon.contains(result.getDevice().getAddress())) throw new AssertionError();
                         }
                         break;
                     default:
                         break;
-                }
+                }//Receive
             }
 
             @Override
@@ -129,20 +124,20 @@ public class BeaconHandler extends Thread{
         bluetoothLeScanner.startScan(filterList, scanSettings, scanCallback);
     }
 
-    public void stopSearch() {
+    void stopSearch() {
         running = false;
     }
 
-    public boolean completeTask() {
+    private boolean completeTask() {
         try {
-            this.sleep(5 * 1000);
+            sleep(5 * 1000);
             Log.i("HJAAJHHAHAst", "5 seccccccc");
         } catch (InterruptedException e) {
             running = false;
             e.printStackTrace();
         }
-        long timeran = System.currentTimeMillis()-timestart;
-        if(timeran > 4*1000*60*60)
+        long timeRan = System.currentTimeMillis()-timestart;
+        if(timeRan > 4*1000*60*60)
             running = false;
         return true;
     }

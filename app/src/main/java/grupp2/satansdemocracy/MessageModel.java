@@ -6,10 +6,9 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 /**
- * Created by dödsadde on 2016-04-14.
  * Separate class to handle REST VERBS
  */
-public class MessageModel {
+class MessageModel {
 
     /**
      * The URL to our API
@@ -23,7 +22,7 @@ public class MessageModel {
     /**
      * Takes URL to API (makes it easier for further implementation.
      */
-    public MessageModel(String baseUrl) {
+    MessageModel(String baseUrl) {
         this.baseUrl = baseUrl;
     }
 
