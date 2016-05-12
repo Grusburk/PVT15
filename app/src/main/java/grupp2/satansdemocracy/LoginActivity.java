@@ -178,8 +178,22 @@ public class LoginActivity extends AppCompatActivity {
      * Method for changeing view to main.
      */
     private void goToMain() {
-        startActivity(new Intent(LoginActivity.this, MainActivity.class).putExtra("facebookID", profile.getId()));
-        finish();
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(200);
+                    if(profile == null) {
+                        profile = Profile.getCurrentProfile();
+                    }
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class).putExtra("facebookID", profile.getId()));
+                    finish();
+                } catch (InterruptedException ie) {
+                    ie.printStackTrace();
+                }
+            }
+        });
+
     }
 
     /**
