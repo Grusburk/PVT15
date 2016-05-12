@@ -9,7 +9,7 @@ import java.io.IOException;
 /**
  * Separate class to handle REST VERBS
  */
-class MessageModel {
+public class MessageModel {
 
     /**
      * The URL to our API

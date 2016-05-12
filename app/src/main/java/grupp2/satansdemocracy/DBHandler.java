@@ -4,7 +4,7 @@ import android.util.Log;
 import com.facebook.Profile;
 import org.json.JSONObject;
 
-class DBHandler {
+public class DBHandler {
 
 
     /**
@@ -39,7 +39,7 @@ class DBHandler {
     /**
      * Creates a new entry in the DB
      */
-    void postNewProfileToDB(Profile profile) {
+    public void postNewProfileToDB(Profile profile) {
 
         /** Adding data to JSONObjects */
         String userJson = "{'id':\"" + profile.getId()

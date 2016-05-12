@@ -83,8 +83,6 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
         notificationBuilder = (Notification.Builder) new Notification.Builder(getApplicationContext());
         popUpDialog = new AlertDialog.Builder(MainActivity.this, android.R.style.Theme_Holo_Dialog_NoActionBar);
         noBluetoothDialog = new AlertDialog.Builder(MainActivity.this, android.R.style.Theme_Holo_Dialog_NoActionBar);
-        messageHandler = new MessageHandler(profileID);
-        messageHandler.setListener(this);
         beaconHandlerTest = new BeaconHandler(this);
         beaconHandlerTest.setListener(this);
         /**
@@ -94,6 +92,8 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
         if (extras != null) {
             profileID = extras.getString("facebookID");
         }
+        messageHandler = new MessageHandler(profileID);
+        messageHandler.setListener(this);
         /**
          * Request access for Beacon Searching
          */
@@ -262,10 +262,9 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
                             @Override
                             public void run() {
                                 messageHandler.lookForMessage();
-                                beaconHandlerTest.BeaconSetUp();
+//                                beaconHandlerTest.BeaconSetUp();
                             }
                         });
-
                     }
                 } else {
                     lampSwitcher.setImageResource(R.drawable.lamp_off);

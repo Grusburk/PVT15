@@ -13,7 +13,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-class BeaconHandler extends Thread {
+public class BeaconHandler extends Thread {
     private List<String> found = new ArrayList<>();
     private List<String> usedBeacon = new ArrayList<>();
     private List<ScanFilter> filterList;
@@ -130,7 +130,7 @@ class BeaconHandler extends Thread {
 
     private boolean completeTask() {
         try {
-            sleep(5 * 1000);
+            sleep(5000);
             Log.i("HJAAJHHAHAst", "5 seccccccc");
         } catch (InterruptedException e) {
             running = false;

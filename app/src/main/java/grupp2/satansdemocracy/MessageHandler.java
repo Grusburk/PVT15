@@ -6,7 +6,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-class MessageHandler extends Thread {
+public class MessageHandler extends Thread {
 
     private MessageListener listener;
 
@@ -29,23 +29,26 @@ class MessageHandler extends Thread {
         completeTask();
     }
 
-    void lookForMessage() {
+    public void lookForMessage() {
         running = true;
         timeStart = System.currentTimeMillis();
+        Log.i("MESS", "FACEBOOK" + facebookID);
 
         while (running) {
             JSONObject messageResponse = dbHandler.getMessageFromDB(facebookID);
             JSONObject eventResponse = dbHandler.getEvent();
+            Log.i("aids",""+messageResponse.toString());
             try {
                 if (!messageResponse.getBoolean("error") && messageResponse.has("data")) {
                     String[] messages = new String[messageResponse.getJSONArray("data").length()];
-                    for (int i = 0; i < messages.length; i++) {
+                    for(int i = 0; i < messages.length; i++) {
                         messages[i] = messageResponse.getJSONArray("data").getString(i);
                     }
-                    for (String message : messages) {
-                        listener.didReceiveMessage(message);
+                    for (int i = 0; i < messages.length; i++){
+                        listener.didReceiveMessage(messages[i]);
                     }
-                } else if (!eventResponse.getBoolean("error") && eventResponse.has("data")) {
+                }
+                if (!eventResponse.getBoolean("error") && eventResponse.has("data")) {
                     for (int i = 0; i < eventResponse.getJSONArray("data").length(); i++) {
                         int eventID = eventResponse.getJSONArray("data").getInt(i);
                         if (!eventIDs.contains(eventID)) {
