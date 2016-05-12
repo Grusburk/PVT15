@@ -258,11 +258,11 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
                         beaconButton.setText("STÄNG AV FÖRESTÄLLNINGSLÄGE");
                         infoText.setText(R.string.showinfooff);
                         beaconMode = true;
+                        beaconHandlerTest.BeaconSetUp();
                         AsyncTask.execute(new Runnable() {
                             @Override
                             public void run() {
                                 messageHandler.lookForMessage();
-//                                beaconHandlerTest.BeaconSetUp();
                             }
                         });
                     }

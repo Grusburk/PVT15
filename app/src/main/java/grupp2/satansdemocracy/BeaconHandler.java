@@ -21,6 +21,7 @@ public class BeaconHandler extends Thread {
     private final String jDonny = "FF:FF:50:01:25:63";
     private final String aZiggy = "F2:E1:A3:7E:CF:BC";
     private final String aDonny = "FF:FF:70:01:4C:E6";
+
     private Context mContext;
     private BeaconListener listener;
     private Integer eventID;
@@ -58,9 +59,9 @@ public class BeaconHandler extends Thread {
         filterList.add(jDonnyFilter);
         filterList.add(aZiggyFilter);
         filterList.add(aDonnyFilter);
-        while (running) {
+//        while (running) {
             BeaconScanner(bluetoothAdapter);
-        }
+//        }
         completeTask();
     }
 

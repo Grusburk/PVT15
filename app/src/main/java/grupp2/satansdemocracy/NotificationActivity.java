@@ -6,6 +6,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -25,6 +26,7 @@ public class NotificationActivity extends AppCompatActivity {
         FrameLayout voteFrame = (FrameLayout) this.findViewById(R.id.vote_frame);
         FrameLayout newspaperFrame = (FrameLayout) this.findViewById(R.id.newspaper_frame);
         Button voteButton = (Button) findViewById(R.id.vote_button);
+        Button okButton = (Button) findViewById(R.id.ok_button);
         TextView voteText = (TextView) findViewById(R.id.vote_text);
         TextView candidate1Name = (TextView) findViewById(R.id.woland_text);
         TextView candidate2Name = (TextView) findViewById(R.id.pilatus_text);
@@ -90,6 +92,12 @@ public class NotificationActivity extends AppCompatActivity {
 
                 } else if (intentPerformer.getString("key").equals("6")) {
                     newspaperFrame.setVisibility(View.VISIBLE);
+                    okButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            finish();
+                        }
+                    });
                 }
             } catch (NullPointerException npe) {
                 npe.printStackTrace();

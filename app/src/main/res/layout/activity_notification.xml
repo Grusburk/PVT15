@@ -116,16 +116,33 @@
                 android:layout_alignParentBottom="true"
                 android:layout_margin="15dp"/>
         </RelativeLayout>
-
-
-
     </FrameLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/newspaper_frame"
-        android:background="@drawable/newspaper_1"
-        android:visibility="invisible"/>
+        android:visibility="gone">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/newspaper_1"/>
+
+            <Button
+                android:background="@color/colorAccent"
+                android:id="@+id/ok_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="OK"
+                android:layout_alignParentBottom="true"
+                android:layout_margin="15dp"/>
+
+        </RelativeLayout>
+    </FrameLayout>
 
 </FrameLayout>
