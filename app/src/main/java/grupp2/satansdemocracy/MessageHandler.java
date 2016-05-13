@@ -9,16 +9,15 @@ import java.util.List;
 public class MessageHandler extends Thread {
 
     private MessageListener listener;
+    private DBHandler dbHandler = new DBHandler();
+    private List<Integer> eventIDs = new ArrayList<>();
+    private String facebookID;
+    private volatile boolean running;
+    private long timeStart = System.currentTimeMillis();
 
     void setListener(MessageListener listener) {
         this.listener = listener;
     }
-
-    private DBHandler dbHandler = new DBHandler();
-    private List<Integer> eventIDs = new ArrayList<>();
-    private String facebookID;
-    private boolean running;
-    private long timeStart;
 
     MessageHandler(String facebookID) {
         this.facebookID = facebookID;
@@ -26,18 +25,16 @@ public class MessageHandler extends Thread {
 
     @Override
     public void run() {
-        completeTask();
+        lookForMessage();
     }
 
     public void lookForMessage() {
         running = true;
-        timeStart = System.currentTimeMillis();
         Log.i("MESS", "FACEBOOK" + facebookID);
 
         while (running) {
             JSONObject messageResponse = dbHandler.getMessageFromDB(facebookID);
             JSONObject eventResponse = dbHandler.getEvent();
-            Log.i("aids",""+messageResponse.toString());
             try {
                 if (!messageResponse.getBoolean("error") && messageResponse.has("data")) {
                     String[] messages = new String[messageResponse.getJSONArray("data").length()];
@@ -67,7 +64,7 @@ public class MessageHandler extends Thread {
         running = false;
     }
 
-    private boolean completeTask() {
+    boolean completeTask() {
         try {
             sleep(30 * 1000);
             Log.i("test", "30 seccccccc");
@@ -76,8 +73,10 @@ public class MessageHandler extends Thread {
             e.printStackTrace();
         }
         long timeRan = System.currentTimeMillis() - timeStart;
-        if (timeRan > 4 * 1000 * 60 * 60)
+        if (timeRan > timeStart + 4 * 1000 * 60 * 60){
             running = false;
+            return false;
+        }
         return true;
     }
 }

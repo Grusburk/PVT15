@@ -21,13 +21,12 @@ public class BeaconHandler extends Thread {
     private final String jDonny = "FF:FF:50:01:25:63";
     private final String aZiggy = "F2:E1:A3:7E:CF:BC";
     private final String aDonny = "FF:FF:70:01:4C:E6";
-
     private Context mContext;
     private BeaconListener listener;
     private Integer eventID;
     private ScanSettings scanSettings;
-    private boolean running;
-    private long timestart;
+    private volatile boolean running;
+    private long timeStart = System.currentTimeMillis();
 
     BeaconHandler(Context mContext) {
         this.mContext = mContext;
@@ -39,14 +38,14 @@ public class BeaconHandler extends Thread {
 
     @Override
     public void run() {
-        completeTask();
+        beaconSetUp();
     }
 
-    void BeaconSetUp() {
+    void beaconSetUp() {
         scanSettings = new ScanSettings.Builder()
                 .setScanMode(ScanSettings.SCAN_MODE_LOW_POWER)
                 .build();
-        boolean running = true;
+        running = true;
         ScanFilter jZiggyFilter = new ScanFilter.Builder().setDeviceAddress(jZiggy).build();
         ScanFilter jDonnyFilter = new ScanFilter.Builder().setDeviceAddress(jDonny).build();
         ScanFilter aZiggyFilter = new ScanFilter.Builder().setDeviceAddress(aZiggy).build();
@@ -59,10 +58,10 @@ public class BeaconHandler extends Thread {
         filterList.add(jDonnyFilter);
         filterList.add(aZiggyFilter);
         filterList.add(aDonnyFilter);
-//        while (running) {
+        while (running) {
             BeaconScanner(bluetoothAdapter);
-//        }
-        completeTask();
+            completeTask();
+        }
     }
 
     private void BeaconScanner(BluetoothAdapter bluetoothAdapter) {
@@ -129,17 +128,19 @@ public class BeaconHandler extends Thread {
         running = false;
     }
 
-    private boolean completeTask() {
+     boolean completeTask() {
         try {
             sleep(5000);
-            Log.i("HJAAJHHAHAst", "5 seccccccc");
         } catch (InterruptedException e) {
             running = false;
             e.printStackTrace();
         }
-        long timeRan = System.currentTimeMillis() - timestart;
-        if (timeRan > 4 * 1000 * 60 * 60)
+        Log.i("Searching Beacon", "5 seccccccc");
+        long timeRan = System.currentTimeMillis() - timeStart;
+        if (timeRan > timeStart + (4 * 1000 * 60 * 60)) {
             running = false;
+            return false;
+        }
         return true;
     }
 }

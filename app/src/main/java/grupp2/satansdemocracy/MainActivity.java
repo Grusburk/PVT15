@@ -11,10 +11,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -53,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
     private DBHandler dbHandler = new DBHandler();
     private MessageHandler messageHandler;
-    private BeaconHandler beaconHandlerTest;
+    private BeaconHandler beaconHandler;
 
     /**
      * Sets up an instance of the mainActivity class upon first creation.
@@ -83,8 +81,6 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
         notificationBuilder = (Notification.Builder) new Notification.Builder(getApplicationContext());
         popUpDialog = new AlertDialog.Builder(MainActivity.this, android.R.style.Theme_Holo_Dialog_NoActionBar);
         noBluetoothDialog = new AlertDialog.Builder(MainActivity.this, android.R.style.Theme_Holo_Dialog_NoActionBar);
-        beaconHandlerTest = new BeaconHandler(this);
-        beaconHandlerTest.setListener(this);
         /**
          * Get facebook profile ID from LoginActivity
          */
@@ -92,8 +88,6 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
         if (extras != null) {
             profileID = extras.getString("facebookID");
         }
-        messageHandler = new MessageHandler(profileID);
-        messageHandler.setListener(this);
         /**
          * Request access for Beacon Searching
          */
@@ -102,6 +96,15 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
                 requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_COARSE_LOCATION);
             }
         }
+    }
+
+    private void threadStart() {
+        beaconHandler = new BeaconHandler(this);
+        beaconHandler.setListener(this);
+        beaconHandler.start();
+        messageHandler = new MessageHandler(profileID);
+        messageHandler.setListener(this);
+        messageHandler.start();
     }
 
     private void notificationSettings() {
@@ -114,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
      * Called for marshmallow access for permissions
      */
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         /** Empty method */
     }
 
@@ -258,21 +261,15 @@ public class MainActivity extends AppCompatActivity implements MessageListener, 
                         beaconButton.setText("STÄNG AV FÖRESTÄLLNINGSLÄGE");
                         infoText.setText(R.string.showinfooff);
                         beaconMode = true;
-                        beaconHandlerTest.BeaconSetUp();
-                        AsyncTask.execute(new Runnable() {
-                            @Override
-                            public void run() {
-                                messageHandler.lookForMessage();
-                            }
-                        });
+                        threadStart();
                     }
                 } else {
                     lampSwitcher.setImageResource(R.drawable.lamp_off);
                     beaconButton.setText("AKTIVERA FÖRESTÄLLNINGSLÄGE");
                     infoText.setText(R.string.showinfoon);
                     beaconMode = false;
+                    beaconHandler.stopSearch();
                     messageHandler.stopSearch();
-                    beaconHandlerTest.stopSearch();
                 }
             }
         });
