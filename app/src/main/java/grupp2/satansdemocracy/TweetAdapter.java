@@ -1,4 +1,5 @@
 package grupp2.satansdemocracy;
+
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,14 +11,15 @@ import com.d4t.getoldtweetslibrary.model.*;
 
 import java.util.List;
 
-public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.MyViewHolder> {
+class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.MyViewHolder> {
 
     private List<Tweet> tweetList;
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView userName, userMessage;
+    class MyViewHolder extends RecyclerView.ViewHolder {
+        TextView userName, userMessage;
         public ImageView userPicture;
-        public MyViewHolder(View view) {
+
+        MyViewHolder(View view) {
             super(view);
             userName = (TextView) view.findViewById(R.id.username);
             userMessage = (TextView) view.findViewById(R.id.usermessage);
@@ -26,7 +28,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.MyViewHolder
     }
 
 
-    public TweetAdapter(List<Tweet> tweetList) {
+    TweetAdapter(List<Tweet> tweetList) {
         this.tweetList = tweetList;
     }
 
@@ -39,7 +41,8 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.MyViewHolder
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {Tweet tweet = tweetList.get(position);
+    public void onBindViewHolder(MyViewHolder holder, int position) {
+        Tweet tweet = tweetList.get(position);
         holder.userName.setText(tweet.getFullName());
         holder.userMessage.setText(tweet.getText());
 //        holder.userPicture.(tweet.getUserPicture());
