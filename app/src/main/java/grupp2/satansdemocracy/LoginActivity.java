@@ -1,14 +1,5 @@
 package grupp2.satansdemocracy;
 
-/**
- * OTHER: Server info:
- * - Server:           mysql.dsv.su.se
- * - Port:             3306 (default)
- * - Database name:    joso8829
- * - User name:        joso8829
- * - Password:         vaeB3iebi9ro
- */
-
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
